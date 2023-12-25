@@ -1,7 +1,7 @@
 #!/bin/bash
 
 container_name="aas_container" # Change this to your container name
-catkin_ws_path="/aas_ws/autsys-2023-geometric-controller-cemkucukgenc/catkin_ws" # Change this to your catkin_ws path
+catkin_ws_path="/aas_ws/tum_aas_project/catkin_ws" # Change this to your catkin_ws path
 
 xhost +
 sudo docker run \

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-catkin_ws_path="/aas_ws/autsys-2023-geometric-controller-cemkucukgenc/catkin_ws" # Change this to your catkin_ws path
+catkin_ws_path="/aas_ws/tum_aas_project/catkin_ws" # Change this to your catkin_ws path
 
 source $catkin_ws_path/devel/setup.bash
 
