@@ -2,11 +2,11 @@
 # 2023 Group Project: Sub-Terrain Challange
 
 ## Group 8
-Cem Kücükgenc
-Baran Özer
-Serdar Soyer
-Erencan Aslakci
-Ali Rabeh
+- Cem Kücükgenc
+- Baran Özer
+- Serdar Soyer
+- Erencan Aslakci
+- Ali Rabeh
 
 ## Introduction
 
