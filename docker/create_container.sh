@@ -1,21 +1,21 @@
 #!/bin/bash
 
-container_name="aas_container" # Change this to your container name
-catkin_ws_path="/aas_ws/tum_aas_project/catkin_ws" # Change this to your catkin_ws path
+container_name="autsys_container" # Change this to your container name
+catkin_ws_path="/autsys_ws/tum_autsys_project/catkin_ws" # Change this to your catkin_ws path
 
 xhost +
 sudo docker run \
   --net=host \
   --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
-  --volume=/home/cemkgenc/aas_ws:/aas_ws \
+  --volume=/home/cemkgenc/autsys_ws:/autsys_ws \
   --device=/dev/dri:/dev/dri \
   --env="DISPLAY=$DISPLAY" \
   --env="QT_X11_NO_MITSHM=1" \
   --name $container_name \
   -it \
   -d \
-  aas_image
+  autsys_image
 
 sleep 2
 

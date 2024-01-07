@@ -1,7 +1,7 @@
 #!/bin/bash
 
-container_name="aas_container" # Change this to your container name
-catkin_ws_path="/aas_ws/tum_aas_project/catkin_ws" # Change this to your catkin_ws path
+container_name="autsys_container" # Change this to your container name
+catkin_ws_path="/autsys_ws/tum_autsys_project/catkin_ws" # Change this to your catkin_ws path
 
 # ANSI escape codes for colors
 RED='\033[0;31m'

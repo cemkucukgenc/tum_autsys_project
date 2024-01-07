@@ -1,4 +1,4 @@
-# TUM Autonomous Systems (AAS) 
+# TUM AAS - Autonomous Systems 
 # 2023 Group Project: Sub-Terrain Challange
 
 ## Group 8
@@ -29,12 +29,12 @@ Install the Docker by following the link
 
 Open a terminal (will be mentioned as T1) and create a directory preferably in `home` location as
 ```
-mkdir -p aas_ws
-cd aas_ws
+mkdir -p autsys_ws
+cd autsys_ws
 ```
 Clone the project repository (T1)
 ```
-git clone https://github.com/cemkucukgenc/tum_aas_project.git
+git clone https://github.com/cemkucukgenc/tum_autsys_project.git
 ```
 On `docker/create_container.sh`, change the line 4 as your `catkin_ws_path` and line 11 as your shared volume path.
 
@@ -47,13 +47,13 @@ Pull the corresponding Docker image (T1)
 sudo docker pull osrf/ros:noetic-desktop-full
 ```
 
-Create necessary Docker image `aas_image` (T1)
+Create necessary Docker image `autsys_image` (T1)
 ```
 cd docker
-sudo docker image build -t aas_image .
+sudo docker image build -t autsys_image .
 ```
 
-Create the Docker container `aas_container` (T1)
+Create the Docker container `autsys_container` (T1)
 ```
 sudo chmod +x create_container.sh
 sudo chmod +x continue_container.sh
@@ -70,20 +70,20 @@ To reach the container on another terminal
 ```
 or
 ```
-sudo docker exec -it aas_container bash
+sudo docker exec -it autsys_container bash
 ```
 
 To list and delete the image
 ```
 sudo docker images
-sudo docker image rm aas_image
+sudo docker image rm autsys_image
 ```
 
 To list and delete the container
 ```
 sudo docker ps -a
-sudo docker stop aas_container
-sudo docker rm aas_container
+sudo docker stop autsys_container
+sudo docker rm autsys_container
 ```
 
 Useful tutorials for your reference
@@ -95,10 +95,10 @@ Useful tutorials for your reference
 
 Open a terminal (will be mentioned as T1) and create a directory preferably in `home` location as
 ```
-mkdir -p aas_ws
-cd aas_ws
+mkdir -p autsys_ws
+cd autsys_ws
 ```
 Clone the project repository (T1)
 ```
-git clone https://github.com/cemkucukgenc/tum_aas_project.git
+git clone https://github.com/cemkucukgenc/tum_autsys_project.git
 ```
