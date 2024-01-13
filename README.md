@@ -1,26 +1,40 @@
 # TUM AAS - Autonomous Systems 
 # 2023 Group Project: Sub-Terrain Challange
 
-## Group 8
-- Cem Kücükgenc
-- Baran Özer
-- Serdar Soyer
-- Erencan Aslakci
-- Ali Rabeh
+#### Table of contents
+1. [Introduction](#introduction)
+2. [Installation guide](#installation_guide)
+    1. [System setup](#system_setup)
+    2. [Building project](#building_project)
+3. [Launching the simulation](#launching_the_simulation)
 
-## Introduction
+## Group 8
+- Cem Kücükgenc (cem.kucukgenc@tum.de)
+- Baran Özer (baran.oezer@tum.de)
+- Serdar Soyer (serdar.soyer@tum.de)
+- Erencan Aslakci (ge97jed@mytum.de)
+- Hünkar Suci
+
+## 1. Introduction <a name="introduction"></a>
 
 ??????????????????????
 
-## Installation guide
+## 2. Installation guide <a name="installation_guide"></a>
 
-### 1. System setup 
+### 2.1. System setup <a name="system_setup"></a>
 This project is developed for the `Ubuntu 20.04` with `ROS Noetic`. Be sure your system has the same configuration. You can check the following links to install them:
 
- - https://releases.ubuntu.com/focal/ 
- - https://wiki.ros.org/noetic/Installation/Ubuntu 
+ - `Ubuntu 20.04` setup guide link: https://releases.ubuntu.com/focal/ 
+ - `ROS Noetic` setup guide link: https://wiki.ros.org/noetic/Installation/Ubuntu 
 
-#### Bonus
+ It is required that the `ROS Noetic` should be sourced in each terminal to run the simulation as mentioned in the `ROS Noetic` setup guide link. To do that,
+ ```
+source /opt/ros/noetic/setup.bash
+ ```
+should be sourced in each terminal. To make it more easy, it can be added to `.bashrc` file for automatic sourcing. Details can be found in `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will be no longer mentioned in further steps.
+
+#### Bonus (Bypass this section and continue from "2. Building project" if you have a successfull installation of `Ubuntu 20.04` with `ROS Noetic`)
+
 If you have a different Linux or ROS distro, you can prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guarenteed to work perfectly in your system.
 
 Install the Docker by following the link
@@ -91,7 +105,7 @@ Useful tutorials for your reference
 - https://www.youtube.com/watch?v=qWuudNxFGOQ
 - https://www.youtube.com/watch?v=oULAVsGlLe8&t
 
-### 2. Building project
+### 2.2. Building project <a name="building_project"></a>
 
 Open a terminal (will be mentioned as T1) and create a directory preferably in `home` location as
 ```
@@ -102,3 +116,37 @@ Clone the project repository (T1)
 ```
 git clone https://github.com/cemkucukgenc/tum_autsys_project.git
 ```
+From the following link, download the `Simulation.zip` file. 
+```
+https://syncandshare.lrz.de/getlink/fiQNaj3tQpvatqB8A5gAHV/
+```
+Extract the contents and copy all of them into
+```
+~/autsys_ws/tum_autsys_project/catkin_ws/src/simulation
+```
+From another terminal, make the `Simulation.x86_64` as executable (T2)
+```
+cd ~/autsys_ws/tum_autsys_project/catkin_ws/src/simulation
+chmod +x Simulation.x86_64 
+```
+and you can terminate this terminal (T2) for now.
+
+In T1,
+```
+cd ~/autsys_ws/tum_autsys_project/catkin_ws
+catkin build
+```
+
+### 3. Launching the simulation <a name="launching_the_simulation"></a>
+
+In T1,
+```
+source ~/autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+roslaunch simulation simulation.launch
+```
+From another terminal (T2),
+```
+source ~/autsys_ws/tum_autsys_project/catkin_ws/ devel/setup.bash
+rosrun controller_pkg traj_publisher
+```
+

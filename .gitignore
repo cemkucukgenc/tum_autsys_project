@@ -50,6 +50,11 @@ qtcreator-*
 # Catkin custom files
 CATKIN_IGNORE
 
+# Simulation files
+catkin_ws/src/simulation/Simulation.x86_64
+catkin_ws/src/simulation/Simulation_Data/
+catkin_ws/src/simulation/UnityPlayer.so
+
 *.DS_Store
 *.idea
 *.catkin_tools
