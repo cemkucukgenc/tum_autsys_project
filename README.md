@@ -116,7 +116,7 @@ Clone the project repository (T1)
 ```
 git clone https://github.com/cemkucukgenc/tum_autsys_project.git
 ```
-From the following link, download the `Simulation.zip` file. 
+From the following link, download the `Simulation.zip` file. (Since the content is large in size, it is not added to git.)
 ```
 https://syncandshare.lrz.de/getlink/fiQNaj3tQpvatqB8A5gAHV/
 ```
@@ -146,7 +146,7 @@ roslaunch simulation simulation.launch
 ```
 From another terminal (T2),
 ```
-source ~/autsys_ws/tum_autsys_project/catkin_ws/ devel/setup.bash
+source ~/autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 rosrun controller_pkg traj_publisher
 ```
 
