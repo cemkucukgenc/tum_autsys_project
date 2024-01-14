@@ -10,10 +10,15 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RESET='\033[0m'
 
-if [ -n "$ROS_ROOT" ]; then
-    echo -e "${GREEN}ROS workspace sourced as${RESET}" $catkin_ws_path
+if [ -f "$catkin_ws_path/devel/setup.bash" ]; then
+    source $catkin_ws_path/devel/setup.bash
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}ROS workspace sourced as${RESET}" $catkin_ws_path
+    else
+        echo -e "${RED}Failed to source ROS workspace${RESET}" $catkin_ws_path
+    fi
 else
-    echo -e "${RED}Failed to source ROS workspace${RESET}"
+    echo -e "${YELLOW}$catkin_ws_path/devel/setup.bash does not exist yet. Skipping sourcing.${RESET}"
 fi
 
 exit 0
