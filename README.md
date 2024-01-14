@@ -1,19 +1,19 @@
 # TUM AAS - Autonomous Systems 
 # 2023 Group Project: Sub-Terrain Challange
 
-#### Table of contents
-1. [Introduction](#introduction)
-2. [Installation guide](#installation_guide)
-    1. [System setup](#system_setup)
-    2. [Building project](#building_project)
-3. [Launching the simulation](#launching_the_simulation)
-
-## Group 8
+## Group 4
 - Cem Kücükgenc (cem.kucukgenc@tum.de)
 - Baran Özer (baran.oezer@tum.de)
 - Serdar Soyer (serdar.soyer@tum.de)
 - Erencan Aslakci (ge97jed@mytum.de)
 - Hünkar Suci (????????????)
+
+## Table of contents
+1. [Introduction](#introduction)
+2. [Installation guide](#installation_guide)
+    1. [System setup](#system_setup)
+    2. [Building project](#building_project)
+3. [Launching the simulation](#launching_the_simulation)
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -33,7 +33,7 @@ source /opt/ros/noetic/setup.bash
  ```
 should be sourced in each terminal. To make it more easy, it can be added to `.bashrc` file for automatic sourcing. Details can be found in `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will be no longer mentioned in further steps.
 
-#### Bonus (Bypass this section and continue from "2.2 Building project" if you have a successfull installation of `Ubuntu 20.04` with `ROS Noetic`)
+#### Bonus (Bypass this section and continue from "2.2. [Building project](#building_project)" if you have a successfull installation of `Ubuntu 20.04` with `ROS Noetic`)
 
 If you have a different Linux or ROS distro, you can prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guarenteed to work perfectly in your system.
 
@@ -48,7 +48,7 @@ cd autsys_ws
 ```
 Clone the project repository (T1)
 ```
-git clone https://github.com/cemkucukgenc/tum_autsys_project.git
+git clone git@github.com:cemkucukgenc/tum_autsys_project.git
 ```
 On `docker/create_container.sh`, change the line 4 as your `catkin_ws_path` and line 11 as your shared volume path.
 
