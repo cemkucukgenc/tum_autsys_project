@@ -21,7 +21,7 @@
 ## 2. Installation guide <a name="installation_guide"></a>
 
 ### 2.1. System setup <a name="system_setup"></a>
-This project is developed for the `Ubuntu 20.04` with `ROS Noetic`. Be sure your system has the same configuration. You can check the following links to install them:
+This project is developed for `Ubuntu 20.04` with `ROS Noetic`. Be sure your system has the same configuration. You can check the following links to install them:
 
  - `Ubuntu 20.04` setup guide link: https://releases.ubuntu.com/focal/ 
  - `ROS Noetic` setup guide link: https://wiki.ros.org/noetic/Installation/Ubuntu 
@@ -30,17 +30,17 @@ This project is developed for the `Ubuntu 20.04` with `ROS Noetic`. Be sure your
  ```
 source /opt/ros/noetic/setup.bash
  ```
-should be sourced in each terminal. To make it more easy, it can be added to `.bashrc` file for automatic sourcing. Details can be found in `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will be no longer mentioned in further steps.
+should be sourced in each terminal. To make it more easy, it can be added to the `.bashrc` file for automatic sourcing. Details can be found in the `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will no longer be mentioned in further steps.
 
-#### Bonus (Bypass this section and continue from "2.2. [Building project](#building_project)" if you have a successfull installation of `Ubuntu 20.04` with `ROS Noetic`)
+#### Bonus (Bypass this section and continue from "2.2. [Building project](#building_project)" if you have a successful installation of `Ubuntu 20.04` with `ROS Noetic`)
 
-If you have a different Linux or ROS distro, you can prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guarenteed to work perfectly in your system.
+If you have a different Linux or ROS distro, you may prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guaranteed to work perfectly in your system.
 
 Install the Docker by following the link
 
 - https://docs.docker.com/desktop/install/ubuntu/
 
-Open a terminal (will be mentioned as T1) and create a directory preferably in `home` location as
+Open a terminal (will be mentioned as T1) and create a directory preferably in the `home` location as
 ```
 mkdir -p autsys_ws
 cd autsys_ws
@@ -49,11 +49,11 @@ Clone the project repository (T1)
 ```
 git clone git@github.com:cemkucukgenc/tum_autsys_project.git
 ```
-On `docker/create_container.sh`, change the line 4 as your `catkin_ws_path` and line 11 as your shared volume path.
+On `docker/create_container.sh`, change line 4 to your `catkin_ws_path` and line 11 to your shared volume path.
 
 On `docker/continue_container.sh`, change the line 4 as your `catkin_ws_path`.
 
-Bonus: The `rosurce.sh` is created to sourcing the `catkin_ws_path` easily. If you want to use that too; on `docker/rosurce.sh`, change the line 3 as your `catkin_ws_path`.
+Bonus: The `rosurce.sh` is created to source the `catkin_ws_path` easily. If you want to use that too; on `docker/rosurce.sh`, change line 3 to your `catkin_ws_path`.
 
 Pull the corresponding Docker image (T1)
 ```
@@ -75,7 +75,7 @@ sudo chmod +x continue_container.sh
 
 Congrats! Your container is created and the shared volume is already including the project repository. Use this container to run the project.
 
-Here is some useful command that will be needed in the further steps of running the simulation. Docker container will be no longer explained, you should be able to setup, reach or delete the containers by yourself with this information.
+Here are some useful commands that will be needed in the further steps of running the simulation. Docker container will no longer be explained, you should be able to set up, reach, or delete the containers by yourself with this information.
 
 To reach the container on another terminal
 ```
@@ -107,7 +107,7 @@ Useful tutorials for your reference
 
 ### 2.2. Building project <a name="building_project"></a>
 
-Open a terminal (will be mentioned as T1) and create a directory preferably in `home` location as
+Open a terminal (will be mentioned as T1) and create a directory preferably in the `home` location as
 ```
 mkdir -p autsys_ws
 cd autsys_ws
@@ -135,7 +135,7 @@ cd ../..
 catkin build
 ```
 
-### 3. Launching the simulation <a name="launching_the_simulation"></a>
+## 3. Launching the simulation <a name="launching_the_simulation"></a>
 
 To run the simulation (T1)
 ```
