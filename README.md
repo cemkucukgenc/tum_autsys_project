@@ -33,7 +33,7 @@ source /opt/ros/noetic/setup.bash
  ```
 should be sourced in each terminal. To make it more easy, it can be added to `.bashrc` file for automatic sourcing. Details can be found in `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will be no longer mentioned in further steps.
 
-#### Bonus (Bypass this section and continue from "2. Building project" if you have a successfull installation of `Ubuntu 20.04` with `ROS Noetic`)
+#### Bonus (Bypass this section and continue from "2.2 Building project" if you have a successfull installation of `Ubuntu 20.04` with `ROS Noetic`)
 
 If you have a different Linux or ROS distro, you can prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guarenteed to work perfectly in your system.
 
@@ -63,7 +63,7 @@ sudo docker pull osrf/ros:noetic-desktop-full
 
 Create necessary Docker image `autsys_image` (T1)
 ```
-cd docker
+cd tum_autsys_project/docker
 sudo docker image build -t autsys_image .
 ```
 
@@ -80,6 +80,7 @@ Here is some useful command that will be needed in the further steps of running 
 
 To reach the container on another terminal
 ```
+cd autsys_ws/tum_autsys_project/docker
 ./continue_container.sh
 ```
 or
@@ -116,22 +117,22 @@ Clone the project repository (T1)
 ```
 git clone https://github.com/cemkucukgenc/tum_autsys_project.git
 ```
-From the following link, download the `Simulation.zip` file. (Since the content is large in size, it is not added to git.)
+From the following link, download the `Simulation.zip` file from the Challange folder. (Since the content is large in size, it is not added to git.)
 
 - https://syncandshare.lrz.de/getlink/fiQNaj3tQpvatqB8A5gAHV/
 
 Extract the contents and copy all of them into
 ```
-/autsys_ws/tum_autsys_project/catkin_ws/src/simulation
+autsys_ws/tum_autsys_project/catkin_ws/src/simulation
 ```
 Make the `Simulation.x86_64` as executable (T1)
 ```
-cd /autsys_ws/tum_autsys_project/catkin_ws/src/simulation
+cd tum_autsys_project/catkin_ws/src/simulation
 chmod +x Simulation.x86_64 
 ```
-To build the project (T1)
+To build the project in `autsys_ws/tum_autsys_project/catkin_ws` (T1)
 ```
-cd /autsys_ws/tum_autsys_project/catkin_ws
+cd ../..
 catkin build
 ```
 
