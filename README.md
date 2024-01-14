@@ -1,14 +1,13 @@
-# TUM AAS - Autonomous Systems 
-# 2023 Group Project: Sub-Terrain Challange
+# TUM AAS - Autonomous Systems - 2023 Group Project: Sub-Terrain Challange
 
-## Group 4
+### Group 4
 - Cem Kücükgenc (cem.kucukgenc@tum.de)
 - Baran Özer (baran.oezer@tum.de)
 - Serdar Soyer (serdar.soyer@tum.de)
 - Erencan Aslakci (ge97jed@mytum.de)
 - Hünkar Suci (????????????)
 
-## Table of contents
+### Table of contents
 1. [Introduction](#introduction)
 2. [Installation guide](#installation_guide)
     1. [System setup](#system_setup)
