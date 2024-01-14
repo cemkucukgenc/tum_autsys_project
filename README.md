@@ -13,7 +13,7 @@
 - Baran Özer (baran.oezer@tum.de)
 - Serdar Soyer (serdar.soyer@tum.de)
 - Erencan Aslakci (ge97jed@mytum.de)
-- Hünkar Suci
+- Hünkar Suci (????????????)
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -117,36 +117,34 @@ Clone the project repository (T1)
 git clone https://github.com/cemkucukgenc/tum_autsys_project.git
 ```
 From the following link, download the `Simulation.zip` file. (Since the content is large in size, it is not added to git.)
-```
-https://syncandshare.lrz.de/getlink/fiQNaj3tQpvatqB8A5gAHV/
-```
+
+- https://syncandshare.lrz.de/getlink/fiQNaj3tQpvatqB8A5gAHV/
+
 Extract the contents and copy all of them into
 ```
-~/autsys_ws/tum_autsys_project/catkin_ws/src/simulation
+/autsys_ws/tum_autsys_project/catkin_ws/src/simulation
 ```
-From another terminal, make the `Simulation.x86_64` as executable (T2)
+Make the `Simulation.x86_64` as executable (T1)
 ```
-cd ~/autsys_ws/tum_autsys_project/catkin_ws/src/simulation
+cd /autsys_ws/tum_autsys_project/catkin_ws/src/simulation
 chmod +x Simulation.x86_64 
 ```
-and you can terminate this terminal (T2) for now.
-
-In T1,
+To build the project (T1)
 ```
-cd ~/autsys_ws/tum_autsys_project/catkin_ws
+cd /autsys_ws/tum_autsys_project/catkin_ws
 catkin build
 ```
 
 ### 3. Launching the simulation <a name="launching_the_simulation"></a>
 
-In T1,
+To run the simulation (T1)
 ```
-source ~/autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 roslaunch simulation simulation.launch
 ```
-From another terminal (T2),
+To run the drone controller (T2)
 ```
-source ~/autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 rosrun controller_pkg traj_publisher
 ```
 
