@@ -114,7 +114,7 @@ cd autsys_ws
 ```
 Clone the project repository (T1)
 ```
-git clone https://github.com/cemkucukgenc/tum_autsys_project.git
+git clone git@github.com:cemkucukgenc/tum_autsys_project.git
 ```
 From the following link, download the `Simulation.zip` file from the Challange folder. (Since the content is large in size, it is not added to git.)
 
@@ -142,7 +142,7 @@ To run the simulation (T1)
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 roslaunch simulation simulation.launch
 ```
-To run the drone controller (T2)
+To run the drone controller, open a new terminal (T2)
 ```
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 rosrun controller_pkg traj_publisher
