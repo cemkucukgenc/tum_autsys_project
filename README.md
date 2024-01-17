@@ -5,7 +5,7 @@
 - Baran Özer (baran.oezer@tum.de)
 - Serdar Soyer (serdar.soyer@tum.de)
 - Erencan Aslakci (ge97jed@mytum.de)
-- Hünkar Suci (????????????)
+- Hünkar Suci (hunkar.suci@tum.de)
 
 ### Table of contents
 1. [Introduction](#introduction)
