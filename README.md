@@ -11,7 +11,8 @@
 1. [Introduction](#introduction)
 2. [Installation guide](#installation_guide)
     1. [System setup](#system_setup)
-    2. [Building project](#building_project)
+    2. [Installing dependencies](#installing_dependencies)
+    3. [Building project](#building_project)
 3. [Launching the simulation](#launching_the_simulation)
 
 ## 1. Introduction <a name="introduction"></a>
@@ -105,7 +106,14 @@ Useful tutorials for your reference
 - https://www.youtube.com/watch?v=qWuudNxFGOQ
 - https://www.youtube.com/watch?v=oULAVsGlLe8&t
 
-### 2.2. Building project <a name="building_project"></a>
+### 2.2. Installing dependencies <a name="installing_dependencies"></a>
+
+For the generation of Point Cloud, we have used `depth_image_proc` package. If you do not have this package installed, run the following command
+```
+sudo apt install ros-noetic-depth-image-proc
+```
+
+### 2.3. Building project <a name="building_project"></a>
 
 Open a terminal (will be mentioned as T1) and create a directory preferably in the `home` location as
 ```
@@ -147,4 +155,5 @@ To run the drone controller, open a new terminal (T2)
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 rosrun controller_pkg traj_publisher
 ```
+
 
