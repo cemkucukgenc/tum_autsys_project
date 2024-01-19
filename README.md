@@ -108,7 +108,7 @@ Useful tutorials for your reference
 
 ### 2.2. Installing dependencies <a name="installing_dependencies"></a>
 
-For the generation of Point Cloud, we have used `depth_image_proc` package. If you do not have this package installed, run the following command
+For the generation of the Point Cloud, `depth_image_proc` package has been utilized. 
 ```
 sudo apt install ros-noetic-depth-image-proc
 ```
