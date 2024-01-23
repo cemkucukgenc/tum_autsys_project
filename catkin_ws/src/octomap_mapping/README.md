@@ -7,5 +7,5 @@ The main branch for ROS1 Kinetic, Melodic, and Noetic is `kinetic-devel`.
 
 The main branch for ROS2 Foxy and newer is `ros2`.
 
-####IMPORTANT NOTE: 
+#### IMPORTANT NOTE: 
 Taken from `https://github.com/OctoMap/octomap_mapping` and edited for TUM AAS - Autonomous Systems - 2023 Group Project: Sub-Terrain Challange.
