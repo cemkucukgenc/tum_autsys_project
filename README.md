@@ -113,6 +113,11 @@ For the generation of the Point Cloud, `depth_image_proc` package has been utili
 sudo apt install ros-noetic-depth-image-proc
 ```
 
+For the generation of the OctoMap, `octomap_mapping` package has been utilized. 
+```
+sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
+```
+
 ### 2.3. Building project <a name="building_project"></a>
 
 Open a terminal (will be mentioned as T1) and create a directory preferably in the `home` location as
