@@ -21,8 +21,6 @@ else
     echo -e "${YELLOW}$catkin_ws_path/devel/setup.bash does not exist yet. Skipping sourcing.${RESET}"
 fi
 
-exit 0
-
 # To run this script in terminal:
 # sudo chmod +x rosource.sh
 # ./rosource.sh
