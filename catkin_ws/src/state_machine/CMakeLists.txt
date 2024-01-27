@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   tf_conversions
+  mav_trajectory_generation
 )
 
 ## System dependencies are found with CMake's conventions

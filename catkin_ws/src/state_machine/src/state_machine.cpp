@@ -13,6 +13,9 @@
 #include <std_msgs/Float64.h>
 
 #include <eigen3/Eigen/Dense>
+#include <mav_trajectory_generation/polynomial_optimization_linear.h>
+#include <mav_trajectory_generation/trajectory.h>
+
 
 StateMachine::StateMachine() {
     double x, y, z;
@@ -45,6 +48,9 @@ void StateMachine::takeoff() {
   q.setRPY(0, 0, 0);
   set_waypoint(pos, q);
 
+  ros::Time trajectoryStartTime;
+  trajectoryStartTime = ros::Time::now();
+
   // if (in_range(takeoff_height_-tol_, takeoff_height_+tol_, pos_[2])) { 
   //   state_ = State::hover;
   //   set_hovering_height();
@@ -56,10 +62,64 @@ void StateMachine::takeoff() {
 }
 
 void StateMachine::to_cave() {
-   ROS_INFO_ONCE("Drone is flying to cave!");
-   // TODO
+  ROS_INFO_ONCE("Drone is flying to cave!");
+ros::Time trajectoryStartTime;
+  mav_trajectory_generation::Vertex::Vector vertices;
+const int dimension = 3;
+const int derivative_to_optimize = mav_trajectory_generation::derivative_order::SNAP;
+ mav_trajectory_generation::Vertex start(dimension), middle(dimension), end(dimension);
+start.makeStartOrEnd(Eigen::Vector3d(-38.0, 10.0, 6.9), derivative_to_optimize);
+vertices.push_back(start);
+
+middle.addConstraint(mav_trajectory_generation::derivative_order::POSITION, Eigen::Vector3d(-59.0, 0.84, 4.7));
+vertices.push_back(middle);
+
+end.makeStartOrEnd(Eigen::Vector3d(-321.0, 10.0, 15.0), derivative_to_optimize);
+vertices.push_back(end);
+std::vector<double> segment_times;
+const double v_max = 2.0;
+const double a_max = 2.0;
+segment_times = estimateSegmentTimes(vertices, v_max, a_max);
+const int N = 10;
+mav_trajectory_generation::PolynomialOptimization<N> opt(dimension);
+opt.setupFromVertices(vertices, segment_times, derivative_to_optimize);
+opt.solveLinear();
+mav_trajectory_generation::Segment::Vector segments;
+opt.getSegments(&segments);
+
+mav_trajectory_generation::Trajectory trajectory;
+opt.getTrajectory(&trajectory);
+
+// Splitting:
+// mav_trajectory_generation::Trajectory x_trajectory = trajectory.getTrajectoryWithSingleDimension(1);
+// mav_trajectory_generation::Trajectory y_trajectory = trajectory.getTrajectoryWithSingleDimension(2);
+// mav_trajectory_generation::Trajectory z_trajectory = trajectory.getTrajectoryWithSingleDimension(3);
+
+// Single sample:
+double sampling_time = 10;
+int derivative_order = mav_trajectory_generation::derivative_order::POSITION;
+Eigen::VectorXd sample = trajectory.evaluate(sampling_time, derivative_order);
+
+// // Sample range:
+// double t_start = 2.0;
+// double t_end = 10.0;
+// double dt = 0.01;
+// std::vector<Eigen::VectorXd> result;
+// std::vector<double> sampling_times; // Optional.
+// x_trajectory.evaluateRange(t_start, t_end, dt, derivative_order, &result, &sampling_times);
+// y_trajectory.evaluateRange(t_start, t_end, dt, derivative_order, &result, &sampling_times);
+// z_trajectory.evaluateRange(t_start, t_end, dt, derivative_order, &result, &sampling_times);
+
+    tf::Vector3 pos(sample(0), sample(1), sample(2));
+    tf::Quaternion q;
+    q.setRPY(0, 0, 0);
+
+    set_waypoint(pos, q);
 }
 
+// - Starting location of the drone p_0 = [-38.0 10.0 6.9]
+// - Location of the latern visible from the start  p_l = [-59.0 0.84 4.7]
+// - Starting location of the cave system p_c = [-321.0 10.0 15.0]
 
 
 void StateMachine::hover() {
