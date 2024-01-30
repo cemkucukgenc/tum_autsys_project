@@ -28,6 +28,8 @@ landing
 
 class StateMachine {
  private:
+ 
+  bool waypoint_navigation_launched;
   ros::NodeHandle nh;
 
   ros::Subscriber cmd_vel_sub_, current_state_sub_;

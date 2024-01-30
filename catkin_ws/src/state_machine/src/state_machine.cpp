@@ -8,21 +8,28 @@
 #include <eigen_conversions/eigen_msg.h>
 #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
+#include <trajectory_msgs/MultiDOFJointTrajectory.h>
 #include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
 #include <math.h>
 #include <std_msgs/Float64.h>
 
 #include <eigen3/Eigen/Dense>
 
-StateMachine::StateMachine() {
+#include <cstdlib>
+#include <iostream>
+
+
+StateMachine::StateMachine(): waypoint_navigation_launched(false) {
     double x, y, z;
     x= -38.0;
     y= 10.0;
     z=6.9;
     
+    
+    
     origin_ = tf::Vector3(x, y, z);
     
-    desired_state_pub_ = nh.advertise<trajectory_msgs::MultiDOFJointTrajectoryPoint>("desired_state", 1);
+    desired_state_pub_ = nh.advertise<trajectory_msgs::MultiDOFJointTrajectory>("command/trajectory", 1);
     current_state_sub_ = nh.subscribe("current_state_est", 1, &StateMachine::onCurrentState, this);
     cmd_vel_sub_ = nh.subscribe("cmd_vel", 1000, &StateMachine::onCmdVel, this);
                                   
@@ -56,8 +63,13 @@ void StateMachine::takeoff() {
 }
 
 void StateMachine::to_cave() {
-   ROS_INFO_ONCE("Drone is flying to cave!");
-   // TODO
+   
+    if (!waypoint_navigation_launched) {
+    	ROS_INFO_ONCE("Drone is flying to cave!");
+        std::string command = "roslaunch navigation_pkg waypoint_navigation.launch &";
+        system(command.c_str());
+        waypoint_navigation_launched = true;
+    }
 }
 
 
@@ -185,8 +197,12 @@ void StateMachine::set_waypoint(tf::Vector3 pos, tf::Quaternion q,
   msg.velocities[0] = vel;
   msg.accelerations.resize(1);
   msg.accelerations[0] = acc;
+  
+  
 
-  desired_state_pub_.publish(msg);
+  trajectory_msgs::MultiDOFJointTrajectory trajectory_msg;
+  trajectory_msg.points.push_back(msg);
+  desired_state_pub_.publish(trajectory_msg);
 
   br.sendTransform(tf::StampedTransform(desired_pos, ros::Time::now(),
                                               "world", "av-desired"));

@@ -118,6 +118,25 @@ For the generation of the OctoMap, `octomap_mapping` package has been utilized.
 sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
 ```
 
+Add the following submodules:
+```
+git submodule add https://github.com/ethz-asl/mav_comm.git
+git submodule add https://github.com/ethz-asl/mav_trajectory_generation.git
+git submodule add https://github.com/ethz-asl/eigen_catkin.git
+git submodule add https://github.com/ethz-asl/eigen_checks.git
+git submodule add https://github.com/catkin/catkin_simple.git
+git submodule add https://github.com/ethz-asl/glog_catkin.git
+git submodule add https://github.com/ethz-asl/nlopt.git
+git submodule add https://github.com/ethz-asl/yaml_cpp_catkin.git
+```
+
+After that, execute:
+```
+git submodule init
+git submodule update
+```
+
+
 ### 2.3. Building project <a name="building_project"></a>
 
 Open a terminal (will be mentioned as T1) and create a directory preferably in the `home` location as
