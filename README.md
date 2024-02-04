@@ -174,7 +174,7 @@ roslaunch simulation simulation.launch
 To run the drone controller, open a new terminal (T2)
 ```
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
-roslaunch state_machine state_machine.launch
+roslaunch state_machine_pkg state_machine.launch
 ```
 
 

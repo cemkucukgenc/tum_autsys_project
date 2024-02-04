@@ -4,6 +4,6 @@
     </include>
 
     <!-- Launch state_machine node -->
-    <node pkg="state_machine" type="state_machine" name="state_machine_node" output="screen"> </node>
+    <node pkg="state_machine_pkg" type="state_machine_pkg" name="state_machine_node" output="screen"> </node>
 </launch>
 

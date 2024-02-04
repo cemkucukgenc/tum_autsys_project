@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(state_machine)
+project(state_machine_pkg)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -141,7 +141,7 @@ include_directories(${CATKIN_DEVEL_PREFIX}/include)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(state_machine src/state_machine.cpp)
+add_executable(state_machine_pkg src/state_machine.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,8 +154,8 @@ add_executable(state_machine src/state_machine.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_include_directories(state_machine PUBLIC include)
-target_link_libraries(state_machine ${catkin_LIBRARIES})
+target_include_directories(state_machine_pkg PUBLIC include)
+target_link_libraries(state_machine_pkg ${catkin_LIBRARIES})
 
 #############
 ## Install ##
