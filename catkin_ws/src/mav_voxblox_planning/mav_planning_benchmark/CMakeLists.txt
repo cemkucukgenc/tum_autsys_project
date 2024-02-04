@@ -5,7 +5,6 @@ find_package(catkin_simple REQUIRED)
 find_package(ompl REQUIRED)
 catkin_simple(ALL_DEPS_REQUIRED)
 
-
 include_directories(${OMPL_INCLUDE_DIRS})
 
 add_definitions(-std=c++14)
@@ -17,6 +16,7 @@ cs_add_library(${PROJECT_NAME}
   src/global_planning_benchmark.cpp
   src/local_planning_benchmark.cpp
 )
+
 target_link_libraries(${PROJECT_NAME} ${OMPL_LIBRARIES})
 
 ############
@@ -36,8 +36,6 @@ cs_add_executable(trajectory_recolor
   src/trajectory_recolor.cpp
 )
 target_link_libraries(trajectory_recolor ${PROJECT_NAME})
-
-
 
 
 ##########

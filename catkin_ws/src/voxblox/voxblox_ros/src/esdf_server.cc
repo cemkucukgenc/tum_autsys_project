@@ -27,7 +27,8 @@ EsdfServer::EsdfServer(const ros::NodeHandle& nh,
       publish_traversable_(false),
       traversability_radius_(1.0),
       incremental_update_(true),
-      num_subscribers_esdf_map_(0) {
+      num_subscribers_esdf_map_(0),
+      map_has_been_pruned_(false) {
   // Set up map and integrator.
   esdf_map_.reset(new EsdfMap(esdf_config));
   esdf_integrator_.reset(new EsdfIntegrator(esdf_integrator_config,
@@ -35,6 +36,12 @@ EsdfServer::EsdfServer(const ros::NodeHandle& nh,
                                             esdf_map_->getEsdfLayerPtr()));
 
   setupRos();
+}
+
+std::shared_ptr<EsdfMap> EsdfServer::getEsdfMapPtr() { return esdf_map_; }
+
+std::shared_ptr<const EsdfMap> EsdfServer::getEsdfMapPtr() const {
+  return esdf_map_;
 }
 
 void EsdfServer::setupRos() {
@@ -142,6 +149,8 @@ void EsdfServer::publishTraversable() {
 }
 
 void EsdfServer::publishMap(bool reset_remote_map) {
+  TsdfServer::publishMap();
+
   if (!publish_esdf_map_) {
     return;
   }
@@ -166,7 +175,6 @@ void EsdfServer::publishMap(bool reset_remote_map) {
     publish_map_timer.Stop();
   }
   num_subscribers_esdf_map_ = subscribers;
-  TsdfServer::publishMap();
 }
 
 bool EsdfServer::saveMap(const std::string& file_path) {
@@ -190,6 +198,12 @@ bool EsdfServer::loadMap(const std::string& file_path) {
 }
 
 void EsdfServer::updateEsdf() {
+  if (map_has_been_pruned_) {
+    map_has_been_pruned_ = false;
+    updateEsdfBatch();
+    return;
+  }
+
   if (tsdf_map_->getTsdfLayer().getNumberOfAllocatedBlocks() > 0) {
     const bool clear_updated_flag_esdf = true;
     esdf_integrator_->updateFromTsdfLayer(clear_updated_flag_esdf);
@@ -220,6 +234,8 @@ void EsdfServer::setTraversabilityRadius(float traversability_radius) {
 }
 
 void EsdfServer::newPoseCallback(const Transformation& T_G_C) {
+  TsdfServer::newPoseCallback(T_G_C);
+
   if (clear_sphere_for_planning_) {
     esdf_integrator_->addNewRobotPosition(T_G_C.getPosition());
   }
@@ -240,9 +256,7 @@ void EsdfServer::esdfMapCallback(const voxblox_msgs::Layer& layer_msg) {
     ROS_ERROR_THROTTLE(10, "Got an invalid ESDF map message!");
   } else {
     ROS_INFO_ONCE("Got an ESDF map from ROS topic!");
-    if (publish_pointclouds_) {
-      publishPointclouds();
-    }
+    publishPointclouds();
   }
 }
 
@@ -256,6 +270,25 @@ void EsdfServer::clear() {
   // Publish a message to reset the map to all subscribers.
   constexpr bool kResetRemoteMap = true;
   publishMap(kResetRemoteMap);
+}
+
+void EsdfServer::pruneMap() {
+  TsdfServer::pruneMap();
+
+  size_t num_pruned_blocks = 0u;
+  BlockIndexList esdf_blocks_;
+  esdf_map_->getEsdfLayerPtr()->getAllAllocatedBlocks(&esdf_blocks_);
+  for (const BlockIndex& esdf_block_index : esdf_blocks_) {
+    if (!tsdf_map_->getTsdfLayer().hasBlock(esdf_block_index)) {
+      ++num_pruned_blocks;
+      esdf_map_->getEsdfLayerPtr()->removeBlock(esdf_block_index);
+    }
+  }
+
+  map_has_been_pruned_ = true;
+
+  ROS_INFO_STREAM_COND(verbose_,
+                       "Pruned " << num_pruned_blocks << " ESDF blocks");
 }
 
 }  // namespace voxblox

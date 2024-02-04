@@ -15,7 +15,7 @@ else()
   set(EIGEN3_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
 endif()
 
-add_definitions(-std=c++11)
+add_definitions(-std=c++14)
 
 add_message_files(
   FILES

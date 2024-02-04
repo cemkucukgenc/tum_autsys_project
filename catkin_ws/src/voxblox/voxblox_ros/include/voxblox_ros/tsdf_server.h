@@ -1,6 +1,7 @@
 #ifndef VOXBLOX_ROS_TSDF_SERVER_H_
 #define VOXBLOX_ROS_TSDF_SERVER_H_
 
+#include <deque>
 #include <memory>
 #include <queue>
 #include <string>
@@ -56,11 +57,23 @@ class TsdfServer {
       const sensor_msgs::PointCloud2::Ptr& pointcloud_msg,
       const Transformation& T_G_C, const bool is_freespace_pointcloud);
 
+  void integratePointcloud(const ros::Time& timestamp,
+                           const Transformation& T_G_C,
+                           std::shared_ptr<const Pointcloud> ptcloud_C,
+                           std::shared_ptr<const Colors> colors,
+                           const bool is_freespace_pointcloud = false);
+
+  // Note(schmluk): Provide the legacy interface for voxblox-specific packages.
   void integratePointcloud(const Transformation& T_G_C,
                            const Pointcloud& ptcloud_C, const Colors& colors,
                            const bool is_freespace_pointcloud = false);
-  virtual void newPoseCallback(const Transformation& /*new_pose*/) {
-    // Do nothing.
+
+  void servicePointcloudDeintegrationQueue();
+
+  virtual void newPoseCallback(const Transformation& T_G_C) {
+    if (slice_level_follow_robot_) {
+      slice_level_ = T_G_C.getPosition().z();
+    }
   }
 
   void publishAllUpdatedTsdfVoxels();
@@ -142,6 +155,7 @@ class TsdfServer {
   ros::Publisher tsdf_slice_pub_;
   ros::Publisher occupancy_marker_pub_;
   ros::Publisher icp_transform_pub_;
+  ros::Publisher reprojected_pointcloud_pub_;
 
   /// Publish the complete map for other nodes to consume.
   ros::Publisher tsdf_map_pub_;
@@ -184,6 +198,7 @@ class TsdfServer {
 
   /// Pointcloud visualization settings.
   double slice_level_;
+  bool slice_level_follow_robot_;
 
   /// If the system should subscribe to a pointcloud giving points in freespace
   bool use_freespace_pointcloud_;
@@ -230,7 +245,7 @@ class TsdfServer {
 
   // Maps and integrators.
   std::shared_ptr<TsdfMap> tsdf_map_;
-  std::unique_ptr<TsdfIntegratorBase> tsdf_integrator_;
+  TsdfIntegratorBase::Ptr tsdf_integrator_;
 
   /// ICP matcher
   std::shared_ptr<ICP> icp_;
@@ -253,12 +268,29 @@ class TsdfServer {
   std::queue<sensor_msgs::PointCloud2::Ptr> pointcloud_queue_;
   std::queue<sensor_msgs::PointCloud2::Ptr> freespace_pointcloud_queue_;
 
+  // TODO(victorr): Add description
+  struct PointcloudDeintegrationPacket {
+    const ros::Time timestamp;
+    const Transformation T_G_C;
+    std::shared_ptr<const Pointcloud> ptcloud_C;
+    std::shared_ptr<const Colors> colors;
+    const bool is_freespace_pointcloud;
+  };
+  size_t pointcloud_deintegration_queue_length_;
+  std::deque<PointcloudDeintegrationPacket> pointcloud_deintegration_queue_;
+  const size_t num_voxels_per_block_;
+  bool map_needs_pruning_;
+  virtual void pruneMap();
+
   // Last message times for throttling input.
   ros::Time last_msg_time_ptcloud_;
   ros::Time last_msg_time_freespace_ptcloud_;
 
   /// Current transform corrections from ICP.
   Transformation icp_corrected_transform_;
+
+  // TODO(victorr): Add description
+  bool publish_map_with_trajectory_;
 };
 
 }  // namespace voxblox

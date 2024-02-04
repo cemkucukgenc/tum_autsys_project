@@ -43,17 +43,15 @@ class EsdfServer : public TsdfServer {
   /// Call this to update the ESDF based on latest state of the TSDF map,
   /// considering only the newly updated parts of the TSDF map (checked with
   /// the ESDF updated bit in Update::Status).
-  void updateEsdf();
+  virtual void updateEsdf();
   /// Update the ESDF all at once; clear the existing map.
-  void updateEsdfBatch(bool full_euclidean = false);
+  virtual void updateEsdfBatch(bool full_euclidean = false);
 
   // Overwrites the layer with what's coming from the topic!
   void esdfMapCallback(const voxblox_msgs::Layer& layer_msg);
 
-  inline std::shared_ptr<EsdfMap> getEsdfMapPtr() { return esdf_map_; }
-  inline std::shared_ptr<const EsdfMap> getEsdfMapPtr() const {
-    return esdf_map_;
-  }
+  virtual std::shared_ptr<EsdfMap> getEsdfMapPtr();
+  virtual std::shared_ptr<const EsdfMap> getEsdfMapPtr() const;
 
   bool getClearSphere() const { return clear_sphere_for_planning_; }
   void setClearSphere(bool clear_sphere_for_planning) {
@@ -105,6 +103,10 @@ class EsdfServer : public TsdfServer {
   // ESDF maps.
   std::shared_ptr<EsdfMap> esdf_map_;
   std::unique_ptr<EsdfIntegrator> esdf_integrator_;
+
+  // TODO(victorr): Add description
+  bool map_has_been_pruned_;
+  void pruneMap() override;
 };
 
 }  // namespace voxblox

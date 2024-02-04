@@ -110,18 +110,23 @@ SkeletonGlobalPlanner::SkeletonGlobalPlanner(const ros::NodeHandle& nh,
     voxblox_server_.generateMesh();
     voxblox_server_.publishSlices();
     voxblox_server_.publishPointclouds();
+    voxblox_server_.publishMap();
+
+    ROS_INFO("published maps");
   }
+
+  generateSparseGraph();
 }
 
 void SkeletonGlobalPlanner::generateSparseGraph() {
   ROS_INFO("About to generate skeleton graph.");
-  skeleton_generator_.updateSkeletonFromLayer();
-  ROS_INFO("Re-populated from layer.");
 
   if (!sparse_graph_path_.empty() &&
       skeleton_generator_.loadSparseGraphFromFile(sparse_graph_path_)) {
     ROS_INFO_STREAM("Loaded sparse graph from file: " << sparse_graph_path_);
   } else {
+    skeleton_generator_.updateSkeletonFromLayer();
+    ROS_INFO("Re-populated from layer.");
     skeleton_generator_.generateSparseGraph();
     ROS_INFO("Generated skeleton graph.");
   }

@@ -26,9 +26,9 @@ class SkeletonGenerator {
   enum CleanupStyle { kNone = 0, kMatchUnderlyingDiagram, kSimplify };
 
   SkeletonGenerator();
-  SkeletonGenerator(Layer<EsdfVoxel>* esdf_layer);
+  SkeletonGenerator(const Layer<EsdfVoxel>* esdf_layer);
 
-  void setEsdfLayer(Layer<EsdfVoxel>* esdf_layer);
+  void setEsdfLayer(const Layer<EsdfVoxel>* esdf_layer);
 
   // Generate a skeleton diagram (a voxel layer containing skeleton voxels).
   void generateSkeleton();
@@ -144,6 +144,8 @@ class SkeletonGenerator {
   void mergeSubgraphs(int subgraph_1, int subgraph_2,
                       std::map<int, int>* subgraph_map) const;
 
+  void setVerbose(bool verbose) {verbose_ = verbose;};
+
  private:
   // KD tree adapters.
   typedef nanoflann::KDTreeSingleIndexAdaptor<
@@ -190,7 +192,7 @@ class SkeletonGenerator {
 
   Skeleton skeleton_;
 
-  Layer<EsdfVoxel>* esdf_layer_;
+  const Layer<EsdfVoxel>* esdf_layer_;
   // Owned by the generator! Since it's an intermediate by-product of
   // constructing the graph.
   std::unique_ptr<Layer<SkeletonVoxel>> skeleton_layer_;
@@ -201,6 +203,8 @@ class SkeletonGenerator {
   size_t voxels_per_side_;
 
   SparseSkeletonGraph graph_;
+
+  bool verbose_;
 };
 
 }  // namespace voxblox
