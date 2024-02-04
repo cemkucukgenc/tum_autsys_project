@@ -6,13 +6,18 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install the basic packages
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y python3-catkin-tools git apt-utils && \
+    apt-get install -y git apt-utils python3-catkin-tools wget libtool && \
     rm -rf /var/lib/apt/lists/*
+
+# Add the ROS repositories to the list of sources
+RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list' && \
+    wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 
 # Install the necessary ROS packages for the project
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install ros-noetic-depth-image-proc -y && \
     apt-get install ros-noetic-octomap ros-noetic-octomap-mapping -y && \
+    apt-get install ros-noetic-ompl -y && \
     rm -rf /var/lib/apt/lists/*
 
 # For Intel GPU support

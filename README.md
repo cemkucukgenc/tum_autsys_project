@@ -108,6 +108,11 @@ Useful tutorials for your reference
 
 ### 2.2. Installing dependencies <a name="installing_dependencies"></a>
 
+For the installation of packages, basic tools are required. 
+```
+sudo apt install wget libtool apt-utils python3-catkin-tools
+```
+
 For the generation of the Point Cloud, `depth_image_proc` package has been utilized. 
 ```
 sudo apt install ros-noetic-depth-image-proc
@@ -118,24 +123,13 @@ For the generation of the OctoMap, `octomap_mapping` package has been utilized.
 sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
 ```
 
-Add the following submodules:
+For the path planning, `Open Motion Planning Library (OMPL)` is required. 
 ```
-git submodule add https://github.com/ethz-asl/mav_comm.git
-git submodule add https://github.com/ethz-asl/mav_trajectory_generation.git
-git submodule add https://github.com/ethz-asl/eigen_catkin.git
-git submodule add https://github.com/ethz-asl/eigen_checks.git
-git submodule add https://github.com/catkin/catkin_simple.git
-git submodule add https://github.com/ethz-asl/glog_catkin.git
-git submodule add https://github.com/ethz-asl/nlopt.git
-git submodule add https://github.com/ethz-asl/yaml_cpp_catkin.git
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
+wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install ros-`rosversion -d`-ompl
 ```
-
-After that, execute:
-```
-git submodule init
-git submodule update
-```
-
 
 ### 2.3. Building project <a name="building_project"></a>
 
@@ -177,7 +171,7 @@ roslaunch simulation simulation.launch
 To run the drone controller, open a new terminal (T2)
 ```
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
-rosrun controller_pkg traj_publisher
+roslaunch state_machine state_machine.launch
 ```
 
 
