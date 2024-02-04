@@ -30,6 +30,8 @@ public:
                         mav_trajectory_generation::Trajectory* trajectory);
 
     bool publishTrajectory(const mav_trajectory_generation::Trajectory& trajectory);
+    
+    
 
 private:
     ros::Publisher pub_markers_;
@@ -44,6 +46,7 @@ private:
     double max_a_; // m/s^2
     double max_ang_v_;
     double max_ang_a_;
+    
 
 };
 
