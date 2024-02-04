@@ -1,11 +1,11 @@
 # TUM AAS - Autonomous Systems - 2023 Group Project: Sub-Terrain Challange
 
 ### Group 4
-- Cem Kücükgenc (cem.kucukgenc@tum.de)
-- Baran Özer (baran.oezer@tum.de)
-- Serdar Soyer (serdar.soyer@tum.de)
-- Erencan Aslakci (ge97jed@mytum.de)
-- Hünkar Suci (hunkar.suci@tum.de)
+- Cem Kücükgenc     (cem.kucukgenc@tum.de)
+- Baran Özer        (baran.oezer@tum.de)
+- Serdar Soyer      (serdar.soyer@tum.de)
+- Erencan Aslakci   (ge97jed@mytum.de)
+- Hünkar Suci       (hunkar.suci@tum.de)
 
 ### Table of contents
 1. [Introduction](#introduction)
@@ -33,7 +33,7 @@ source /opt/ros/noetic/setup.bash
  ```
 should be sourced in each terminal. To make it more easy, it can be added to the `.bashrc` file for automatic sourcing. Details can be found in the `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will no longer be mentioned in further steps.
 
-#### Bonus (Bypass this section and continue from "2.2. [Building project](#building_project)" if you have a successful installation of `Ubuntu 20.04` with `ROS Noetic`)
+#### Bonus: Docker container setup (Bypass this section and continue from "2.2. [Installing dependencies](#installing_dependencies)" if you have a successful installation of `Ubuntu 20.04` with `ROS Noetic`)
 
 If you have a different Linux or ROS distro, you may prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guaranteed to work perfectly in your system.
 
