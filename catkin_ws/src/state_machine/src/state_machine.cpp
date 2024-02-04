@@ -25,9 +25,9 @@ StateMachine::StateMachine(): waypoint_navigation_launched(false) {
     y= 10.0;
     z=6.9;
 
-
-    addGoalPoint(-38.0, 10.0, 10.0);
-    addGoalPoint(-321, 10.0, 15.0);
+    addGoalPoint(-38.0, 10.0, 10.0); // take off from initial position
+    addGoalPoint(-59.0, 0.84, 10.0); // first lamp position at the outside
+    addGoalPoint(-321, 10.0, 15.0); // cave entrance
     addGoalPoint(-500, 0.0, 10.0);
     addGoalPoint(-599, -9.0, 10.0);
     addGoalPoint(-599, -5, 10.0);

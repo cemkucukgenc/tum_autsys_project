@@ -108,6 +108,12 @@ Useful tutorials for your reference
 
 ### 2.2. Installing dependencies <a name="installing_dependencies"></a>
 
+To have a clear installation, updating and upgrading your system is recommended.
+```
+sudo apt-get update
+sudo apt-get upgrade
+```
+
 For the installation of packages, basic tools are required. 
 ```
 sudo apt install wget libtool apt-utils python3-catkin-tools
@@ -125,10 +131,7 @@ sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
 
 For the path planning, `Open Motion Planning Library (OMPL)` is required. 
 ```
-sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
-wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install ros-`rosversion -d`-ompl
+sudo apt-get install ros-noetic-ompl
 ```
 
 ### 2.3. Building project <a name="building_project"></a>
