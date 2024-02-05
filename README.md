@@ -202,11 +202,8 @@ cd cmake-3.28.0/
 ./bootstrap
 make
 sudo make install
-
-
+cmake --version
 ```
-
-
 ---
 ## 3.2 Install OpenCV 4.2.0
 The ORB-SLAM 3 was test by  
@@ -235,7 +232,7 @@ sudo make install
 ## 3.3 Install Pangolin
 Now, we install the Pangolin. I used the commit version 86eb4975fc4fc8b5d92148c2e370045ae9bf9f5d
 ```shell
-cd ~/Dev
+cd cd /autsys_ws/tum_autsys_project/catkin_ws/src/ORB_SLAM3_NOETIC
 git clone https://github.com/stevenlovegrove/Pangolin.git
 cd Pangolin 
 mkdir build 
@@ -247,7 +244,91 @@ sudo make install
 > If you want to install to conda environment, add `CMAKE_INSTALL_PREFIX=$CONDA_PREFIX` instead.
 ---
 
+In `CMakeLists.txt`, change the OpenCV version line to
 
+    find_package(OpenCV 4.2)
+
+We also need to make changes to `System.cc`. Open it with `gedit ./src/System.cc` or your favorite text editor, and change both lines 584 and 701 from
+
+    Map* pBiggerMap;
+
+to
+
+    Map* pBiggerMap = nullptr;
+
+This latter error allowed the examples to run fine, but they caused a segmentation fault at the very end when trying to save the map.
+
+Now all compilation errors should be fixed, and we can build ORB_SLAM3. Run their provided shell script `build.sh`, which will build all of the third party programs as well as ORB_SLAM3 itself. 
+
+    ./build.sh
+
+It will likely show errors, but just run it a few times without changing anything, and it should succeed after a few attempts.
+
+## Download Example Data
+We will use the EuRoC MH_01 easy dataset.
+
+    cd ~
+    mkdir -p Datasets/EuRoc
+    cd Datasets/EuRoc/
+    wget -c http://robotics.ethz.ch/~asl-datasets/ijrr_euroc_mav_dataset/machine_hall/MH_01_easy/MH_01_easy.zip
+    mkdir MH01
+    unzip MH_01_easy.zip -d MH01/
+
+Two of the images in my download were corrupted, so for the program to run successfully, I replaced each of these with their nearest frame.
+
+    cd ~/Datasets/EuRoc/MH01/mav0/cam0/data
+    rm 1403636689613555456.png
+    cp 1403636689663555584.png 1403636689613555456.png
+    rm 1403636722213555456.png
+    cp 1403636722263555584.png 1403636722213555456.png
+
+If the example exits with a segmentation fault, retry the unzip step for your data, and pay attention for an image failing with a bad CRC; the image is likely corrupted and should be replaced in the manner I've done here. Note that each image must appear by name, so corrupt images must be replaced by an adjacent frame rather than simply deleted.
+
+## Run Simulation with Examples
+
+    cd ~ORB_SLAM3_NOETIC
+
+Then, choose one of the following to run. A map viewer as well as an image viewer should appear after it finishes setup.
+
+    # Mono
+    ./Examples/Monocular/mono_euroc ./Vocabulary/ORBvoc.txt ./Examples/Monocular/EuRoC.yaml ~/Datasets/EuRoc/MH01 ./Examples/Monocular/EuRoC_TimeStamps/MH01.txt dataset-MH01_mono
+
+    # Mono + Inertial
+    ./Examples/Monocular-Inertial/mono_inertial_euroc ./Vocabulary/ORBvoc.txt ./Examples/Monocular-Inertial/EuRoC.yaml ~/Datasets/EuRoc/MH01 ./Examples/Monocular-Inertial/EuRoC_TimeStamps/MH01.txt dataset-MH01_monoi
+
+    # Stereo
+    ./Examples/Stereo/stereo_euroc ./Vocabulary/ORBvoc.txt ./Examples/Stereo/EuRoC.yaml ~/Datasets/EuRoc/MH01 ./Examples/Stereo/EuRoC_TimeStamps/MH01.txt dataset-MH01_stereo
+
+    # Stereo + Inertial
+    ./Examples/Stereo-Inertial/stereo_inertial_euroc ./Vocabulary/ORBvoc.txt ./Examples/Stereo-Inertial/EuRoC.yaml ~/Datasets/EuRoc/MH01 ./Examples/Stereo-Inertial/EuRoC_TimeStamps/MH01.txt dataset-MH01_stereoi
+
+## Validating Estimates vs Ground Truth
+We're using python 2.7, and need numpy and matplotlib. For this, we need the 2.7 version of pip.
+
+    sudo apt install curl
+    cd ~/Desktop
+    curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+    sudo python2 get-pip.py
+    pip2.7 install numpy matplotlib
+
+Now run and plot the ground truth:
+
+    cd ~/Dev/ORB_SLAM3
+
+    ./Examples/Stereo/stereo_euroc ./Vocabulary/ORBvoc.txt ./Examples/Stereo/EuRoC.yaml ~/Datasets/EuRoc/MH01 ./Examples/Stereo/EuRoC_TimeStamps/MH01.txt dataset-MH01_stereo
+
+And now run and plot the estimate compared to ground truth:
+
+    cd ~/Dev/ORB_SLAM3
+
+    python evaluation/evaluate_ate_scale.py evaluation/Ground_truth/EuRoC_left_cam/MH01_GT.txt f_dataset-MH01_stereo.txt --plot MH01_stereo.pdf
+
+Open the pdf `MH01_stereo.pdf` to see the results. This can be done with the command `evince MH01_stereo.pdf`.
+
+---
+
+# Using Our Own Data
+I've done all of this section on a separate computer running Ubuntu 20.04 with ROS Noetic, and then copied the files onto an external storage drive, which I use with my virtual machine to run ORB_SLAM3. I would recommend doing this as well, rather than installing ROS onto the VM and potentially breaking things with version conflicts.
 
 
 
