@@ -164,7 +164,7 @@ cd ../..
 catkin build
 ```
 
-# 3. Installation of ORB-SLAM 3 on installed Ubuntu 20.04 Noetic
+## 3. Installation of ORB-SLAM 3 on installed Ubuntu 20.04 Noetic
 Install all liberay dependencies.
 ```shell
 
