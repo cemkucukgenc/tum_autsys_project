@@ -208,8 +208,7 @@ cmake --version
 ## 3.2 Install OpenCV 4.2.0
 The ORB-SLAM 3 was test by  
 ```shell
-cd ~
-mkdir Dev && cd Dev
+cd /autsys_ws/tum_autsys_project/catkin_ws/src/ORB_SLAM3_NOETIC
 git clone https://github.com/opencv/opencv.git
 cd opencv
 git checkout 4.2.0
@@ -286,7 +285,7 @@ If the example exits with a segmentation fault, retry the unzip step for your da
 
 ## Run Simulation with Examples
 
-    cd ~ORB_SLAM3_NOETIC
+    cd /autsys_ws/tum_autsys_project/catkin_ws/src/ORB_SLAM3_NOETIC
 
 Then, choose one of the following to run. A map viewer as well as an image viewer should appear after it finishes setup.
 
@@ -327,8 +326,8 @@ Open the pdf `MH01_stereo.pdf` to see the results. This can be done with the com
 
 ---
 
-# Using Our Own Data
-I've done all of this section on a separate computer running Ubuntu 20.04 with ROS Noetic, and then copied the files onto an external storage drive, which I use with my virtual machine to run ORB_SLAM3. I would recommend doing this as well, rather than installing ROS onto the VM and potentially breaking things with version conflicts.
+# ROS Implementation
+
 
 
 
