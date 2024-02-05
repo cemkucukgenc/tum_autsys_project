@@ -164,7 +164,7 @@ cd ../..
 catkin build
 ```
 
-# 3. Installation of ORB-SLAM 3 Ubuntu 20.04 Noetic
+# 3. Installation of ORB-SLAM 3 on installed Ubuntu 20.04 Noetic
 Install all liberay dependencies.
 ```shell
 
@@ -179,10 +179,36 @@ sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libp
 sudo apt-get install libglew-dev libboost-all-dev libssl-dev
 
 sudo apt install libeigen3-dev
-...
+
+```
+
+## 3.1 ORB-SLAM 3 
+Now, we install ORB-SLAM3 Noetic
+
+```shell
+cd /autsys_ws/tum_autsys_project/catkin_ws/src
+git clone https://github.com/RAFALAMAO/ORB_SLAM3_NOETIC](https://github.com/RAFALAMAO/ORB_SLAM3_NOETIC
+cd ORB_SLAM3_NOETIC
+```
+## 3.2 CMake Installation (If it does not exist or not >= 3.0)
+
+```shell
+cd ~
+sudo apt update
+sudo apt install -y software-properties-common lsb-release build-essential
+wget https://github.com/Kitware/CMake/releases/download/v3.28.0/cmake-3.28.0.tar.gz
+tar -zxvf cmake-3.28.0.tar.gz
+cd cmake-3.28.0/
+./bootstrap
+make
+sudo make install
+
+
+```
+
 
 ---
-### Install OpenCV 4.2.0
+## 3.2 Install OpenCV 4.2.0
 The ORB-SLAM 3 was test by  
 ```shell
 cd ~
@@ -206,7 +232,24 @@ sudo make install
 > If you want to install to conda environment, use `CMAKE_INSTALL_PREFIX=$CONDA_PREFIX` instead.
 ---
 
-...
+## 3.3 Install Pangolin
+Now, we install the Pangolin. I used the commit version 86eb4975fc4fc8b5d92148c2e370045ae9bf9f5d
+```shell
+cd ~/Dev
+git clone https://github.com/stevenlovegrove/Pangolin.git
+cd Pangolin 
+mkdir build 
+cd build 
+cmake .. -D CMAKE_BUILD_TYPE=Release 
+make -j 3 
+sudo make install
+```
+> If you want to install to conda environment, add `CMAKE_INSTALL_PREFIX=$CONDA_PREFIX` instead.
+---
+
+
+
+
 
 ## 4. Launching the simulation <a name="launching_the_simulation"></a>
 
