@@ -263,7 +263,7 @@ Now all compilation errors should be fixed, and we can build ORB_SLAM3. Run thei
 
 It will likely show errors, but just run it a few times without changing anything, and it should succeed after a few attempts.
 
-## Download Example Data
+## Download Example Data (Optional)
 We will use the EuRoC MH_01 easy dataset.
 
     cd ~
@@ -283,7 +283,7 @@ Two of the images in my download were corrupted, so for the program to run succe
 
 If the example exits with a segmentation fault, retry the unzip step for your data, and pay attention for an image failing with a bad CRC; the image is likely corrupted and should be replaced in the manner I've done here. Note that each image must appear by name, so corrupt images must be replaced by an adjacent frame rather than simply deleted.
 
-## Run Simulation with Examples
+## Run Simulation with Examples (Optional)
 
     cd /autsys_ws/tum_autsys_project/catkin_ws/src/ORB_SLAM3_NOETIC
 
@@ -301,7 +301,7 @@ Then, choose one of the following to run. A map viewer as well as an image viewe
     # Stereo + Inertial
     ./Examples/Stereo-Inertial/stereo_inertial_euroc ./Vocabulary/ORBvoc.txt ./Examples/Stereo-Inertial/EuRoC.yaml ~/Datasets/EuRoc/MH01 ./Examples/Stereo-Inertial/EuRoC_TimeStamps/MH01.txt dataset-MH01_stereoi
 
-## Validating Estimates vs Ground Truth
+## Validating Estimates vs Ground Truth (Optional)
 We're using python 2.7, and need numpy and matplotlib. For this, we need the 2.7 version of pip.
 
     sudo apt install curl
