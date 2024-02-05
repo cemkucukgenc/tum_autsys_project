@@ -164,7 +164,51 @@ cd ../..
 catkin build
 ```
 
-## 3. Launching the simulation <a name="launching_the_simulation"></a>
+# 3. Installation of ORB-SLAM 3 Ubuntu 20.04 Noetic
+Install all liberay dependencies.
+```shell
+
+sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
+sudo apt update
+
+sudo apt-get install build-essential
+sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+
+sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev libjasper-dev
+
+sudo apt-get install libglew-dev libboost-all-dev libssl-dev
+
+sudo apt install libeigen3-dev
+...
+
+---
+### Install OpenCV 4.2.0
+The ORB-SLAM 3 was test by  
+```shell
+cd ~
+mkdir Dev && cd Dev
+git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout 4.2.0
+```
+Put the following at the top of header file `gedit ./modules/videoio/src/cap_ffmpeg_impl.hpp`  
+`#define AV_CODEC_FLAG_GLOBAL_HEADER (1 << 22)`  
+`#define CODEC_FLAG_GLOBAL_HEADER AV_CODEC_FLAG_GLOBAL_HEADER`  
+`#define AVFMT_RAWPICTURE 0x0020`  
+and save and close the file
+```shell
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=Release -D WITH_CUDA=OFF -D CMAKE_INSTALL_PREFIX=/usr/local ..
+make -j 3
+sudo make install
+```
+> If you want to install to conda environment, use `CMAKE_INSTALL_PREFIX=$CONDA_PREFIX` instead.
+---
+
+...
+
+## 4. Launching the simulation <a name="launching_the_simulation"></a>
 
 To run the simulation (T1)
 ```
