@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find vision_pkg)/launch/generate_point_cloud.launch"/>
+  <include file="$(find mapping)/launch/rviz.launch"/>
+  <include file="$(find mapping)/launch/octomap_3d.launch"/>
+</launch>
