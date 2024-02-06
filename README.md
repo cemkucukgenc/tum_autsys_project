@@ -171,7 +171,13 @@ To run the simulation (T1)
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 roslaunch simulation simulation.launch
 ```
-To run the drone controller, open a new terminal (T2)
+
+To run the mapping, open a new terminal (T2)
+```
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+roslaunch mapping mapping.launch
+
+To run the drone controller, open a new terminal (T3)
 ```
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 roslaunch state_machine_pkg state_machine.launch
