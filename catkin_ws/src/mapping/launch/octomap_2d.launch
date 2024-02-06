@@ -8,6 +8,6 @@
     <param name = "height_map" value = "true" />
     <param name = "latch" value = "false" /> 
 
-    <remap from="cloud_in" to="/points/filtered"/>
+    <remap from="cloud_in" to="/point_cloud"/>
   </node>
 </launch>
