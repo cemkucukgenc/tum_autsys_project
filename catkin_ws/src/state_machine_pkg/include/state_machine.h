@@ -23,7 +23,8 @@ takeoff,
 to_cave,
 hover,
 explore,
-landing
+landing,
+turn
 };
 
 class StateMachine {
@@ -69,12 +70,17 @@ class StateMachine {
   void hover();
   void explore();
   void landing();
+  void turn();
   
   geometry_msgs::Point getNextGoalPoint();
   void addGoalPoint(double x, double y, double z);
 
   bool in_range(double low, double high, double x);
   bool goal_reached();
+  
+  void set_waypoint(tf::Vector3 pos, tf::Quaternion q,
+   tf::Vector3 lin_vel = zero_vec, tf::Vector3 ang_vel = zero_vec,
+    tf::Vector3 lin_acc = zero_vec);
 
 };
 

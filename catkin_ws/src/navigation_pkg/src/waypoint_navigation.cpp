@@ -3,8 +3,8 @@
 
 BasicPlanner::BasicPlanner(ros::NodeHandle& nh) :
         nh_(nh),
-        max_v_(10.0),
-        max_a_(5.0),
+        max_v_(30.0),
+        max_a_(20.0),
         current_velocity_(Eigen::Vector3d::Zero()),
         current_pose_(Eigen::Affine3d::Identity()) {
 
