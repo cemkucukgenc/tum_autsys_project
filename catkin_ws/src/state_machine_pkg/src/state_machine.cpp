@@ -71,6 +71,7 @@ void StateMachine::state_machine_mission(const ros::TimerEvent& t) {
     else if (state_ == State::explore) { explore();}
     else if (state_ == State::landing) { landing();}
     else if (state_ == State::turn) { turn();}
+    else if (state_ == State::forward) { forward();}
 }
 
 
@@ -107,6 +108,8 @@ void StateMachine::to_cave() {
         // goalpoint = StateMachine::getNextGoalPoint();
         if(current_goal_index == 7){
           state_ = State::turn;
+          yaw_des = -1.5708; //-90 deg
+          set_position();
         }
 
     }
@@ -132,13 +135,35 @@ void StateMachine::landing() {
 
 void StateMachine::turn() {
     ROS_INFO_ONCE("Drone is turning!");
-    tf::Vector3 pos(pos_[0], pos_[1], pos_[2]);
+    tf::Vector3 pos(cur_position[0], cur_position[1], cur_position[2]);
     
-    double angle_radians = -90 * M_PI / 180.0;
+    //double angle_radians = yaw_des * M_PI / 180.0;
     tf::Quaternion q;
-    q.setRPY(0, 0, angle_radians);
+    q.setRPY(0, 0, yaw_des);
 
     set_waypoint(pos, q);
+    
+    if( in_range(yaw_des - 0.01, yaw_des + 0.01, yaw_)){
+        state_ = State::forward;
+    	set_position();
+    }
+  
+}
+
+
+void StateMachine::forward() {
+    ROS_INFO_ONCE("Drone is flying forward!");
+    tf::Vector3 pos(cur_position[0], cur_position[1]-3, cur_position[2]);
+    tf::Quaternion q;
+    q.setRPY(0, 0, yaw_des);
+    set_waypoint(pos, q);
+    
+    if( in_range(pos_[1] - tol_, pos_[1] + tol_, cur_position[1]-5)){
+        state_ = State::hover;
+    	set_position();
+    }
+    
+    
 }
 
 
@@ -222,6 +247,11 @@ void StateMachine::set_waypoint(tf::Vector3 pos, tf::Quaternion q,
   br.sendTransform(tf::StampedTransform(desired_pos, ros::Time::now(),
                                               "world", "av-desired"));}
 
+
+
+void StateMachine::set_position() {
+  cur_position << pos_[0], pos_[1], pos_[2];
+}
 
 
 int main(int argc, char **argv) {

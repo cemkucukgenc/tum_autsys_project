@@ -24,7 +24,8 @@ to_cave,
 hover,
 explore,
 landing,
-turn
+turn,
+forward
 };
 
 class StateMachine {
@@ -47,7 +48,6 @@ class StateMachine {
   Eigen::Vector3d pos_, vel_, omega_;
   tf::Quaternion quat_;
   double yaw_ = 0.0;
-  Eigen::Vector3d hover_pos_;
   
   const float takeoff_height_ = 10.0;
   const float sim_interval_ = 0.1;
@@ -57,6 +57,9 @@ class StateMachine {
   std::vector<geometry_msgs::Point> goalpoints;
   size_t current_goal_index = 0;
   bool goal_sent_once = 0;
+  
+  Eigen::Vector3d cur_position;
+  double yaw_des = 0;
 
 
  public:
@@ -71,6 +74,7 @@ class StateMachine {
   void explore();
   void landing();
   void turn();
+  void forward();
   
   geometry_msgs::Point getNextGoalPoint();
   void addGoalPoint(double x, double y, double z);
@@ -81,6 +85,9 @@ class StateMachine {
   void set_waypoint(tf::Vector3 pos, tf::Quaternion q,
    tf::Vector3 lin_vel = zero_vec, tf::Vector3 ang_vel = zero_vec,
     tf::Vector3 lin_acc = zero_vec);
+  
+  void set_position();
+  void set_yaw();
 
 };
 
