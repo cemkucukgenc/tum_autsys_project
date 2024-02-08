@@ -1,6 +1,6 @@
 #!/bin/bash
 
-container_name="autsys_container" # Change this to your container name
+container_name="autsys_container_melodic" # Change this to your container name
 catkin_ws_path="/autsys_ws/tum_autsys_project/catkin_ws" # Change this to your catkin_ws path
 
 xhost +
@@ -15,7 +15,7 @@ sudo docker run \
   --name $container_name \
   -it \
   -d \
-  autsys_image
+  autsys_image_melodic
 
 sleep 2
 
@@ -27,15 +27,15 @@ RESET='\033[0m'
 
 sudo docker exec -it $container_name bash -c "
     sudo apt update && sudo apt upgrade -y
-    if [ -f '/opt/ros/noetic/setup.bash' ]; then
-        source /opt/ros/noetic/setup.bash && \
+    if [ -f '/opt/ros/melodic/setup.bash' ]; then
+        source /opt/ros/melodic/setup.bash && \
         if [ \$? -eq 0 ]; then
             echo -e '${GREEN}ROS distro sourced as${RESET}' \$ROS_DISTRO 
         else
             echo -e '${RED}Failed to source ROS distro${RESET}' 
         fi
     else
-        echo -e '${YELLOW}/opt/ros/noetic/setup.bash does not exist yet. Skipping sourcing.${RESET}'
+        echo -e '${YELLOW}/opt/ros/melodic/setup.bash does not exist yet. Skipping sourcing.${RESET}'
     fi && \
     if [ -f '$catkin_ws_path/devel/setup.bash' ]; then
         source $catkin_ws_path/devel/setup.bash && \
