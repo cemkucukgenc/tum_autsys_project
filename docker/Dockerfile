@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install the basic packages
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y git apt-utils python-catkin-tools wget libtool && \
+    apt-get install -y git apt-utils python-catkin-tools wget libtool autoconf automake && \
     rm -rf /var/lib/apt/lists/*
 
 # Install the necessary ROS packages for the project

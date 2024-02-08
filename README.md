@@ -116,7 +116,7 @@ sudo apt-get upgrade
 
 For the installation of packages, basic tools are required. 
 ```
-sudo apt install wget libtool apt-utils python3-catkin-tools
+sudo apt install git apt-utils python-catkin-tools wget libtool autoconf automake
 ```
 
 For the generation of the Point Cloud, `depth_image_proc` package has been utilized. 

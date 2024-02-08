@@ -7,7 +7,7 @@ catkin_simple(ALL_DEPS_REQUIRED)
 
 include_directories(${OMPL_INCLUDE_DIRS})
 
-add_definitions(-std=c++14)
+add_definitions(-std=c++11)
 
 #############
 # LIBRARIES #
