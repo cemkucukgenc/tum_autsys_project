@@ -1,0 +1,17 @@
+geometry_msgs/Pose                uav_pose
+geometry_msgs/Pose                target_pose
+bool                              publish_path
+bool                              publish_trajectory
+bool                              plan_path
+bool                              plan_trajectory
+bool                              use_custom_parabola_params
+float64[]                         custom_parabola_params
+bool                              use_custom_psi_params
+float64[]                         custom_psi_params
+---
+trajectory_msgs/JointTrajectory   trajectory
+trajectory_msgs/JointTrajectory   path
+bool                              success
+float64                           path_length
+float64[]                         roll
+float64[]                         pitch

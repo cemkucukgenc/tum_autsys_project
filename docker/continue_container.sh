@@ -10,15 +10,15 @@ YELLOW='\033[0;33m'
 RESET='\033[0m'
 
 sudo docker exec -it $container_name bash -c "
-    if [ -f '/opt/ros/noetic/setup.bash' ]; then
-        source /opt/ros/noetic/setup.bash && \
+    if [ -f '/opt/ros/melodic/setup.bash' ]; then
+        source /opt/ros/melodic/setup.bash && \
         if [ \$? -eq 0 ]; then
             echo -e '${GREEN}ROS distro sourced as${RESET}' \$ROS_DISTRO 
         else
             echo -e '${RED}Failed to source ROS distro${RESET}' 
         fi
     else
-        echo -e '${YELLOW}/opt/ros/noetic/setup.bash does not exist yet. Skipping sourcing.${RESET}'
+        echo -e '${YELLOW}/opt/ros/melodic/setup.bash does not exist yet. Skipping sourcing.${RESET}'
     fi && \
     if [ -f '$catkin_ws_path/devel/setup.bash' ]; then
         source $catkin_ws_path/devel/setup.bash && \
