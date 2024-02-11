@@ -8,7 +8,7 @@ max_ray_length_m: 10
 
 # Voxblox independent params:
 use_tf_transforms: true
-world_frame: mission
+world_frame: world
 sensor_frame: airsim_drone/Lidar_ground_truth
 update_mesh_every_n_sec: 99999
 method: fast

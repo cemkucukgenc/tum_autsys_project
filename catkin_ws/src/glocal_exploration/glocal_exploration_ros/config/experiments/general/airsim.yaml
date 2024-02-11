@@ -4,7 +4,7 @@ ViewMode: Manual
 ClockSpeed: 1.0
 publish_sensor_transforms: true 
 velocity: 1.0
-simulator_frame_name: "odom"
+simulator_frame_name: "true_body"
  
 sensors:   
   Lidar:

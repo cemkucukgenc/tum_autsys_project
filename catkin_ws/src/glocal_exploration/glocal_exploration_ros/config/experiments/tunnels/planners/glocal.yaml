@@ -19,10 +19,10 @@ replan_timeout_velocity: 1.0
 
 region_of_interest:
   type: bounding_box
-  x_min: -200
-  x_max: 200
-  y_min: -200
-  y_max: 200
+  x_min: -1000
+  x_max: 1000
+  y_min: -1000
+  y_max: 1000
   z_min: -100
   z_max: 100
 
@@ -84,9 +84,9 @@ mapping:
   loop_closure_topic_queue_length: 1000
   submap_topic_queue_length: 10
   publisher_queue_length: 10
-  input_odom_frame: "odom"
+  input_odom_frame: "world"
   input_base_link_frame: "imu"
-  output_odom_frame: "odom"
+  output_odom_frame: "world"
   output_base_link_frame: "drone_corrected"
   output_sensor_frame: "lidar_corrected"
   tsdf_integrator:

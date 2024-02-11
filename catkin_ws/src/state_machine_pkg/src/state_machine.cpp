@@ -26,6 +26,7 @@ StateMachine::StateMachine(): waypoint_navigation_launched(false) {
     z=6.9;
 
     addGoalPoint(-38.0, 10.0, 10.0); // take off from initial position
+    addGoalPoint(-57.0, -1.0, 3.0); // first lamp position at the outside
     addGoalPoint(-59.0, 0.84, 10.0); // first lamp position at the outside
     addGoalPoint(-321, 10.0, 15.0); // cave entrance
     addGoalPoint(-500, 0.0, 10.0);
@@ -104,7 +105,7 @@ void StateMachine::to_cave() {
     if(goal_reached()) {
         goal_sent_once=0;
         // goalpoint = StateMachine::getNextGoalPoint();
-        if(current_goal_index == 6){
+        if(current_goal_index == 2){
           state_ = State::hover;
         }
 

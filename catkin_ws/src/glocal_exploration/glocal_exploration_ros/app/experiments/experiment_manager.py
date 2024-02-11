@@ -389,7 +389,7 @@ class EvalData(object):
         drift_estimated_rot = 0
 
         try:
-            (t, r) = self.tf_listener.lookupTransform('odom', 'initial_pose',
+            (t, r) = self.tf_listener.lookupTransform('world', 'initial_pose',
                                                       rospy.Time(0))
         except (tf.LookupException, tf.ConnectivityException,
                 tf.ExtrapolationException):
@@ -447,7 +447,7 @@ class EvalData(object):
         if self.initial_point_offset is None:
             try:
                 (t1, r1) = self.tf_listener.lookupTransform(
-                    'initial_pose', 'odom', rospy.Time(0))
+                    'initial_pose', 'world', rospy.Time(0))
                 (t2, r2) = self.tf_listener.lookupTransform(
                     'airsim_drone/Lidar', 'airsim_drone/Lidar_ground_truth',
                     rospy.Time(0))
@@ -463,7 +463,7 @@ class EvalData(object):
                 pass
 
         # Query position
-        t, _ = self.tf_listener.lookupTransform('odom',
+        t, _ = self.tf_listener.lookupTransform('world',
                                                 'airsim_drone_ground_truth',
                                                 rospy.Time(0))
         t = np.array(t)
