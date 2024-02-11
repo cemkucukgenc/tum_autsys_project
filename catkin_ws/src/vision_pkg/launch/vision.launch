@@ -1,0 +1,20 @@
+<launch>
+
+<!-- Using depth_image_proc package - point_cloud_xyz nodelet to generate point cloud from depth camera image -->
+  <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" />
+  <node pkg="nodelet" type="nodelet" name="depth_to_cloud"
+        args="load depth_image_proc/point_cloud_xyz nodelet_manager">
+    <remap from="camera_info" to="/realsense/depth/camera_info"/>
+    <remap from="image_rect" to="/realsense/depth/image"/>
+    <remap from="points" to="/point_cloud"/>
+  </node>
+
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen">
+      <remap from="cloud_in" to="/point_cloud"/>
+      <remap from="occupied_cells_vis_array" to="/map/occupied"/>
+      <param name="frame_id" value="world"/>
+      <param name="latch" value="true"/>
+      <param name="resolution" value="2"/>
+  </node>
+
+</launch>

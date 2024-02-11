@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find simulation)/launch/simulation.launch" />
+    <include file="$(find vision_pkg)/launch/vision.launch" />
+    <include file="$(find state_machine_pkg)/launch/state_machine.launch" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulation)/launch/rviz_configuration.rviz" />
+</launch>
