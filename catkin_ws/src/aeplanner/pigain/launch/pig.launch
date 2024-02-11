@@ -1,8 +1,10 @@
 <?xml version="1.0" ?>
 <launch>
+<group ns="aeplanner">
   <arg name="param_file" default="$(find pigain)/config/config.yaml" />
   <node name="pig" pkg="pigain" type="pig.py">
-    <remap from="pose" to="/mavros/local_position/pose"/>
+    <remap from="pose" to="/pose_est"/>
     <rosparam command="load" file="$(arg param_file)" />
   </node>
+</group>
 </launch>

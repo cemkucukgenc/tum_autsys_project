@@ -39,8 +39,8 @@ class PIGain:
 
         # Get environment boundaries 
         try:
-            self.min = rospy.get_param('boundary/min')
-            self.max = rospy.get_param('boundary/max')
+            self.min = rospy.get_param('/aeplanner/boundary/min')
+            self.max = rospy.get_param('/aeplanner/boundary/max')
         except KeyError:
             rospy.logwarn("Boundary parameters not specified")
             rospy.logwarn("Defaulting to (-100, -100, 0), (100, 100, 3)...")
@@ -48,7 +48,7 @@ class PIGain:
             self.max = [ 100,  100, 3]
 
         try:
-            self.range = rospy.get_param('aep/gain/r_max') * 2
+            self.range = rospy.get_param('/aeplanner/aep/gain/r_max')
         except KeyError:
             rospy.logwarn("Range max parameter not specified")
             rospy.logwarn("Defaulting to 8 m...")
@@ -95,8 +95,9 @@ class PIGain:
                 reevaluate_position_list.append(item.object.position)
                 reevaluate_list.append(item)
         try:
+            print (reevaluate_position_list)
             res = self.reevaluate_client(reevaluate_position_list)
-        except rospy.ServiceException, e:
+        except rospy.ServiceException as e:
             rospy.logerr("Calling reevaluate service failed")
             return
 
@@ -162,6 +163,7 @@ class PIGain:
                 best_gain = item.object.gain
 
         response.gain = best_gain
+        print ("vracam best node!")
         return response
 
     """ Evaluate potential information gain function over grid and publish it in rviz """
@@ -205,7 +207,7 @@ class PIGain:
 
     def np_array_to_marker(self, id, p, v=0, a=0):
         marker = Marker()
-        marker.header.frame_id = "map"
+        marker.header.frame_id = "world"
         marker.type = marker.CUBE
         marker.action = marker.ADD
         marker.id = id
@@ -227,7 +229,7 @@ class PIGain:
 
     def node_to_marker(self, id, node):
         marker = Marker()
-        marker.header.frame_id = "map"
+        marker.header.frame_id = "world"
         marker.type = marker.SPHERE
         marker.action = marker.ADD
         marker.id = id

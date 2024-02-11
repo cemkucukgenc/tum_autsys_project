@@ -18,7 +18,7 @@
   <include file="$(find rpl_exploration)/launch/rpl_inspector.launch">
     <arg name="mav_name" value="$(arg mav_name)" />
     <arg name="param_file" value="$(find rpl_exploration)/config/exploration.yaml" />
-    <arg name="tf_frame" value="map" />
+    <arg name="tf_frame" value="world" />
     <arg name="resolution" value="0.2" />
     <arg name="visualize_max_z" value="2.5" />
     <arg name="sensor_max_range" value="5.0" />
@@ -26,7 +26,7 @@
   -->
 
   <node name="fly_to_server" pkg="rpl_exploration" type="fly_to">
-    <remap from="fly_to_cmd" to="/mavros/setpoint_position/local"/>
+    <!-- <remap from="fly_to_cmd" to="/red/mavros/setpoint_position/local"/> -->
   </node>
 
   <node name="rrtplanner_node" pkg="rrtplanner" type="rrtplanner_node"/>

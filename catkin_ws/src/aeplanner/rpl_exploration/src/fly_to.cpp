@@ -52,8 +52,8 @@ namespace rpl_exploration {
           ROS_INFO_STREAM("Publishing goal to (" << p.x << ", " << p.y << ", " << p.z << ") ");
           pub_.publish(goal->pose);
 
-          listener.waitForTransform("/map", "/base_link", ros::Time(0), ros::Duration(10.0) );
-          listener.lookupTransform("/map", "/base_link", ros::Time(0), transform);
+          listener.waitForTransform("/world", "/true_body", ros::Time(0), ros::Duration(10.0) );
+          listener.lookupTransform("/world", "/true_body", ros::Time(0), transform);
 
           geometry_msgs::Point q;
           q.x = (float)transform.getOrigin().x(); 

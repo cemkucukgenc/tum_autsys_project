@@ -2,4 +2,4 @@ visualize/mean:  false
 visualize/sigma: false
 visualize/pts:   true
 
-visualize/resolution: 0.5
+visualize/resolution: 0.2
