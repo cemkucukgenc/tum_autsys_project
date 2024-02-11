@@ -22,18 +22,18 @@
 ## 2. Installation guide <a name="installation_guide"></a>
 
 ### 2.1. System setup <a name="system_setup"></a>
-This project is developed for `Ubuntu 20.04` with `ROS Noetic`. Be sure your system has the same configuration. You can check the following links to install them:
+This project is developed for `Ubuntu 18.04` with `ROS Melodic`. Be sure your system has the same configuration. You can check the following links to install them:
 
- - `Ubuntu 20.04` setup guide link: https://releases.ubuntu.com/focal/ 
- - `ROS Noetic` setup guide link: https://wiki.ros.org/noetic/Installation/Ubuntu 
+ - `Ubuntu 18.04` setup guide link: https://releases.ubuntu.com/bionic/ 
+ - `ROS Melodic` setup guide link: https://wiki.ros.org/Melodic/Installation/Ubuntu 
 
- It is required that the `ROS Noetic` should be sourced in each terminal to run the simulation as mentioned in the `ROS Noetic` setup guide link. To do that,
+ It is required that the `ROS Melodic` should be sourced in each terminal to run the simulation as mentioned in the `ROS Melodic` setup guide link. To do that,
  ```
-source /opt/ros/noetic/setup.bash
+source /opt/ros/melodic/setup.bash
  ```
-should be sourced in each terminal. To make it more easy, it can be added to the `.bashrc` file for automatic sourcing. Details can be found in the `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will no longer be mentioned in further steps.
+should be sourced in each terminal. To make it more easy, it can be added to the `.bashrc` file for automatic sourcing. Details can be found in the `ROS Melodic` setup guide link. Sourcing `ROS Melodic` will no longer be mentioned in further steps.
 
-#### Bonus: Docker container setup for `Ubuntu 20.04` with `ROS Noetic` (Bypass this section and continue from "2.2. [Installing dependencies](#installing_dependencies)" if you have a successful installation of `Ubuntu 20.04` with `ROS Noetic`)
+#### Bonus: Docker container setup (Bypass this section and continue from "2.2. [Installing dependencies](#installing_dependencies)" if you have a successful installation of `Ubuntu 18.04` with `ROS Melodic`)
 
 If you have a different Linux or ROS distro, you may prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guaranteed to work perfectly in your system.
 
@@ -58,16 +58,16 @@ Bonus: The `rosurce.sh` is created to source the `catkin_ws_path` easily. If you
 
 Pull the corresponding Docker image (T1)
 ```
-sudo docker pull osrf/ros:noetic-desktop-full
+sudo docker pull osrf/ros:melodic-desktop-full-bionic
 ```
 
-Create necessary Docker image `autsys_image` (T1)
+Create necessary Docker image `autsys_image_melodic` (T1)
 ```
 cd tum_autsys_project/docker
-sudo docker image build -t autsys_image .
+sudo docker image build -t autsys_image_melodic .
 ```
 
-Create the Docker container `autsys_container` (T1)
+Create the Docker container `autsys_container_melodic` (T1)
 ```
 sudo chmod +x create_container.sh
 sudo chmod +x continue_container.sh
@@ -85,20 +85,20 @@ cd autsys_ws/tum_autsys_project/docker
 ```
 or
 ```
-sudo docker exec -it autsys_container bash
+sudo docker exec -it autsys_container_melodic bash
 ```
 
 To list and delete the image
 ```
 sudo docker images
-sudo docker image rm autsys_image
+sudo docker image rm autsys_image_melodic
 ```
 
 To list and delete the container
 ```
 sudo docker ps -a
-sudo docker stop autsys_container
-sudo docker rm autsys_container
+sudo docker stop autsys_container_melodic
+sudo docker rm autsys_container_melodic
 ```
 
 Useful tutorials for your reference
@@ -116,22 +116,22 @@ sudo apt-get upgrade
 
 For the installation of packages, basic tools are required. 
 ```
-sudo apt install git wstool wget libtool apt-utils python3-catkin-tools
+sudo apt install git apt-utils python-catkin-tools wget libtool autoconf automake
 ```
 
 For the generation of the Point Cloud, `depth_image_proc` package has been utilized. 
 ```
-sudo apt install ros-noetic-depth-image-proc
+sudo apt install ros-melodic-depth-image-proc
 ```
 
-For the generation of the OctoMap, `octomap` and `octomap_mapping` packages have been utilized. 
+For the generation of the OctoMap, `octomap_mapping` package has been utilized. 
 ```
-sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
+sudo apt-get install ros-melodic-octomap ros-melodic-octomap-mapping
 ```
 
 For the path planning, `Open Motion Planning Library (OMPL)` is required. 
 ```
-sudo apt-get install ros-noetic-ompl
+sudo apt-get install ros-melodic-ompl
 ```
 
 ### 2.3. Building project <a name="building_project"></a>
@@ -169,8 +169,11 @@ catkin build
 To run the simulation (T1)
 ```
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
-roslaunch simulation mission.launch
+roslaunch simulation simulation.launch
 ```
-`mission.launch` file launches related packages that should be run simultaneously. Additionally, it runs `rviz` to show octomapping visual.
-
+To run the drone controller, open a new terminal (T2)
+```
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+roslaunch state_machine_pkg state_machine.launch
+```
 
