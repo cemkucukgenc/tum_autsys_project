@@ -1,7 +1,0 @@
-<library path="lib/libaeplanner">
-  <class name="aeplanner/AEPlannerNodelet" type="aeplanner::AEPlannerNodelet" base_class_type="nodelet::Nodelet">
-    <description>
-      This is the Autonomous Planner Nodelet.
-    </description>
-  </class>
-</library>
