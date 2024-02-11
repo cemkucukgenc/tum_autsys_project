@@ -82,9 +82,9 @@ mapping:
   loop_closure_topic_queue_length: 1000
   submap_topic_queue_length: 10
   publisher_queue_length: 10
-  input_odom_frame: "world"
+  input_odom_frame: "odom"
   input_base_link_frame: "imu"
-  output_odom_frame: "world"
+  output_odom_frame: "odom"
   output_base_link_frame: "drone_corrected"
   output_sensor_frame: "lidar_corrected"
   tsdf_integrator:

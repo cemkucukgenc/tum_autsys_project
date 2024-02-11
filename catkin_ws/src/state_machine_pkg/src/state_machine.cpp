@@ -26,13 +26,12 @@ StateMachine::StateMachine(): waypoint_navigation_launched(false) {
     z=6.9;
 
     addGoalPoint(-38.0, 10.0, 10.0); // take off from initial position
-    addGoalPoint(-57.0, -1.0, 3.0); // first lamp position at the outside
-    addGoalPoint(-59.0, 0.84, 10.0); // first lamp position at the outside
+    addGoalPoint(-55, 0.84, 15.0); // first lamp position at the outside
     addGoalPoint(-321, 10.0, 15.0); // cave entrance
     addGoalPoint(-500, 0.0, 10.0);
     addGoalPoint(-599, -9.0, 10.0);
     addGoalPoint(-599, -5, 10.0);
-    addGoalPoint(-599, -2, 7.0);
+    addGoalPoint(-599, -2, 3.0);
 
     
     origin_ = tf::Vector3(x, y, z);
@@ -71,6 +70,8 @@ void StateMachine::state_machine_mission(const ros::TimerEvent& t) {
     else if (state_ == State::hover) { hover(); }
     else if (state_ == State::explore) { explore();}
     else if (state_ == State::landing) { landing();}
+    else if (state_ == State::turn) { turn();}
+    else if (state_ == State::forward) { forward();}
 }
 
 
@@ -105,8 +106,10 @@ void StateMachine::to_cave() {
     if(goal_reached()) {
         goal_sent_once=0;
         // goalpoint = StateMachine::getNextGoalPoint();
-        if(current_goal_index == 2){
-          state_ = State::hover;
+        if(current_goal_index == 7){
+          state_ = State::turn;
+          yaw_des = -1.5708; //-90 deg
+          set_position();
         }
 
     }
@@ -128,6 +131,41 @@ void StateMachine::landing() {
     ROS_INFO_ONCE("Drone is landing!");
     // TODO
 }
+
+
+void StateMachine::turn() {
+    ROS_INFO_ONCE("Drone is turning!");
+    tf::Vector3 pos(cur_position[0], cur_position[1], cur_position[2]);
+    
+    //double angle_radians = yaw_des * M_PI / 180.0;
+    tf::Quaternion q;
+    q.setRPY(0, 0, yaw_des);
+
+    set_waypoint(pos, q);
+    
+    if( in_range(yaw_des - 0.01, yaw_des + 0.01, yaw_)){
+        state_ = State::forward;
+    	set_position();
+    }
+  
+}
+
+
+void StateMachine::forward() {
+    ROS_INFO_ONCE("Drone is flying forward!");
+    tf::Vector3 pos(cur_position[0], cur_position[1]-3, cur_position[2]);
+    tf::Quaternion q;
+    q.setRPY(0, 0, yaw_des);
+    set_waypoint(pos, q);
+    
+    if( in_range(pos_[1] - tol_, pos_[1] + tol_, cur_position[1]-5)){
+        state_ = State::hover;
+    	set_position();
+    }
+    
+    
+}
+
 
 
 
@@ -157,6 +195,62 @@ bool StateMachine::goal_reached() {
   return ( in_range(goalpoint.x - tol_, goalpoint.x + tol_, pos_[0]) &&
           in_range(goalpoint.y - tol_, goalpoint.y + tol_, pos_[1]) &&
           in_range(goalpoint.z - tol_, goalpoint.z + tol_, pos_[2]) );
+}
+
+void StateMachine::set_waypoint(tf::Vector3 pos, tf::Quaternion q,
+ tf::Vector3 lin_vel, tf::Vector3 ang_vel, tf::Vector3 lin_acc) {
+  tf::Transform desired_pos(tf::Transform::getIdentity());
+  geometry_msgs::Twist vel;
+  geometry_msgs::Twist acc;
+
+  // WAYPOINT INITIALIZATION. 
+  // Setting desired position and orientation
+  desired_pos.setOrigin(pos);  //  Setting desired point
+  desired_pos.setRotation(q);
+
+   // Defining angular and linear velocity
+  vel.linear.x = lin_vel.getX();
+  vel.linear.y = lin_vel.getY();
+  vel.linear.z = lin_vel.getZ();
+
+  vel.angular.x = ang_vel.getX();
+  vel.angular.y = ang_vel.getY();
+  vel.angular.z = ang_vel.getZ();
+
+  // Defining linear acceleration
+  acc.linear.x = lin_acc.getX();
+  acc.linear.y = lin_acc.getY();
+  acc.linear.z = lin_acc.getZ();
+
+  //  Making a message to send to rotors
+  trajectory_msgs::MultiDOFJointTrajectoryPoint msg;
+  msg.transforms.resize(1);
+  msg.transforms[0].translation.x = desired_pos.getOrigin().x();
+  msg.transforms[0].translation.y = desired_pos.getOrigin().y();
+  msg.transforms[0].translation.z = desired_pos.getOrigin().z();
+  msg.transforms[0].rotation.x = desired_pos.getRotation().getX();
+  msg.transforms[0].rotation.y = desired_pos.getRotation().getY();
+  msg.transforms[0].rotation.z = desired_pos.getRotation().getZ();
+  msg.transforms[0].rotation.w = desired_pos.getRotation().getW();
+
+  msg.velocities.resize(1);
+  msg.velocities[0] = vel;
+  msg.accelerations.resize(1);
+  msg.accelerations[0] = acc;
+  
+  
+
+  trajectory_msgs::MultiDOFJointTrajectory trajectory_msg;
+  trajectory_msg.points.push_back(msg);
+  desired_state_pub_.publish(trajectory_msg);
+
+  br.sendTransform(tf::StampedTransform(desired_pos, ros::Time::now(),
+                                              "world", "av-desired"));}
+
+
+
+void StateMachine::set_position() {
+  cur_position << pos_[0], pos_[1], pos_[2];
 }
 
 

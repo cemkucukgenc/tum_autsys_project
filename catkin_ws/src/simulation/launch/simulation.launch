@@ -41,9 +41,6 @@
   <node name="w_to_unity" pkg="simulation" type="w_to_unity"/>
   
   <node name="controller_node" pkg="controller_pkg" type="controller_node"/>
-  
-
-
 
   <node pkg="tf2_ros" type="static_transform_publisher"
         name="sim_true_body"      args="0 0 0 0 0 0 /Quadrotor/TrueState /true_body" />
@@ -62,4 +59,9 @@
 
   <node pkg="tf2_ros" type="static_transform_publisher"
         name="depth_camera_to_body"      args="0 0 0 0 0 0 /true_body /depth_camera" />
+
+<!-- 90 degrees rotation about X axis from true_body to Depth Camera Frame -->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="depth_cam_sensors"      args="0 0 0 -1.5708 0 -1.5708 /depth_camera /Quadrotor/Sensors/DepthCamera" />
+
 </launch>

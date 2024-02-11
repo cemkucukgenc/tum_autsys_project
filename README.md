@@ -33,7 +33,7 @@ source /opt/ros/noetic/setup.bash
  ```
 should be sourced in each terminal. To make it more easy, it can be added to the `.bashrc` file for automatic sourcing. Details can be found in the `ROS Noetic` setup guide link. Sourcing `ROS Noetic` will no longer be mentioned in further steps.
 
-#### Bonus: Docker container setup (Bypass this section and continue from "2.2. [Installing dependencies](#installing_dependencies)" if you have a successful installation of `Ubuntu 20.04` with `ROS Noetic`)
+#### Bonus: Docker container setup for `Ubuntu 20.04` with `ROS Noetic` (Bypass this section and continue from "2.2. [Installing dependencies](#installing_dependencies)" if you have a successful installation of `Ubuntu 20.04` with `ROS Noetic`)
 
 If you have a different Linux or ROS distro, you may prefer to use a Docker container to run the simulation. To do that, an example Docker container implementation for a PC with `Intel i7-1165G7` CPU (no Discreet GPU) and `Ubuntu 22.04` will be explained. In any case, you should try to implement it according to your system with external sources. This method is not guaranteed to work perfectly in your system.
 
@@ -116,7 +116,7 @@ sudo apt-get upgrade
 
 For the installation of packages, basic tools are required. 
 ```
-sudo apt install wget libtool apt-utils python3-catkin-tools python3-wstool
+sudo apt install git wstool wget libtool apt-utils python3-catkin-tools
 ```
 
 For the generation of the Point Cloud, `depth_image_proc` package has been utilized. 
@@ -124,7 +124,7 @@ For the generation of the Point Cloud, `depth_image_proc` package has been utili
 sudo apt install ros-noetic-depth-image-proc
 ```
 
-For the generation of the OctoMap, `octomap_mapping` package has been utilized. 
+For the generation of the OctoMap, `octomap` and `octomap_mapping` packages have been utilized. 
 ```
 sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
 ```
@@ -169,12 +169,8 @@ catkin build
 To run the simulation (T1)
 ```
 source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
-roslaunch simulation simulation.launch
+roslaunch simulation mission.launch
 ```
-To run the drone controller, open a new terminal (T2)
-```
-source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
-roslaunch state_machine_pkg state_machine.launch
-```
+`mission.launch` file launches related packages that should be run simultaneously. Additionally, it runs `rviz` to show octomapping visual.
 
 

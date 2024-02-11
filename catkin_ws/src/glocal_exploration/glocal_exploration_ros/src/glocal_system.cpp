@@ -355,7 +355,7 @@ void GlocalSystem::performCollisionAvoidance() {
 
           // Visualize the goal point chosen by the collision avoidance
           geometry_msgs::PointStamped goal_point_msg;
-          goal_point_msg.header.frame_id = "world";
+          goal_point_msg.header.frame_id = "odom";
           goal_point_msg.header.stamp = current_timestamp;
           goal_point_msg.point.x = safe_waypoint.position.x();
           goal_point_msg.point.y = safe_waypoint.position.y();

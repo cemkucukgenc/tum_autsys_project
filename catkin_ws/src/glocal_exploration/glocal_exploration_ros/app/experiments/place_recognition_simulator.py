@@ -18,7 +18,7 @@ class PlaceRecognitionSimulator(object):
         '''  Initialize ros node and read params '''
         # Parse parameters
         self.update_period = rospy.get_param('~update_period', 1.0)
-        self.world_frame = rospy.get_param('~world_frame', 'world')
+        self.world_frame = rospy.get_param('~world_frame', 'odom')
         self.ground_truth_pose_tf_frame_id = rospy.get_param(
             '~ground_truth_pose_tf_frame_id', 'airsim_drone/Lidar_ground_truth')
         self.recognizeable_areas = rospy.get_param('~recognizeable_areas')
@@ -133,7 +133,7 @@ class PlaceRecognitionSimulator(object):
     def visualize_loop_closure(self, start_point, end_point):
         marker = Marker()
 
-        marker.header.frame_id = "world"
+        marker.header.frame_id = "odom"
         marker.header.stamp = rospy.Time(0)
         marker.ns = "place_recognition_association"
         marker.id = 0
@@ -172,7 +172,7 @@ class PlaceRecognitionSimulator(object):
         for idx, recognizeable_area in enumerate(recognizeable_areas):
             marker = Marker()
 
-            marker.header.frame_id = "world"
+            marker.header.frame_id = "odom"
             marker.header.stamp = rospy.Time(0)
             marker.ns = "recognizeable_areas"
             marker.id = idx

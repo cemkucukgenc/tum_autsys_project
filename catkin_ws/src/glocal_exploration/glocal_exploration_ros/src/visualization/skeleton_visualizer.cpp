@@ -184,7 +184,7 @@ void SkeletonVisualizer::visualizePathSearch() {
       planner_->getVisualizationEdges();
   // Setup the marker
   visualization_msgs::Marker marker_msg;
-  marker_msg.header.frame_id = "world";
+  marker_msg.header.frame_id = "odom";
   marker_msg.header.stamp = ros::Time();
   marker_msg.ns = "a_star_search";
   marker_msg.id = 0;
