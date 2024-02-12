@@ -106,8 +106,8 @@ void StateMachine::to_cave() {
     if(goal_reached()) {
         goal_sent_once=0;
         // goalpoint = StateMachine::getNextGoalPoint();
-        if(current_goal_index == 7){
-          state_ = State::turn;
+        if(current_goal_index == 3){
+          state_ = State::hover;
           yaw_des = -1.5708; //-90 deg
           set_position();
         }

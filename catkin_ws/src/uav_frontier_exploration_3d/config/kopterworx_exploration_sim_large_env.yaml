@@ -1,6 +1,6 @@
 exploration:
   global_frame: "world"
-  base_link_frame: "red/base_link"
+  base_link_frame: "true_body"
   # Exploration depth of octomap tree. 16 is best resolution, slowest exploration
   # Save frontiers on that level
   # experience shows that there is significant increase in search time by 
@@ -12,12 +12,19 @@ exploration:
   # bounding box: necessary to limit the simulation 
   # scenario (smaller than actual gazebo scenario)
   # used for frontier detection
-  bbx_minX: -65.0
-  bbx_maxX: 65.0
-  bbx_minY: -90.0
-  bbx_maxY: 90.0
-  bbx_minZ: 1.0
-  bbx_maxZ: 5.0
+  # bbx_minX: -65.0
+  # bbx_maxX: 65.0
+  # bbx_minY: -90.0
+  # bbx_maxY: 90.0
+  # bbx_minZ: 1.0
+  # bbx_maxZ: 5.0
+
+  bbx_minX: -1000
+  bbx_maxX: 1000
+  bbx_minY: -1000
+  bbx_maxY: 1000
+  bbx_minZ: -20
+  bbx_maxZ: 20
 
   # Length of one side of the cube inside which we calculate information gain
   box_length: 8.0

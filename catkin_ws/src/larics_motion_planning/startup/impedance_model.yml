@@ -1,0 +1,51 @@
+name: impedance_model
+root: ./
+startup_window: roscore
+pre_window: cd ~/; export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$HOME/uav_ws/src/larics_gazebo_worlds/models
+windows:
+  - roscore_gazebo:
+      layout: tiled
+      panes:
+        - roscore
+        - waitForRos; roslaunch gazebo_ros empty_world.launch use_sim_time:=true paused:=false
+        - >
+          waitForSimulation; 
+          roslaunch larics_gazebo_worlds spawn_bridge.launch; 
+          roslaunch larics_gazebo_worlds spawn_bridge_blob.launch name:="blob1" x:=14.5661 y:=14.9036 z:=11.0134 roll:=1.57079632679 pitch:=0.0 yaw:=-3.988566033 cylinder_length:=0.002
+        - waitForSimulation; roslaunch wp_manipulator_3rx planning_context.launch
+  - uavs:
+      layout: tiled
+      panes:
+        - >
+          waitForSimulation; 
+          sleep 8; 
+          roslaunch impedance_control impedance_control_asap_3rx.launch start_gazebo:=false collision_bitmask:=1 name:="model_uav"
+        - waitForSimulation; sleep 8; roslaunch impedance_control impedance_control_asap_3rx.launch start_gazebo:=false collision_bitmask:=2 mount_stereo_cam:=true
+        - waitForSimulation; sleep 15; rosrun impedance_control get_uav_airborne.sh model_uav
+        - waitForSimulation; sleep 15; rosrun impedance_control get_uav_airborne.sh
+  - blob_detection:
+      layout: tiled
+      panes:
+        - export UAV_NAMESPACE="uav"; waitForRos; roslaunch mood_ros detection_manager.launch odometry:="odometry"
+        - >
+          waitForRos; 
+          rosrun tf static_transform_publisher 0.025 0 0.1 -0.5 0.5 -0.5 0.5 uav/base_link uav/camera 10
+  - motion_planning:
+      layout: 0362,204x54,0,0{102x54,0,0,0,101x54,103,0[101x27,103,0,2,101x26,103,28,3]}
+      panes:
+        - waitForSimulation; sleep 5; roslaunch larics_motion_planning arducopter_wp_manipulator_3rx.launch
+        - |
+          waitForSimulation; sleep 8; rostopic pub -1 /model_uav/reference_tracker/set_current_trajectory_point trajectory_msgs/JointTrajectoryPoint "
+          positions: [1.37, 2.2, 2.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+          velocities: [0]
+          accelerations: [0]
+          effort: [0]
+          time_from_start: {secs: 0, nsecs: 0}"
+        - |
+          waitForSimulation; sleep 8; rostopic pub -1 /uav/reference_tracker/set_current_trajectory_point trajectory_msgs/JointTrajectoryPoint "
+          positions: [1.37, 2.2, 2.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+          velocities: [0]
+          accelerations: [0]
+          effort: [0]
+          time_from_start: {secs: 0, nsecs: 0}"
+        - waitForSimulation; sleep 5; rosrun rqt_gui rqt_gui

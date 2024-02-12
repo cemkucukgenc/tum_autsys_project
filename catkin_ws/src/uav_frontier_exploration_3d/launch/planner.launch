@@ -1,10 +1,10 @@
 <launch>
   <arg name="rate" default="10" />
-  <arg name="namespace" default="$(env UAV_NAMESPACE)" />
+  <arg name="namespace" default="" />
   <arg name="slam_ns" default="map"/>
 
-  <group ns="$(arg namespace)">
-    <node name="generate_toppra_trajectory" pkg="topp_ros" type="generate_toppra_trajectory.py" output="screen" />
+  <!-- <group ns="$(arg namespace)"> -->
+    <!-- <node name="generate_toppra_trajectory" pkg="topp_ros" type="generate_toppra_trajectory.py" output="screen" /> -->
 
     <node name="global_planner" pkg="larics_motion_planning" type="global_planner_node" output="screen">
       <param name="rate" value="$(arg rate)" />
@@ -16,6 +16,6 @@
       <param name="rate" value="100" />
       <remap from="trajectory_point_ref" to="position_hold/trajectory" />
     </node>
-   <node name="map_transform" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 world $(arg namespace)/$(arg slam_ns)/map 100" />
-  </group>
+   <!-- <node name="map_transform" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 world $(arg namespace)/$(arg slam_ns)/map 100" /> -->
+  <!-- </group> -->
 </launch>

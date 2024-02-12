@@ -62,9 +62,14 @@ namespace frontier_server
       void publishClusteredFrontier();
       void publishBestFrontier();
       void publishUAVGoal(point3d goal);
+      // TODO:
+      void publish_goal_position(point3d goal);
+      
       bool toggleExplorationServiceCb(std_srvs::SetBool::Request& request, 
 			  std_srvs::SetBool::Response& response)
       {
+        // m_explorationToggled = 1;
+        // TODO: -> Old:  m_explorationToggled = request.data;
         m_explorationToggled = request.data;
         if (m_explorationToggled) 
           std::cout << "Exploration ON." << std::endl << std::endl;
@@ -76,6 +81,10 @@ namespace frontier_server
       }
 
       ros::NodeHandle m_nh;
+
+      // TODO:
+      ros::Publisher goal_publisher;
+
       ros::Publisher m_markerFrontierPub, m_markerClusteredFrontierPub,
         m_bestFrontierPub, m_markerCandidatesPub,m_frontierMapPub, m_uavGoalPub,
         m_pubEsmState;
@@ -92,7 +101,8 @@ namespace frontier_server
         m_explorationMaxZ, m_kernelBandwidth;
 
       bool m_currentGoalReached {true};
-      bool m_explorationToggled {false};
+      // bool m_explorationToggled {false};
+      bool m_explorationToggled {true};
 
       string m_configFilename;
       

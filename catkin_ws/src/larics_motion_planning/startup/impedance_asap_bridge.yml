@@ -1,0 +1,141 @@
+name: impedance_asap_bridge
+root: ./
+startup_window: roscore
+pre_window: cd ~/; export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$HOME/uav_ws/src/larics_gazebo_worlds/models
+windows:
+  - roscore_gazebo:
+      layout: tiled
+      panes:
+        - roscore
+        - waitForRos; roslaunch gazebo_ros empty_world.launch use_sim_time:=true paused:=false
+        - >
+          waitForSimulation; 
+          roslaunch larics_gazebo_worlds spawn_asap_bridge_element.launch; 
+          roslaunch larics_gazebo_worlds spawn_bridge_blob.launch name:="blob1" x:=2.78884 z:=3.34571 pitch:=1.57079632679 cylinder_length:=0.002; 
+          roslaunch larics_gazebo_worlds spawn_bridge_blob.launch name:="blob2" x:=2.52395 z:=3.02571 pitch:=-0.393597668428 cylinder_length:=0.002
+        - waitForSimulation; roslaunch wp_manipulator_3rx planning_context.launch
+  - uavs:
+      layout: tiled
+      panes:
+        - >
+          waitForSimulation; 
+          sleep 8; 
+          roslaunch impedance_control impedance_control_asap_3rx.launch start_gazebo:=false collision_bitmask:=1 name:="model_uav"
+        - waitForSimulation; sleep 11; roslaunch impedance_control impedance_control_asap_3rx.launch start_gazebo:=false collision_bitmask:=2 mount_stereo_cam:=false
+        - waitForSimulation; sleep 18; rosrun impedance_control get_uav_airborne.sh model_uav
+        - waitForSimulation; sleep 18; rosrun impedance_control get_uav_airborne.sh
+  - blob_detection:
+      layout: tiled
+      panes:
+        - export UAV_NAMESPACE="uav"; waitForRos; roslaunch mood_ros detection_manager.launch odometry:="odometry"
+        - >
+          waitForRos; 
+          rosrun tf static_transform_publisher 0.025 0 0.1 -0.5 0.5 -0.5 0.5 uav/base_link uav/camera 10
+  - motion_planning:
+      layout: tiled
+      panes:
+        - waitForSimulation; sleep 5; roslaunch larics_motion_planning arducopter_wp_manipulator_3rx.launch
+        - |
+          waitForSimulation; sleep 8; rostopic pub -1 /model_uav/reference_tracker/set_current_trajectory_point trajectory_msgs/JointTrajectoryPoint "
+          positions: [1.37, 2.2, 2.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+          velocities: [0]
+          accelerations: [0]
+          effort: [0]
+          time_from_start: {secs: 0, nsecs: 0}"
+        - |
+          waitForSimulation; sleep 8; rostopic pub -1 /uav/reference_tracker/set_current_trajectory_point trajectory_msgs/JointTrajectoryPoint "
+          positions: [1.37, 2.2, 2.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+          velocities: [0]
+          accelerations: [0]
+          effort: [0]
+          time_from_start: {secs: 0, nsecs: 0}"
+        - waitForSimulation; sleep 5; history -s "rosrun rqt_gui rqt_gui"
+  - running:
+      layout: tiled
+      panes:
+        - |
+          echo "HORIZONTAL CONTACT"; history -s "rosservice call /uav/model_correction_trajectory \"waypoints:
+            header:
+              seq: 0
+              stamp: {secs: 0, nsecs: 0}
+              frame_id: ''
+            joint_names: ['']
+            points:
+            - positions: [1.37, 2.2, 2.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+            - positions: [6, 0, 3.14571, 0.0, 0.0, 3.14159, -0.443, 0.907, -0.463, 0, 0, 0, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+            - positions: [4, 0, 3.14571, 0.0, 0.0, 3.14159, -0.443, 0.907, -0.463, 0, 0, 0, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+            - positions: [3.405, 0, 3.14571, 0.0, 0.0, 3.14159, -0.443, 0.907, -0.463, -0.5, 0, 0, 0, 0, 0, 0.5]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+          publish_path: false
+          publish_trajectory: true
+          plan_path: false
+          plan_trajectory: true\""
+        - |
+          echo "INCLINED CONTACT"; history -s "rosservice call /uav/model_correction_trajectory \"waypoints:
+            header:
+              seq: 0
+              stamp: {secs: 0, nsecs: 0}
+              frame_id: ''
+            joint_names: ['']
+            points:
+            - positions: [1.37, 2.2, 2.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+            - positions: [5.0, 0, 1.5, 0.0, 0.0, 3.14159, -0.443, 0.907, -0.463, 0, 0, 0, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+            - positions: [3.3, 0, 1.5, 0.0, 0.0, 3.14159, -0.833, 0.517, -0.853, -0.1918, 0, 0.4618, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+            - positions: [3.1, 0, 1.9867, 0.0, 0.0, 3.14159, -0.833, 0.517, -0.853, -0.1918, 0, 0.4618, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+            - positions: [2.918, 0, 2.425, 0.0, 0.0, 3.14159, -0.833, 0.517, -0.853, -0.1918, 0, 0.4618, 0, 0, 0, 1]
+              velocities: [0]
+              accelerations: [0]
+              effort: [0]
+              time_from_start: {secs: 0, nsecs: 0}
+          publish_path: false
+          publish_trajectory: true
+          plan_path: false
+          plan_trajectory: true\""
+  - recording:
+      layout: tiled
+      panes:
+        - |
+          history -s "roslaunch larics_gazebo_worlds spawn_simple_camera.launch x:=5 y:=-6 z:=4 yaw:=1.9 pitch:=0.3"
+        - history -s "rosrun image_view video_recorder image:=/cam_ns/camera/image_raw _fps:=30"
+  - logging:
+      layout: tiled
+      panes:
+        - |
+          cd ~/bags/impedance_bridge;
+          history -s "rosbag record -a -x \"/(.*)(gazebo|camera|bias|joint_states|parameter_descriptions|parameter_updates)(.*)\" -o impedance_asap_bridge"
+        - history -s "rosrun larics_motion_planning aerial_manipulator_state_recorder.py _filename:=asap_bridge_impedance __ns:=uav"
+        - |
+          history -s "rosservice call /uav/record_trajectory \"data: true\""
+        - |
+          history -s "rosservice call /uav/record_trajectory \"data: false\""

@@ -22,6 +22,10 @@ namespace frontier_server
 		m_logfile << "This is a log file for 3D-Frontier" << endl;
 
 		// Initialize publishers
+
+		// TODO:
+		goal_publisher = m_nh.advertise<geometry_msgs::Point>("goal_position", 1);
+
 		m_bestFrontierPub = m_nh.advertise<
 			visualization_msgs::Marker>("best_frontier_marker", 1, false);
 		m_markerFrontierPub = m_nh.advertise<
@@ -466,8 +470,12 @@ namespace frontier_server
 					cout << "Best frontier: " << m_bestFrontierPoint << endl;
 					publishBestFrontier();
 					publishUAVGoal(m_bestFrontierPoint);
+					// publish_goal_position(m_bestFrontierPoint);
 					ros::Duration(0.05).sleep();
 					setStateAndPublish(ExplorationState::CHECKFORFRONTIERS);
+
+					
+
 					// }
 					break;
 			}
@@ -675,6 +683,32 @@ namespace frontier_server
 		m_goal.pose.orientation.w = 1;
 
 		m_uavGoalPub.publish(m_goal);
+		ROS_WARN_STREAM(goal.x() << " " << goal.y() << " " << goal.z() << " -> Goal published!");
+	}
+
+    //TODO:
+   	void FrontierServer::publish_goal_position(point3d goal)
+	{
+		// // Make sure that point is in the bounding box
+		if (goal.x() < m_explorationMinX || 
+			goal.x() > m_explorationMaxX ||
+			goal.y() < m_explorationMinY || 
+			goal.y() > m_explorationMaxY ||
+			goal.z() < m_explorationMinZ || 
+			goal.z() > m_explorationMaxZ) 
+		{
+			ROS_ERROR("Want to publish a goal out of the bounding box.");
+			setPointAsInvalid(goal);
+			m_currentGoalReached = true;
+			return; 
+		}	
+		geometry_msgs::Point goal_point;
+
+		goal_point.x = goal.x();
+		goal_point.y = goal.y();
+		goal_point.z = goal.z();
+
+		goal_publisher.publish(goal_point);
 		ROS_WARN_STREAM(goal.x() << " " << goal.y() << " " << goal.z() << " -> Goal published!");
 	}
 }
