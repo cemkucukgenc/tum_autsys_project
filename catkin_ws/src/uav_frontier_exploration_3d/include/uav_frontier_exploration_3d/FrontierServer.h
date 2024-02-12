@@ -5,7 +5,7 @@
 #include <uav_frontier_exploration_3d/BestFrontier.h>
 //Mean shift clustering
 #include <uav_frontier_exploration_3d/ClusteringAlgorithm.h>
-#include <dlib/clustering.h>
+//#include <dlib/clustering.h>
 #include <std_srvs/SetBool.h>
 #include <std_msgs/Int32.h>
 

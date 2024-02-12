@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(uav_frontier_exploration_3d)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+
+set(octomap_DIR "/opt/ros/noetic/share/octomap")
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
@@ -31,7 +33,7 @@ find_package(PCL 1.8 REQUIRED COMPONENTS
     ros
     segmentation
     filters)
-find_package(octomap 1.7 REQUIRED)
+find_package(octomap 1.9 REQUIRED)
 add_definitions(-DOCTOMAP_NODEBUGOUT)
 find_package(cmake_modules REQUIRED)
 
@@ -66,7 +68,8 @@ set(LINK_LIBS
 )
 
 add_library(frontier_exploration_3d 
-    src/FrontierServer.cpp)
+    src/FrontierServer.cpp
+    src/OctomapLUT.cpp )
 target_link_libraries(frontier_exploration_3d ${LINK_LIBS} yaml-cpp)
 
 add_executable(frontier_server_node src/FrontierServerNode.cpp src/OctomapServer.cpp src/BestFrontier.cpp)
