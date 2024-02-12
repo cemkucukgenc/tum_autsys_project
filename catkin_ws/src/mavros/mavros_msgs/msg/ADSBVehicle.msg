@@ -3,10 +3,23 @@
 # https://mavlink.io/en/messages/common.html#ADSB_VEHICLE
 
 # [[[cog:
-# import mavros_cog
-# mavros_cog.idl_decl_enum('ADSB_ALTITUDE_TYPE', 'ALT_')
-# mavros_cog.idl_decl_enum('ADSB_EMITTER_TYPE', 'EMITTER_')
-# mavros_cog.idl_decl_enum('ADSB_FLAGS', 'FLAG_', 16)
+# from pymavlink.dialects.v20 import common
+#
+# def decl_enum(ename, pfx='', bsz=8):
+#     enum = sorted(common.enums[ename].items())
+#     enum.pop() # remove ENUM_END
+#
+#     cog.outl("# " + ename)
+#     for k, e in enum:
+#         sn = e.name[len(ename) + 1:]
+#         l = "uint{bsz} {pfx}{sn} = {k}".format(**locals())
+#         if e.description:
+#             l += ' ' * (40 - len(l)) + ' # ' + e.description
+#         cog.outl(l)
+#
+# decl_enum('ADSB_ALTITUDE_TYPE', 'ALT_')
+# decl_enum('ADSB_EMITTER_TYPE', 'EMITTER_')
+# decl_enum('ADSB_FLAGS', 'FLAG_', 16)
 # ]]]
 # ADSB_ALTITUDE_TYPE
 uint8 ALT_PRESSURE_QNH = 0               # Altitude reported from a Baro source using QNH reference
@@ -47,7 +60,7 @@ uint16 FLAG_SOURCE_UAT = 32768
 
 std_msgs/Header header
 
-uint32 icao_address
+uint32 ICAO_address
 string callsign
 
 float64 latitude
@@ -61,6 +74,6 @@ float32 ver_velocity	# m/s
 uint8 altitude_type	# Type from ADSB_ALTITUDE_TYPE enum
 uint8 emitter_type	# Type from ADSB_EMITTER_TYPE enum
 
-builtin_interfaces/Duration tslc		# Duration from last communication, seconds [0..255]
+duration tslc		# Duration from last communication, seconds [0..255]
 uint16 flags		# ADSB_FLAGS bit field
 uint16 squawk		# Squawk code

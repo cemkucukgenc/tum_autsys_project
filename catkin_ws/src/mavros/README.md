@@ -17,7 +17,6 @@ MAVLink extendable communication node for ROS.
 - Since 2019-01-03 (0.28.0) support for Indigo by master not guaranteed. Consider update to more recent distro.
 - 2020-01-01 version 1.0.0 released, please see [#1369][iss1369] for reasons and its purpose.
 - 2021-05-28 version 2.0.0 released, it's the first alpha release for ROS2.
-- 2023-09-09 version 2.6.0, dropped support for EOLed ROS2 releases. Now it require Humble+ (Humble, Iron, Rolling...).
 
 
 mavros package
@@ -70,9 +69,8 @@ We'd like to keep the project bug tracker as free as possible, so please contact
 CI Statuses
 -----------
 
-  - ROS2 Humble: [![Build Status](https://build.ros2.org/job/Hdev__mavros__ubuntu_jammy_amd64/badge/icon)](https://build.ros2.org/job/Hdev__mavros__ubuntu_jammy_amd64/)
-  - ROS2 Iron: [![Build Status](https://build.ros2.org/job/Idev__mavros__ubuntu_jammy_amd64/badge/icon)](https://build.ros2.org/job/Idev__mavros__ubuntu_jammy_amd64/)
-  - ROS2 Rolling: [![Build Status](https://build.ros2.org/job/Rdev__mavros__ubuntu_jammy_amd64/badge/icon)](https://build.ros2.org/job/Rdev__mavros__ubuntu_jammy_amd64/)
+  - ROS Melodic: [![Build Status](http://build.ros.org/buildStatus/icon?job=Mdev__mavros__ubuntu_bionic_amd64)](http://build.ros.org/job/Mdev__mavros__ubuntu_bionic_amd64/)
+  - ROS Noetic: [![Build Status](http://build.ros.org/buildStatus/icon?job=Ndev__mavros__ubuntu_focal_amd64)](http://build.ros.org/job/Ndev__mavros__ubuntu_focal_amd64/)
 
 
 [mrrm]: https://github.com/mavlink/mavros/blob/master/mavros/README.md
