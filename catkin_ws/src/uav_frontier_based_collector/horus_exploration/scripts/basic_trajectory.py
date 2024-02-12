@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python3
 
 import rospy,math, time
 from geometry_msgs.msg import Pose, PoseStamped, PoseArray
