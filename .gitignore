@@ -58,3 +58,4 @@ catkin_ws/src/simulation/UnityPlayer.so
 *.DS_Store
 *.idea
 *.catkin_tools
+*.vscode
