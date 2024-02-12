@@ -31,6 +31,7 @@ endif()
 # #################################
 # # Configure CATKIN dependecies ##
 # #################################
+find_package(octomap REQUIRED)
 find_package(
    catkin REQUIRED
    COMPONENTS std_msgs
