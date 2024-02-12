@@ -1,0 +1,11 @@
+controller_list:
+  - name: fake_wp_manipulator_arm_controller
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+initial:  # Define initial robot poses.
+  - group: wp_manipulator_arm
+    pose: home

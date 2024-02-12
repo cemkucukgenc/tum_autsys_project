@@ -1,0 +1,36 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/opt/ros/noetic/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/ardupilot_gazebo/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/mav_comm/mav_msgs/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/mav_comm/planning_msgs/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/rotors_simulator/rotors_control/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/rotors_simulator/rotors_gazebo_plugins/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/rotors_simulator/rotors_joy_interface/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/uav_ros_stack/ros_packages/uav_ros_control/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/uav_ros_stack/ros_packages/uav_ros_general/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/uav_ros_stack/ros_packages/uav_ros_lib/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/uav_ros_stack/ros_packages/uav_ros_tests/include/**",
+                "/home/lmark/Workspace/uav_ws/src/uav_ros_simulation/ros_packages/uav_ros_stack/ros_packages/uav_ros_tracker/include/**",
+                "/usr/include/**",
+                "/home/lmark/Workspace/uav_ws/devel/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c17",
+            "compilerArgs": [
+                "-Wall",
+                "-Wextra",
+                "-Wshadow"
+            ]
+        }
+    ],
+    "version": 4
+}

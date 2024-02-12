@@ -1,0 +1,190 @@
+location: .gitman
+sources:
+  - repo: git@github.com:larics/ardupilot
+    name: ardupilot
+    rev: Larics-4.4.3
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: firmware/ardupilot
+    scripts:
+      - git submodule update --init --recursive
+      - rm -rf build
+  - repo: git@github.com:larics/ardupilot_gazebo
+    name: ardupilot_gazebo
+    rev: larics-master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/ardupilot_gazebo
+    scripts:
+      - git submodule update --init --recursive
+  - repo: git@github.com:larics/mav_comm
+    name: mav_comm
+    rev: larics_master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/mav_comm
+    scripts:
+      - git submodule update --init --recursive
+  - repo: git@github.com:larics/rotors_simulator
+    name: rotors_simulator
+    rev: larics_noetic_master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/rotors_simulator
+    scripts:
+      - git submodule update --init --recursive
+  - repo: git@github.com:larics/uav_ros_stack
+    name: uav_ros_stack
+    rev: main
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/uav_ros_stack
+    scripts:
+      - gitman install core
+  - repo: git@github.com:larics/uav_ros_stack
+    name: uav_ros_stack_sparse
+    rev: main
+    type: git
+    params:
+    sparse_paths:
+      - miscellaneous/*
+      - installation/*
+    links:
+      - source: ''
+        target: ros_packages/uav_ros_stack
+    scripts:
+      -
+  - repo: git@github.com:larics/larics_gazebo_worlds.git
+    name: larics_gazebo_worlds
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/larics_gazebo_worlds
+    scripts:
+      -
+sources_locked:
+  - repo: git@github.com:larics/ardupilot
+    name: ardupilot
+    rev: 34af6c42e25d3e43af5e223205e35bfd7d30f449
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: firmware/ardupilot
+    scripts:
+      - git submodule update --init --recursive
+      - rm -rf build
+  - repo: git@github.com:larics/ardupilot_gazebo
+    name: ardupilot_gazebo
+    rev: 923b3b97d39104032b49272b2ef7488b0c262f6e
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/ardupilot_gazebo
+    scripts:
+      - git submodule update --init --recursive
+  - repo: git@github.com:larics/mav_comm
+    name: mav_comm
+    rev: 260be9430423e8655473b419606f58d887059d8d
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/mav_comm
+    scripts:
+      - git submodule update --init --recursive
+  - repo: git@github.com:larics/rotors_simulator
+    name: rotors_simulator
+    rev: e683629c575c05530dc8cccc0151215f1c018154
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/rotors_simulator
+    scripts:
+      - git submodule update --init --recursive
+  - repo: git@github.com:larics/uav_ros_stack
+    name: uav_ros_stack
+    rev: c9c41b81e4b7a2877f774e48f3519bb6603d03ca
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/uav_ros_stack
+    scripts:
+      - gitman install core
+  - repo: git@github.com:larics/larics_gazebo_worlds.git
+    name: larics_gazebo_worlds
+    rev: e89f89005487e593f74631c3ebbf653f27559ac5
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      - source: ''
+        target: ros_packages/larics_gazebo_worlds
+    scripts:
+      -
+  - repo: git@github.com:larics/uav_ros_stack
+    name: uav_ros_stack_sparse
+    rev: 403b08ba0420df68846a2af9ac56ef5c5c904b54
+    type: git
+    params:
+    sparse_paths:
+      - miscellaneous/*
+      - installation/*
+    links:
+      - source: ''
+        target: ros_packages/uav_ros_stack
+    scripts:
+      -
+groups:
+  - name: stack
+    members:
+      - uav_ros_stack
+  - name: stack_sparse
+    members:
+      - uav_ros_stack_sparse
+  - name: simulation
+    members:
+      - rotors_simulator
+      - ardupilot_gazebo
+      - mav_comm
+      - ardupilot
+      - larics_gazebo_worlds
+default_group: 'simulation'

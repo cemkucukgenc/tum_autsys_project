@@ -1,0 +1,30 @@
+name: single_kopter_mpctracker
+root: ./
+startup_window: roscore
+pre_window: export UAV_NAMESPACE=red
+windows:
+  - roscore:
+      layout: tiled
+      panes:
+        - roscore
+        # GPS_TYPEX=0 in parameters to disable GPS!
+        - export SITL_RITW_TERMINAL="tmux new-window -d -n :ardupilot1"; waitForRos; roslaunch ardupilot_gazebo sim_vehicle.launch
+          enable_console:=false 
+          parm_file:=$(rospack find ardupilot_gazebo)/config/kopterworx_v432.params
+          name:=kopter41
+        - waitForRos; rosparam set use_sim_time true; roslaunch ardupilot_gazebo mavros.launch 
+  - gazebo:
+      layout: tiled
+      panes:
+        - waitForRos; roslaunch ardupilot_gazebo kopterworx.launch 
+          use_sim_time:=true
+  - arm&takeof:
+      layout: tiled
+      panes:
+        - waitForRos; roslaunch uav_ros_control control_manager_nodelet.launch
+          odometry_in:=/$UAV_NAMESPACE/odometry
+        - waitForRos; waitForSysStatus; rosrun ardupilot_gazebo automatic_takeoff.sh 2 /$UAV_NAMESPACE/odometry
+  - trajectory:
+      layout: tiled
+      panes:
+        - waitForRos; roslaunch uav_ros_tracker mpc_tracker.launch
