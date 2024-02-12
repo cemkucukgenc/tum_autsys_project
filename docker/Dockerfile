@@ -14,6 +14,7 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install ros-noetic-depth-image-proc -y && \
     apt-get install ros-noetic-octomap ros-noetic-octomap-mapping -y && \
     apt-get install ros-noetic-ompl -y && \
+    apt-get install ros-noetic-mavlink ros-noetic-geographic-msgs libgeographic-dev -y && \
     rm -rf /var/lib/apt/lists/*
 
 # For Intel GPU support

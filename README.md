@@ -17,7 +17,16 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
-??????????????????????
+?????????????? WRITE AN INTRO ?????????????????????
+
+### Utilized repositories
+- https://github.com/ethz-asl/mav_trajectory_generation
+- https://github.com/davidchangoluisa/uav_frontier_based_collector
+    - `Gazebo` related files are deleted due to the fact that `Unity` simulation is utilized in this project.
+- https://github.com/AnaBatinovic/octomap-1.7.2/tree/master
+    - `octomap-1.7.2` package added due to new `octomap` package version from original ROS packages does not include `OcTreeLUT.h`, `OcTreeLUT.cpp` and `OcTreeLUTdefs.h`.
+- https://github.com/larics/larics_motion_planning
+    - Many files related to `topp_ros` package is deleted since this package is not provided any more and causes build errors.
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
@@ -134,6 +143,11 @@ For the path planning, `Open Motion Planning Library (OMPL)` is required.
 sudo apt-get install ros-noetic-ompl
 ```
 
+For the other dependencies
+```
+sudo apt-get install ros-noetic-mavlink ros-noetic-geographic-msgs libgeographic-dev
+```
+
 ### 2.3. Building project <a name="building_project"></a>
 
 Open a terminal (will be mentioned as T1) and create a directory preferably in the `home` location as
@@ -163,6 +177,7 @@ To build the project in `autsys_ws/tum_autsys_project/catkin_ws` (T1)
 cd ../..
 catkin build
 ```
+Important Note: If you get a build error in the first try, don't worry. You may need to catkin build twice. It should build all the packages in the second attempt.
 
 ## 3. Launching the simulation <a name="launching_the_simulation"></a>
 
@@ -173,4 +188,21 @@ roslaunch simulation mission.launch
 ```
 `mission.launch` file launches related packages that should be run simultaneously. Additionally, it runs `rviz` to show octomapping visual.
 
+??????????????? EDIT BELOW THIS ????????????????????
 
+```
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+roslaunch octomanager octomanager.launch
+```
+```
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+roslaunch horus_exploration horus_exploration_node
+```
+```
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+rqt_graph
+```
+```
+source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
+rostopic list
+```
