@@ -26,7 +26,7 @@
 - https://github.com/AnaBatinovic/octomap-1.7.2/tree/master
     - `octomap-1.7.2` package added due to new `octomap` package version from original ROS packages does not include `OcTreeLUT.h`, `OcTreeLUT.cpp` and `OcTreeLUTdefs.h`.
 - https://github.com/larics/larics_motion_planning
-    - Many files related to `topp_ros` package is deleted since this package is not provided any more and causes build errors.
+    - `larics_motion_planning/CMakeLists.txt` is changed to not build `.cpp` files since `topp_ros` package  is not provided any more and this causes build errors.
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
