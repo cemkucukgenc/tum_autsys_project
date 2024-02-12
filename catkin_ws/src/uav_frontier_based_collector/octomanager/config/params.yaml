@@ -1,12 +1,12 @@
-lidar_frame_id: "uav1/os_lidar" # Name of the sensor frame
-global_frame_id: "uav1/gps_origin" # Name of the map origin frame
+lidar_frame_id: "laser" # Name of the sensor frame
+global_frame_id: "world" # Name of the map origin frame
 
 # lidar_topic: "/uav1/pcl_filter_ouster/points_processed" # LiDAR sensor topic
-lidar_topic: "/uav1/os_cloud_nodelet/points" # LiDAR sensor topic
+lidar_topic: "/point_cloud" # LiDAR sensor topic
 # lidar_topic: "/uav1/pcl_filter/points_processed" # LiDAR sensor topic
 
-odom_topic: "/uav1/mavros/global_position/local"
-octomap_vis_topic: "/occupied_octomap_cells" # Visual octomap topic
+odom_topic: "/current_state_est"
+octomap_vis_topic: "/map/occupied2" # Visual octomap topic
 # pcd_path: "/home/ivan/user_ros_workspace/src/basic.pcd" # Leave empty if you're working with a sensor pointcloud
 pcd_path: "" # Leave empty if you're working with a sensor pointcloud
 
@@ -31,7 +31,7 @@ inflation_radius: 0.5 # [m] Set 0 to ignore inflation
 ground_removal_dist: 0.0 # [m] Set 0 to ignore ground removal
 
 # --- Does not work when a pcd_path is available
-min_sensor_range: 1.0 # [m]
+min_sensor_range: 0.0 # [m]
 max_sensor_range: 20.0 # [m]
 # ---
 

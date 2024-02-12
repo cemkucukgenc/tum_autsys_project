@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python3
 
 import rospy,math, time
 from enum import Enum
@@ -34,7 +34,7 @@ class FrontierExplorationSM:
         self.current_traj = PoseStamped()
         self.prev_traj = PoseStamped()
         self.tarjet_pose = PoseStamped()
-        self.current_reference = PoseArray()
+        self.current_reference = Pose()
         self.first_measurement_received = False
         self.executing_state = 0
         self.confirmed = False
@@ -46,19 +46,19 @@ class FrontierExplorationSM:
         self.point_reached_pub = rospy.Publisher('/octomanager/exploration/point_reached',Bool,queue_size=1)
 
         '''Subscribers'''
-        rospy.Subscriber('uav1/odometry/odom_main', Odometry, self.globalPositionCallback, queue_size=1)
-        rospy.Subscriber('uav1/control_manager/mpc_tracker/mpc_reference_debugging',PoseArray, self.referenceCallback, queue_size=1)
+        rospy.Subscriber('/current_state_est', Odometry, self.globalPositionCallback, queue_size=1)
+        rospy.Subscriber('/pose_est',PoseStamped, self.referenceCallback, queue_size=1)
         rospy.Subscriber('uav1/exploration/goal', PoseStamped, self.targetPointCallback,queue_size=1)
         rospy.Subscriber('octomanager/exploration/state', Int32, self.explorationStatusCallback, queue_size=1)
 
 
-        #Init the service
-        print("Waiting for service multi_dof_trajectory")
-        rospy.wait_for_service('uav1/multi_dof_trajectory', timeout = 30)
-        self.plan_trajectory_service = rospy.ServiceProxy(
-            "uav1/multi_dof_trajectory", MultiDofTrajectory)
+        # #Init the service
+        # print("Waiting for service multi_dof_trajectory")
+        # rospy.wait_for_service('/command/trajectory', timeout = 30)
+        # self.plan_trajectory_service = rospy.ServiceProxy(
+        #     "/command/trajectory", MultiDofTrajectory)
 
-        rospy.Service('/uav1/confirm_trajectory', SetBool, self.confirm_trajectory)
+        # rospy.Service('/uav1/confirm_trajectory', SetBool, self.confirm_trajectory)
 
     def run(self):
         rate = rospy.Rate(self.rate)
@@ -173,7 +173,7 @@ class FrontierExplorationSM:
             rate.sleep()
     
     def referenceCallback(self,msg):
-        self.current_reference = msg.poses[0]
+        self.current_reference = msg.pose
 
     def globalPositionCallback(self,msg):
         self.current_pose = msg.pose.pose

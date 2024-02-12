@@ -14,6 +14,10 @@
 #include <std_msgs/Float64.h>
 
 #include <eigen3/Eigen/Dense>
+#include <visualization_msgs/Marker.h>
+#include <geometry_msgs/PoseStamped.h>
+
+
 
 #include <cstdlib>
 #include <iostream>
@@ -39,6 +43,8 @@ StateMachine::StateMachine(): waypoint_navigation_launched(false) {
     desired_state_pub_ = nh.advertise<trajectory_msgs::MultiDOFJointTrajectory>("command/trajectory", 1);
     current_state_sub_ = nh.subscribe("current_state_est", 1, &StateMachine::onCurrentState, this);
     goal_position_pub_ = nh.advertise<geometry_msgs::Point>("goal_position", 1);
+best_frontier_marker_sub_ = nh.subscribe("/octomanager/best_frontier_marker", 1000, &StateMachine::markerCallback, this);
+exploration_goal_sub_ = nh.subscribe("/uav1/exploration/goal", 1000, &StateMachine::poseStampedCallback, this);
 
                                   
     state_machine_timer_ = nh.createTimer(ros::Duration(sim_interval_),
@@ -54,6 +60,21 @@ geometry_msgs::Point StateMachine::getNextGoalPoint() {
     }
 }
 
+void StateMachine::markerCallback(const visualization_msgs::Marker::ConstPtr& msg)
+{
+    ROS_INFO("Received marker with ID: %d", msg->id);
+    // You can access other properties of the marker here as well, for example:
+    // ROS_INFO("Marker position: (%f, %f, %f)", msg->pose.position.x, msg->pose.position.y, msg->pose.position.z);
+}
+
+void StateMachine::poseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
+{
+    ROS_INFO("Received PoseStamped message with position: (%f, %f, %f)", 
+             msg->pose.position.x, msg->pose.position.y, msg->pose.position.z);
+    ROS_INFO("Orientation: (%f, %f, %f, %f)", 
+             msg->pose.orientation.x, msg->pose.orientation.y, 
+             msg->pose.orientation.z, msg->pose.orientation.w);
+}
 
 void StateMachine::addGoalPoint(double x, double y, double z) {
     geometry_msgs::Point point;

@@ -1,0 +1,5 @@
+doc/*
+*.slxc
+*slprj*
+*.pyc
+.tmuxinator.yml

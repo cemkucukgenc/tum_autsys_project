@@ -25,7 +25,7 @@ class BasicTrajectory:
         self.rate = 10
         self.current_pose = Pose()
         self.tarjet_pose = PoseStamped()
-        self.current_reference = PoseArray()
+        self.current_reference = PoseStamped()
         self.first_measurement_received = False
         self.confirmed = True
         self.service_called = False
@@ -35,16 +35,16 @@ class BasicTrajectory:
         self.path_pub       = rospy.Publisher('/uav1/path', Marker, queue_size=10)
 
         # Subscribers
-        rospy.Subscriber('uav1/odometry/odom_main', Odometry, self.globalPositionCallback, queue_size=1)
-        rospy.Subscriber('uav1/control_manager/mpc_tracker/mpc_reference_debugging',PoseArray, self.referenceCallback, queue_size=1)
+        rospy.Subscriber('/current_state_est', Odometry, self.globalPositionCallback, queue_size=1)
+        rospy.Subscriber('/pose_est',PoseStamped, self.referenceCallback, queue_size=1)
         rospy.Subscriber('uav1/exploration/goal', PoseStamped, self.targetPointCallback,queue_size=1)
 
 
         #Init the service
         print("Waiting for service multi_dof_trajectory")
-        rospy.wait_for_service('uav1/multi_dof_trajectory', timeout = 30)
+        rospy.wait_for_service('/command/trajectory', timeout = 30)
         self.plan_trajectory_service = rospy.ServiceProxy(
-            "uav1/multi_dof_trajectory", MultiDofTrajectory)
+            "/command/trajectory", MultiDofTrajectory)
 
         rospy.Service('/uav1/confirm_trajectory', SetBool, self.confirm_trajectory)
 
@@ -124,7 +124,7 @@ class BasicTrajectory:
             rate.sleep()
     
     def referenceCallback(self,msg):
-        self.current_reference = msg.poses[0]
+        self.current_reference = msg.pose
         # print(self.current_reference)
 
     def globalPositionCallback(self,msg):

@@ -14,6 +14,8 @@
 #include <std_msgs/Float64.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <eigen3/Eigen/Dense>
+#include <visualization_msgs/Marker.h>
+#include <geometry_msgs/PoseStamped.h>
 
 #define PI M_PI
 const tf::Vector3 zero_vec(0, 0, 0);
@@ -37,6 +39,8 @@ class StateMachine {
   ros::Subscriber cmd_vel_sub_, current_state_sub_;
   ros::Publisher desired_state_pub_;
   ros::Publisher goal_position_pub_;
+      ros::Subscriber best_frontier_marker_sub_;
+    ros::Subscriber exploration_goal_sub_;
   tf::TransformBroadcaster br;
   geometry_msgs::Twist cmd_twist_;
 
@@ -75,6 +79,8 @@ class StateMachine {
   void landing();
   void turn();
   void forward();
+      void markerCallback(const visualization_msgs::Marker::ConstPtr& msg);
+    void poseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
   
   geometry_msgs::Point getNextGoalPoint();
   void addGoalPoint(double x, double y, double z);
