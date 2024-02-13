@@ -40,5 +40,6 @@ class ExplorationMetrics():
     
 if __name__ == '__main__':
     rospy.init_node('Exploration_Metrics')
+    rospy.spin()
     exp_metrics = ExplorationMetrics()
     exp_metrics.run()

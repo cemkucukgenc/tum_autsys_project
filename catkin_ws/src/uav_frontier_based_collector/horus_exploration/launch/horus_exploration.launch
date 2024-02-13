@@ -1,6 +1,7 @@
 <launch>
     <!-- Node for horus_exploration -->
-    <include file="$(find octomanager)/launch/octomanager.launch" />
+    <!--include file="$(find octomanager)/launch/octomanager.launch" --> <!--/include-->
+    <include file="$(find navigation_pkg)/launch/waypoint_navigation.launch" > </include>
     <node name="horus_exploration_node" pkg="horus_exploration" type="horus_exploration_node" output="screen" >
         <!-- Add any parameters -->
         <!--<param name="some_parameter" value="some_value"/>-->

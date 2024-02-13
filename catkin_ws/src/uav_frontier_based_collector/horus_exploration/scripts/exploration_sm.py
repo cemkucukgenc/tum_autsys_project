@@ -55,10 +55,10 @@ class FrontierExplorationSM:
         
         rospy.Subscriber('/current_state_est', Odometry, self.globalPositionCallback, queue_size=1)
         #rospy.Subscriber('uav1/odometry/odom_main', Odometry, self.globalPositionCallback, queue_size=1)
-        rospy.Subscriber('uav1/control_manager/mpc_tracker/mpc_reference_debugging',PoseArray, self.referenceCallback, queue_size=1)
+        rospy.Subscriber('/uav1/control_manager/mpc_tracker/mpc_reference_debugging',PoseArray, self.referenceCallback, queue_size=1)
         rospy.Subscriber('/goal_position', PoseStamped, self.targetPointCallback,queue_size=1)
         #rospy.Subscriber('uav1/exploration/goal', PoseStamped, self.targetPointCallback,queue_size=1)
-        rospy.Subscriber('octomanager/exploration/state', Int32, self.explorationStatusCallback, queue_size=1)
+        rospy.Subscriber('/octomanager/exploration/state', Int32, self.explorationStatusCallback, queue_size=1)
 
 
         #Init the service
@@ -315,6 +315,8 @@ class FrontierExplorationSM:
 
 
 if __name__ == '__main__':
-    rospy.init_node('frontier_exploration')
+    #rospy.init_node('frontier_exploration')
+    rospy.init_node('horus_exploration_node')
     frontier_exploration = FrontierExplorationSM()
     frontier_exploration.run()
+
