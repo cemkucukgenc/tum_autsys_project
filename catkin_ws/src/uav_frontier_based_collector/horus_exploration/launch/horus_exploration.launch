@@ -1,0 +1,11 @@
+<launch>
+    <!-- Node for horus_exploration -->
+    <include file="$(find octomanager)/launch/octomanager.launch" />
+    <node name="horus_exploration_node" pkg="horus_exploration" type="horus_exploration_node" output="screen" >
+        <!-- Add any parameters -->
+        <!--<param name="some_parameter" value="some_value"/>-->
+
+        <!-- Add any required arguments -->
+        <!--<arg name="some_arg" default="some_value"/>-->
+    </node>
+</launch>

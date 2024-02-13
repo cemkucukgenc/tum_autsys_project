@@ -14,7 +14,8 @@ class ExplorationMetrics():
         self.odom_received = False
 
         '''Subscribers'''
-        rospy.Subscriber('uav1/odometry/odom_main', Odometry, self.globalPositionCallback, queue_size=1)
+        rospy.Subscriber('/current_state_est', Odometry, self.globalPositionCallback, queue_size=1)
+        #rospy.Subscriber('uav1/odometry/odom_main', Odometry, self.globalPositionCallback, queue_size=1)
 
     def run(self):
         rate = rospy.Rate(self.rate)

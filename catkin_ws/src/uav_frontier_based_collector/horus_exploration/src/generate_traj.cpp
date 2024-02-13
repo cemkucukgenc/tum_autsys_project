@@ -1,14 +1,17 @@
 #include "ros/ros.h"
 #include <mrs_msgs/TrajectoryReference.h>
 #include <iostream>
+#include <trajectory_msgs/MultiDOFJointTrajectory.h>
+#include <mav_planning_msgs/PolynomialTrajectory4D.h>
+
 
 int main (int argc, char **argv)
 
 {
     ros::init (argc, argv, "trajectory_horus");
     ros::NodeHandle nh;
-    ros::Publisher pub = nh.advertise <mrs_msgs::TrajectoryReference>("/uav1/control_manager/trajectory_reference",10);
-
+    //ros::Publisher pub = nh.advertise <mrs_msgs::TrajectoryReference>("/uav1/control_manager/trajectory_reference",10);
+    ros::Publisher pub = nh.advertise<mav_planning_msgs::PolynomialTrajectory4D>("/trajectory", 1);
     ros::spinOnce();
     ros::Duration(1.0).sleep();
 

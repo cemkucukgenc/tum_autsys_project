@@ -6,6 +6,7 @@ from std_msgs.msg import Header, ColorRGBA
 from std_srvs.srv import SetBool, SetBoolResponse, SetBoolRequest
 from visualization_msgs.msg import Marker
 from nav_msgs.msg import Odometry
+from mav_planning_msgs.msg import PolynomialTrajectory4D
 from trajectory_msgs.msg import MultiDOFJointTrajectoryPoint, \
   MultiDOFJointTrajectory, JointTrajectory, JointTrajectoryPoint
 
@@ -31,13 +32,20 @@ class BasicTrajectory:
         self.service_called = False
 
         # Publishers
-        self.trajectory_pub = rospy.Publisher('/uav1/control_manager/trajectory_reference', TrajectoryReference, queue_size=1)
+        #self.trajectory_pub    = rospy.Publisher('/uav1/control_manager/trajectory_reference', TrajectoryReference, queue_size=1)
+        
+        #self.trajectory_pub    = rospy.Publisher('/command/trajectory', TrajectoryReference, queue_size=1)
+
+        self.trajectory_pub = rospy.Publisher('/trajectory', PolynomialTrajectory4D, queue_size=1)
+
         self.path_pub       = rospy.Publisher('/uav1/path', Marker, queue_size=10)
 
         # Subscribers
-        rospy.Subscriber('uav1/odometry/odom_main', Odometry, self.globalPositionCallback, queue_size=1)
+        rospy.Subscriber('/current_state_est', Odometry, self.globalPositionCallback, queue_size=1)
+        #rospy.Subscriber('uav1/odometry/odom_main', Odometry, self.globalPositionCallback, queue_size=1)
         rospy.Subscriber('uav1/control_manager/mpc_tracker/mpc_reference_debugging',PoseArray, self.referenceCallback, queue_size=1)
-        rospy.Subscriber('uav1/exploration/goal', PoseStamped, self.targetPointCallback,queue_size=1)
+        rospy.Subscriber('/goal_position', PoseStamped, self.targetPointCallback,queue_size=1)
+        #rospy.Subscriber('uav1/exploration/goal', PoseStamped, self.targetPointCallback,queue_size=1)
 
 
         #Init the service
