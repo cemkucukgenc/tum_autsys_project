@@ -24,7 +24,7 @@
 
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "object_detector_node");
+  ros::init(argc, argv, "light_detector_node");
   ObjectDetectorNode node;
   ros::spin();
 }
