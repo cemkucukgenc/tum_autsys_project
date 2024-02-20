@@ -16,5 +16,7 @@
       <param name="latch" value="true"/>
       <param name="resolution" value="2"/>
   </node>
+  
+  <node pkg="vision_pkg" type="light_detector_node" name="LightDetectorNode" output="screen"> </node>
 
 </launch>

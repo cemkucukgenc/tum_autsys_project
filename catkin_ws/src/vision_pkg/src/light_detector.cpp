@@ -23,12 +23,37 @@
 #include <visualization_msgs/Marker.h>
 
 class LightDetectorNode {
-  ros::NodeHandle nh_;
+  ros::NodeHandle nodeHandle_;
   image_transport::ImageTransport image_transport_;
   image_transport::Subscriber semantic_image_subscriber_;
   image_transport::Subscriber depth_image_subscriber_;
   ros::Subscriber depth_info_subscriber_;
-}
+
+  ros::Publisher marker_publisher_;
+  ros::Publisher point_cloud_publisher_;
+
+  public:
+  LightDetectorNode() : image_transport_(nodeHandle_) {
+    semantic_image_subscriber_ = image_transport_.subscribe("/realsense/semantic/image_raw", 5, &LightDetectorNode::onSemanticImageReceived, this);
+    depth_image_subscriber_ = image_transport_.subscribe("/realsense/depth/image", 5, &LightDetectorNode::onDepthImageReceived, this);
+    depth_info_subscriber_ = nodeHandle_.subscribe("/realsense/depth/camera_info", 5, &LightDetectorNode::onDepthInfoReceived, this);
+
+    marker_publisher_ = nodeHandle_.advertise<visualization_msgs::Marker>("detected_objects_markers", 10);
+    point_cloud_publisher_ = nodeHandle_.advertise<sensor_msgs::PointCloud2>("detected_objects_point_cloud", 10);
+  }
+  void onSemanticImageReceived(const sensor_msgs::ImageConstPtr& semantic_image_msg) {
+    // TODO
+  }
+
+  void onDepthImageReceived(const sensor_msgs::ImageConstPtr& depth_image_msg) {
+    // TODO
+  }
+
+  void onDepthInfoReceived(const sensor_msgs::CameraInfo& depth_info_msg) {
+    // TODO
+  }
+
+};
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "light_detector_node");

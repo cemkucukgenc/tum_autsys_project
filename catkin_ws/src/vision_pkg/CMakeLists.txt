@@ -3,15 +3,47 @@ project(vision_pkg)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
-
+find_package(PCL REQUIRED) 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  nodelet
-  roscpp
-  rospy
+  cv_bridge
+  depth_image_proc
+  fla_msgs
+  fla_utils
+  nav_msgs
+  geometry_msgs
+  image_transport
+  sensor_msgs
+  std_msgs
+  tf
+  eigen_conversions
+  visualization_msgs
+  image_geometry
+  pcl_conversions
+  pcl_ros
 )
+
+catkin_package(CATKIN_DEPENDS 
+  cv_bridge
+  depth_image_proc
+  fla_msgs
+  fla_utils
+  nav_msgs
+  geometry_msgs
+  image_transport
+  sensor_msgs
+  std_msgs
+  tf
+  eigen_conversions
+  visualization_msgs
+  image_geometry  
+  pcl_conversions
+  pcl_ros
+)
+add_executable(light_detector_node src/light_detector.cpp)
+target_link_libraries(light_detector_node ${catkin_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
