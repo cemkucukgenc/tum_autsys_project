@@ -22,9 +22,16 @@
 #include <tf/transform_listener.h>
 #include <visualization_msgs/Marker.h>
 
+class LightDetectorNode {
+  ros::NodeHandle nh_;
+  image_transport::ImageTransport image_transport_;
+  image_transport::Subscriber semantic_image_subscriber_;
+  image_transport::Subscriber depth_image_subscriber_;
+  ros::Subscriber depth_info_subscriber_;
+}
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "light_detector_node");
-  ObjectDetectorNode node;
+  LightDetectorNode node;
   ros::spin();
 }
