@@ -129,9 +129,10 @@ For the generation of the OctoMap, `octomap` and `octomap_mapping` packages have
 sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
 ```
 
-For the path planning, `Open Motion Planning Library (OMPL)` is required. 
+For the path planning, `Open Motion Planning Library (OMPL)` and `Flexible Cloud Library (FCL)` is required. 
 ```
 sudo apt-get install ros-noetic-ompl
+sudo apt-get install ros-noetic-fcl
 ```
 
 ### 2.3. Building project <a name="building_project"></a>
