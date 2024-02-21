@@ -73,6 +73,13 @@ Visualization Manager:
       Transport Hint: raw
       Unreliable: false
       Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: "/detected_objects_markers"
+      Name: Marker
+      Namespaces:
+      # Adjust namespaces as needed
+      Queue Size: 100
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
