@@ -9,7 +9,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RESET='\033[0m'
 
-sudo docker exec -it $container_name bash -c "
+#sudo
+docker exec -it $container_name bash -c "
     if [ -f '/opt/ros/noetic/setup.bash' ]; then
         source /opt/ros/noetic/setup.bash && \
         if [ \$? -eq 0 ]; then

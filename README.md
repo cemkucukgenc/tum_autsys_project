@@ -41,6 +41,10 @@ Install the Docker by following the link
 
 - https://docs.docker.com/desktop/install/ubuntu/
 
+NOTE: `sudo` commands in front of `docker` are removed in the following scripts. If you have errors regarding to this, you may need to add the user to the `docker` group or add `sudo` in front of the `docker` commands in the scripts which are already there but commented out. To add the user to the `docker` group, you can check the following tutorial
+
+- https://www.youtube.com/watch?v=VjUbSe8ONhs
+
 Open a terminal (will be mentioned as T1) and create a directory preferably in the `home` location as
 ```
 mkdir -p autsys_ws
@@ -129,10 +133,9 @@ For the generation of the OctoMap, `octomap` and `octomap_mapping` packages have
 sudo apt-get install ros-noetic-octomap ros-noetic-octomap-mapping
 ```
 
-For the path planning, `Open Motion Planning Library (OMPL)` and `Flexible Cloud Library (FCL)` is required. 
+For the path planning, `Open Motion Planning Library (OMPL)` and `Flexible Cloud Library (FCL)` are required. 
 ```
-sudo apt-get install ros-noetic-ompl
-sudo apt-get install ros-noetic-fcl
+sudo apt-get install ros-noetic-ompl ros-noetic-fcl
 ```
 
 ### 2.3. Building project <a name="building_project"></a>

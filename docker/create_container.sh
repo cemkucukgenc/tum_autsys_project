@@ -4,7 +4,8 @@ container_name="autsys_container" # Change this to your container name
 catkin_ws_path="/autsys_ws/tum_autsys_project/catkin_ws" # Change this to your catkin_ws path
 
 xhost +
-sudo docker run \
+#sudo 
+docker run \
   --net=host \
   --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
@@ -25,7 +26,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RESET='\033[0m'
 
-sudo docker exec -it $container_name bash -c "
+#sudo 
+docker exec -it $container_name bash -c "
     sudo apt update && sudo apt upgrade -y
     if [ -f '/opt/ros/noetic/setup.bash' ]; then
         source /opt/ros/noetic/setup.bash && \
