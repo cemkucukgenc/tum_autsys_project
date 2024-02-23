@@ -52,6 +52,29 @@ class LightDetectorNode {
   void onDepthInfoReceived(const sensor_msgs::CameraInfo& depth_info_msg) {
     // TODO
   }
+  void publishMarkers(const pcl::PointXYZ det, int id) {
+    visualization_msgs::Marker marker;
+    marker.header.frame_id = "world";
+    marker.header.stamp = ros::Time();
+    marker.id = id;
+    marker.type = visualization_msgs::Marker::SPHERE;
+    marker.action = visualization_msgs::Marker::ADD;
+    marker.pose.position.x = det.x;
+    marker.pose.position.y = det.y;
+    marker.pose.position.z = det.z;
+    marker.pose.orientation.x = 0.0;
+    marker.pose.orientation.y = 0.0;
+    marker.pose.orientation.z = 0.0;
+    marker.pose.orientation.w = 1.0;
+    marker.scale.x = 2;
+    marker.scale.y = 2;
+    marker.scale.z = 4;
+    marker.color.a = 1.0;
+    marker.color.r = 1.0;
+    marker.color.g = 1.0;
+    marker.color.b = 0.0;
+    marker_publisher_.publish( marker );
+  }
 
 };
 
