@@ -22,19 +22,20 @@
 #ifndef PLANNER_H
 #define PLANNER_H
 
-#include <octomap/octomap.h>
-
+#include <geometry_msgs/Point.h>
+#include <nav_msgs/Path.h>
+#include <nav_msgs/Odometry.h>
+#include <nav_msgs/OccupancyGrid.h>
+#include <ros/ros.h>
 #include <ompl/base/spaces/SE3StateSpace.h>
 #include <ompl/base/OptimizationObjective.h>
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
 #include <ompl/geometric/planners/rrt/InformedRRTstar.h>
 #include <ompl/geometric/PathSimplifier.h>
-// #include <ompl/geometric/planners/rrt/RRTstar.h>
-// #include <ompl/geometric/SimpleSetup.h>
-
+#include <ompl/geometric/planners/rrt/RRTstar.h>
+#include <ompl/geometric/SimpleSetup.h>
 #include <ompl/config.h>
 #include <iostream>
-
 #include <fcl/config.h>
 #include <fcl/fcl.h>
 #include <fcl/geometry/collision_geometry.h>
@@ -50,17 +51,11 @@ public:
 	Planner();
 	~Planner();
 
-	bool setStart(double x, double y, double z);
+	bool setGoal(const geometry_msgs::PointConstPtr& msg);
 
-	bool setGoal(double x, double y, double z);
-
-	void updateMap(octomap::OcTree tree_oct);
+	void updateMap(const octomap_msgs::OctomapConstPtr& msg);
 
 	void plan(void);
-
-	bool replan(void);
-
-	std::vector<std::tuple<double, double, double>> getSmoothPath();
 
 private:
 
@@ -85,8 +80,6 @@ private:
 	std::shared_ptr<fcl::CollisionObject<double>> aircraftObject;
 
 	bool isStateValid(const ob::State *state);
-
-	// ob::OptimizationObjectivePtr getThresholdPathLengthObj(const ob::SpaceInformationPtr& si);
 
 	ob::OptimizationObjectivePtr getPathLengthObjWithCostToGo(const ob::SpaceInformationPtr& si);
 

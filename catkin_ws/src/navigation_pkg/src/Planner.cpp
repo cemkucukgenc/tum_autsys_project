@@ -97,29 +97,7 @@ Planner::~Planner()
 {
 }
 
-bool Planner::setStart(double x, double y, double z)
-{
-	ob::ScopedState<ob::RealVectorStateSpace> start(space);
-	start->values[0] = x;
-	start->values[1] = y;
-	start->values[2] = z;
-	ob::State *state =  space->allocState();
-	state->as<ob::RealVectorStateSpace::StateType>()->values = start->values;
-	if(isStateValid(state)) // Check if the start state is valid
-	{	
-		pdef->clearStartStates();
-		pdef->addStartState(start);
-		DBG("Start point set to: " << x << " " << y << " " << z);
-		return true;
-	}
-	else
-	{
-		ERROR("Start state: " << x << " " << y << " " << z << " invalid");
-		return false;
-	}
-}
-
-bool Planner::setGoal(double x, double y, double z)
+bool Planner::setGoal(const geometry_msgs::PointConstPtr& msg)
 {
 	ob::ScopedState<ob::RealVectorStateSpace> goal(space);
 	goal->values[0] = x;
@@ -141,51 +119,12 @@ bool Planner::setGoal(double x, double y, double z)
 	}
 }
 
-void Planner::updateMap(octomap::OcTree tree_oct)
+void Planner::updateMap(const octomap_msgs::OctomapConstPtr& msg)
 {
 	// convert octree to collision object
 	fcl::OcTree<double>* tree = new fcl::OcTree<double>(std::make_shared<const octomap::OcTree>(tree_oct));
 	std::shared_ptr<fcl::CollisionGeometry<double>> tree_obj = std::shared_ptr<fcl::CollisionGeometry<double>>(tree);
 	treeObj = std::make_shared<fcl::CollisionObject<double>>((tree_obj));
-}
-
-bool Planner::replan(void)
-{	
-	if(path_smooth != NULL)
-	{
-		og::PathGeometric* path = pdef->getSolutionPath()->as<og::PathGeometric>();
-		DBG("Total Points:" << path->getStateCount ());
-		double distance;
-		if(pdef->hasApproximateSolution())
-		{
-			DBG("Goal state not satisfied and distance to goal is: " << pdef->getSolutionDifference());
-			replan_flag = true;
-		}
-		else
-		{
-			for (std::size_t idx = 0; idx < path->getStateCount (); idx++)
-			{
-				if(!replan_flag)
-				{
-					replan_flag = !isStateValid(path->getState(idx));
-				}
-				else
-					break;
-			}
-		}
-	}
-	if(replan_flag)
-	{
-		pdef->clearSolutionPaths();
-		DBG("Replanning");
-		plan();
-		return true;
-	}
-	else
-	{
-		DBG("Replanning not required");
-		return false;
-	}
 }
 
 void Planner::plan(void)
@@ -242,17 +181,4 @@ ob::OptimizationObjectivePtr Planner::getPathLengthObjWithCostToGo(const ob::Spa
 	ob::OptimizationObjectivePtr obj(new ob::PathLengthOptimizationObjective(si));
 	// obj->setCostToGoHeuristic(&ob::goalRegionCostToGo);
 	return obj;
-}
-
-
-std::vector<std::tuple<double, double, double>> Planner::getSmoothPath()
-{
-	std::vector<std::tuple<double, double, double>> path;
-	for (std::size_t idx = 0; idx < path_smooth->getStateCount (); idx++)
-	{
-        // cast the abstract state type to the type we expect
-		const ob::RealVectorStateSpace::StateType *pos = path_smooth->getState(idx)->as<ob::RealVectorStateSpace::StateType>();
-		path.push_back(std::tuple<double, double, double>(pos->values[0], pos->values[1], pos->values[2]));
-	}
-	return path;
 }
