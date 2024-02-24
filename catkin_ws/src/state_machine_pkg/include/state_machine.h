@@ -88,6 +88,8 @@ class StateMachine {
   
   void set_position();
   void set_yaw();
+  geometry_msgs::PoseStamped pointToPoseStamped(const geometry_msgs::Point& point, const std::string& frame_id, double yaw = 0.0);
+
 
 };
 

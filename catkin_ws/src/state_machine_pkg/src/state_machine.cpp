@@ -38,7 +38,7 @@ StateMachine::StateMachine(): waypoint_navigation_launched(false) {
     
     desired_state_pub_ = nh.advertise<trajectory_msgs::MultiDOFJointTrajectory>("command/trajectory", 1);
     current_state_sub_ = nh.subscribe("current_state_est", 1, &StateMachine::onCurrentState, this);
-    goal_position_pub_ = nh.advertise<geometry_msgs::Point>("goal_position", 1);
+    goal_position_pub_ = nh.advertise<geometry_msgs::PoseStamped>("goal_position", 1);
 
                                   
     state_machine_timer_ = nh.createTimer(ros::Duration(sim_interval_),
@@ -54,6 +54,18 @@ geometry_msgs::Point StateMachine::getNextGoalPoint() {
     }
 }
 
+geometry_msgs::PoseStamped StateMachine::pointToPoseStamped(const geometry_msgs::Point &point, const std::string &frame_id, double yaw)
+{
+    geometry_msgs::PoseStamped pose_stamped;
+    pose_stamped.header.stamp = ros::Time::now();
+    pose_stamped.header.frame_id = frame_id;
+
+    pose_stamped.pose.position = point;
+    tf::Quaternion quat = tf::createQuaternionFromYaw(yaw);
+    quaternionTFToMsg(quat, pose_stamped.pose.orientation);
+
+    return pose_stamped;
+}
 
 void StateMachine::addGoalPoint(double x, double y, double z) {
     geometry_msgs::Point point;
@@ -81,7 +93,9 @@ void StateMachine::takeoff() {
           goal_sent_once=1;
           goalpoint = StateMachine::getNextGoalPoint();
           ros::Duration(1).sleep();
-          goal_position_pub_.publish(goalpoint);
+                  auto goal_pose_stamped = StateMachine::pointToPoseStamped(goalpoint, "world");
+
+        goal_position_pub_.publish(goal_pose_stamped);
           ROS_INFO("Published goal position: [%f, %f, %f]", goalpoint.x, goalpoint.y, goalpoint.z); }
           // ros::Duration(1).sleep();
 
@@ -99,7 +113,9 @@ void StateMachine::to_cave() {
       goal_sent_once=1;
       goalpoint = StateMachine::getNextGoalPoint();
       // ros::Duration(1).sleep();
-      goal_position_pub_.publish(goalpoint);
+              auto goal_pose_stamped = StateMachine::pointToPoseStamped(goalpoint, "world");
+
+        goal_position_pub_.publish(goal_pose_stamped);
       ROS_INFO("Published goal position: [%f, %f, %f]", goalpoint.x, goalpoint.y, goalpoint.z); }
       
 

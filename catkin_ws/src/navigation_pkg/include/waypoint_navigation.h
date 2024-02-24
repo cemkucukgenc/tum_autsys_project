@@ -39,9 +39,9 @@ private:
     ros::Subscriber sub_odom_;
 
     ros::NodeHandle& nh_;
-    Eigen::Affine3d current_pose_;
-    Eigen::Vector3d current_velocity_;
-    Eigen::Vector3d current_angular_velocity_;
+    Eigen::Vector4d current_pose_;
+    Eigen::Vector4d current_velocity_;
+    Eigen::Vector4d current_angular_velocity_;
     double max_v_; // m/s
     double max_a_; // m/s^2
     double max_ang_v_;
