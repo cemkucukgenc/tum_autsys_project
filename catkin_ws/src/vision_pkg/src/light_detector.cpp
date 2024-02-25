@@ -31,9 +31,6 @@ class LightDetectorNode {
 
   tf::TransformListener transform_listener_;
 
-  ros::Publisher marker_publisher_;
-  ros::Publisher point_cloud_publisher_;
-
   std::vector<pcl::PointXYZ> detections_;
 
   sensor_msgs::Image last_depth_image_;
