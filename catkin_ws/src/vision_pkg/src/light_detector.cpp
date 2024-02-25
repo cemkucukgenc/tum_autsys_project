@@ -49,6 +49,14 @@ public:
 
     sensor_msgs::PointCloud2::Ptr cloud_msg(new sensor_msgs::PointCloud2);
     createPointCloudFromDepthImage(cloud_msg, masked_depth_image);
+
+    auto world_frame_cloud = transformPointCloudToGlobalFrame(cloud_msg);
+    if (world_frame_cloud.points.empty()) 
+    {
+    ROS_ERROR("Point cloud is empty!");
+    return;
+    }
+    
   }
 
   void onDepthImageReceived(const sensor_msgs::ImageConstPtr &depth_image_msg) {
@@ -61,7 +69,7 @@ public:
 
 private:
 
-void createPointCloudFromDepthImage(sensor_msgs::PointCloud2::Ptr& cloud_msg, const cv::Mat& depth_image) {
+  void createPointCloudFromDepthImage(sensor_msgs::PointCloud2::Ptr& cloud_msg, const cv::Mat& depth_image) {
     cloud_msg->header = last_depth_image_.header;
     cloud_msg->height = last_depth_image_.height;
     cloud_msg->width = last_depth_image_.width;
@@ -73,6 +81,23 @@ void createPointCloudFromDepthImage(sensor_msgs::PointCloud2::Ptr& cloud_msg, co
 
     depthImageToPointCloud(depth_image, cloud_msg, camera_model_);
   }
+  
+  pcl::PointCloud<pcl::PointXYZ> transformPointCloudToGlobalFrame(sensor_msgs::PointCloud2::Ptr cloud_msg) {
+    pcl::PointCloud<pcl::PointXYZ> local_cloud;
+    pcl::fromROSMsg(*cloud_msg, local_cloud);
+
+    tf::StampedTransform transform;
+    try {
+      transform_listener_.waitForTransform("world", cloud_msg->header.frame_id, ros::Time(0), ros::Duration(10.0));
+      transform_listener_.lookupTransform("world", cloud_msg->header.frame_id, ros::Time(0), transform);
+    } catch (tf::TransformException& ex) {
+      ROS_ERROR("%s", ex.what());
+    }
+
+    pcl::PointCloud<pcl::PointXYZ> global_cloud;
+    pcl_ros::transformPointCloud(local_cloud, global_cloud, transform);
+    return global_cloud;
+    }
 
   void depthImageToPointCloud(
     const cv::Mat& depth_image,
