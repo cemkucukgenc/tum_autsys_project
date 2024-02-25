@@ -9,17 +9,9 @@ find_package(PCL REQUIRED)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
-  depth_image_proc
-  fla_msgs
-  fla_utils
-  nav_msgs
-  geometry_msgs
   image_transport
-  sensor_msgs
   std_msgs
   tf
-  eigen_conversions
-  visualization_msgs
   image_geometry
   pcl_conversions
   pcl_ros
@@ -27,18 +19,10 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(CATKIN_DEPENDS 
   cv_bridge
-  depth_image_proc
-  fla_msgs
-  fla_utils
-  nav_msgs
-  geometry_msgs
   image_transport
-  sensor_msgs
   std_msgs
   tf
-  eigen_conversions
-  visualization_msgs
-  image_geometry  
+  image_geometry
   pcl_conversions
   pcl_ros
 )
