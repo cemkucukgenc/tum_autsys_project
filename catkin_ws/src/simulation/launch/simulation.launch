@@ -7,6 +7,8 @@
   <arg name="left_info_topic" default="/realsense/rgb/left_image_info" />
   <arg name="depth_image_topic" default="/realsense/depth/image" />
   <arg name="depth_info_topic" default="/realsense/depth/camera_info" />
+  <arg name="semantic_image_topic" default="/realsense/semantic/image_raw" />
+  <arg name="semantic_info_topic" default="/realsense/semantic/camera_info" />
 
   <include file="$(find simulation)/launch/unity_ros.launch" >
     <arg name="load_params" value="$(arg load_params)" />
@@ -16,6 +18,8 @@
     <arg name="left_info_topic" value="$(arg left_info_topic)" />
     <arg name="depth_image_topic" value="$(arg depth_image_topic)" />
     <arg name="depth_info_topic" value="$(arg depth_info_topic)" />
+    <arg name="semantic_image_topic" value="$(arg semantic_image_topic)" />
+    <arg name="semantic_info_topic" value="$(arg semantic_info_topic)" />
   </include>
 
   <node name="Simulation" pkg="simulation" type="Simulation.x86_64"/>

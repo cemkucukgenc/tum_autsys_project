@@ -52,7 +52,6 @@ public:
 
     auto world_frame_cloud = transformPointCloudToGlobalFrame(cloud_msg);
     if (world_frame_cloud.points.empty()) {
-      ROS_ERROR("Point cloud is empty!");
       return;
     }
     auto detection_center = calculatePointCloudCenter(world_frame_cloud);

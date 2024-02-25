@@ -31,6 +31,7 @@ catkin_package(CATKIN_DEPENDS
   sensor_msgs
 )
 add_executable(light_detector_node src/light_detector.cpp)
+add_dependencies(light_detector_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(light_detector_node ${catkin_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
