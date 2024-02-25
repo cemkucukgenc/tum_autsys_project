@@ -17,6 +17,7 @@
 #include <sensor_msgs/point_cloud2_iterator.h>
 
 #include <cmath>
+#include <geometry_msgs/PointStamped.h>
 
 class LightDetectorNode {
   ros::NodeHandle nh_;
@@ -28,6 +29,7 @@ class LightDetectorNode {
   tf::TransformListener transform_listener_;
 
   std::vector<pcl::PointXYZ> detections_;
+  ros::Publisher detected_points_publisher_;
 
   sensor_msgs::Image last_depth_image_;
   sensor_msgs::CameraInfo last_depth_info_;
@@ -44,6 +46,9 @@ public:
     depth_info_subscriber_ =
         nh_.subscribe("/realsense/depth/camera_info", 5,
                       &LightDetectorNode::onDepthInfoReceived, this);
+
+    detected_points_publisher_ =
+        nh_.advertise<geometry_msgs::PointStamped>("detected_points", 10);
   }
   void onSemanticImageReceived(
       const sensor_msgs::ImageConstPtr &semantic_image_msg) {
@@ -65,6 +70,15 @@ public:
         ROS_WARN("Light detected at %f, %f, %f", detection_center.x,
                  detection_center.y, detection_center.z);
         detections_.push_back(detection_center);
+
+        // Create and publish the PointStamped message
+        geometry_msgs::PointStamped point_msg;
+        point_msg.header.stamp = ros::Time::now();
+        point_msg.header.frame_id = "world"; // or the appropriate frame
+        point_msg.point.x = detection_center.x;
+        point_msg.point.y = detection_center.y;
+        point_msg.point.z = detection_center.z;
+        detected_points_publisher_.publish(point_msg);
       }
     }
   }
