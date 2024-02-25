@@ -11,7 +11,10 @@
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl_ros/transforms.h>
-
+#include <depth_image_proc/depth_traits.h>
+#include <sensor_msgs/Image.h>
+#include <sensor_msgs/point_cloud2_iterator.h>
+#include <sensor_msgs/PointCloud2.h>
 
 class LightDetectorNode {
   ros::NodeHandle nh_;
@@ -43,6 +46,9 @@ public:
   void onSemanticImageReceived(
       const sensor_msgs::ImageConstPtr &semantic_image_msg) {
     auto masked_depth_image = extractDepthImageWithMask(semantic_image_msg);
+
+    sensor_msgs::PointCloud2::Ptr cloud_msg(new sensor_msgs::PointCloud2);
+    createPointCloudFromDepthImage(cloud_msg, masked_depth_image);
   }
 
   void onDepthImageReceived(const sensor_msgs::ImageConstPtr &depth_image_msg) {
@@ -54,6 +60,59 @@ public:
   }
 
 private:
+
+void createPointCloudFromDepthImage(sensor_msgs::PointCloud2::Ptr& cloud_msg, const cv::Mat& depth_image) {
+    cloud_msg->header = last_depth_image_.header;
+    cloud_msg->height = last_depth_image_.height;
+    cloud_msg->width = last_depth_image_.width;
+    cloud_msg->is_dense = false;
+    cloud_msg->is_bigendian = false;
+
+    sensor_msgs::PointCloud2Modifier cloud_modifier(*cloud_msg);
+    cloud_modifier.setPointCloud2FieldsByString(1, "xyz");
+
+    depthImageToPointCloud(depth_image, cloud_msg, camera_model_);
+  }
+
+  void depthImageToPointCloud(
+    const cv::Mat& depth_image,
+    sensor_msgs::PointCloud2::Ptr& cloud_msg,
+    const image_geometry::PinholeCameraModel& camera_model,
+    double range_max = 0.0) {
+    float center_x = camera_model.cx();
+    float center_y = camera_model.cy();
+
+    double unit_scaling = depth_image_proc::DepthTraits<uint16_t>::toMeters(uint16_t(1));
+    float constant_x = unit_scaling / camera_model.fx();
+    float constant_y = unit_scaling / camera_model.fy();
+    float bad_point = std::numeric_limits<float>::quiet_NaN();
+
+    sensor_msgs::PointCloud2Iterator<float> iter_x(*cloud_msg, "x");
+    sensor_msgs::PointCloud2Iterator<float> iter_y(*cloud_msg, "y");
+    sensor_msgs::PointCloud2Iterator<float> iter_z(*cloud_msg, "z");
+
+    const uint16_t* depth_row = reinterpret_cast<const uint16_t*>(depth_image.data);
+    int row_step = depth_image.step / sizeof(uint16_t);
+
+    for (int v = 0; v < (int)cloud_msg->height; ++v, depth_row += row_step) {
+      for (int u = 0; u < (int)cloud_msg->width; ++u, ++iter_x, ++iter_y, ++iter_z) {
+        uint16_t depth = depth_row[u];
+
+        if (!depth_image_proc::DepthTraits<uint16_t>::valid(depth)) {
+          if (range_max != 0.0) {
+            depth = depth_image_proc::DepthTraits<uint16_t>::fromMeters(range_max);
+          } else {
+            *iter_x = *iter_y = *iter_z = bad_point;
+            continue;
+          }
+        }
+
+        *iter_x = (u - center_x) * depth * constant_x;
+        *iter_y = (v - center_y) * depth * constant_y;
+        *iter_z = depth_image_proc::DepthTraits<uint16_t>::toMeters(depth);
+      }
+    }
+  }
   cv::Mat extractDepthImageWithMask(
       const sensor_msgs::ImageConstPtr &semantic_image_msg) {
     auto semantic_image = cv_bridge::toCvCopy(

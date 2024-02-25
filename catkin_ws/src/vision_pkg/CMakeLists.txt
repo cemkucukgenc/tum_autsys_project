@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   image_geometry
   pcl_conversions
   pcl_ros
+  depth_image_proc
+  sensor_msgs
 )
 
 catkin_package(CATKIN_DEPENDS 
@@ -25,6 +27,8 @@ catkin_package(CATKIN_DEPENDS
   image_geometry
   pcl_conversions
   pcl_ros
+  depth_image_proc
+  sensor_msgs
 )
 add_executable(light_detector_node src/light_detector.cpp)
 target_link_libraries(light_detector_node ${catkin_LIBRARIES})
