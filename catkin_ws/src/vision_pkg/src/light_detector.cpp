@@ -16,6 +16,8 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 
+#include <cmath>
+
 class LightDetectorNode {
   ros::NodeHandle nh_;
   image_transport::ImageTransport image_transport_;
@@ -56,10 +58,14 @@ public:
     }
     auto detection_center = calculatePointCloudCenter(world_frame_cloud);
 
-    if (checkForNewDetection(detection_center)) {
-      ROS_WARN("Light detected at %f, %f, %f", detection_center.x,
-               detection_center.y, detection_center.z);
-      detections_.push_back(detection_center);
+    // Check if detection_center coordinates are not NaN before processing
+    if (!std::isnan(detection_center.x) && !std::isnan(detection_center.y) &&
+        !std::isnan(detection_center.z)) {
+      if (checkForNewDetection(detection_center)) {
+        ROS_WARN("Light detected at %f, %f, %f", detection_center.x,
+                 detection_center.y, detection_center.z);
+        detections_.push_back(detection_center);
+      }
     }
   }
 
@@ -109,11 +115,13 @@ private:
 
   pcl::PointXYZ
   calculatePointCloudCenter(const pcl::PointCloud<pcl::PointXYZ> &cloud) {
-    pcl::PointXYZ center;
+    pcl::PointXYZ center(0, 0, 0); // Initialize the center point
     int valid_points = 0;
     for (const auto &point : cloud.points) {
+      // Check if point is valid and not equal to (0, 0, 0)
       if (!std::isnan(point.x) && !std::isnan(point.y) &&
-          !std::isnan(point.z)) {
+          !std::isnan(point.z) &&
+          (point.x != 0 || point.y != 0 || point.z != 0)) {
         center.x += point.x;
         center.y += point.y;
         center.z += point.z;
@@ -124,6 +132,11 @@ private:
       center.x /= valid_points;
       center.y /= valid_points;
       center.z /= valid_points;
+    } else {
+      // Set the center to NaN to indicate invalid/missing data
+      center.x = std::numeric_limits<float>::quiet_NaN();
+      center.y = std::numeric_limits<float>::quiet_NaN();
+      center.z = std::numeric_limits<float>::quiet_NaN();
     }
     return center;
   }
