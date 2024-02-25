@@ -56,7 +56,12 @@ public:
     ROS_ERROR("Point cloud is empty!");
     return;
     }
-    
+    auto detection_center = calculatePointCloudCenter(world_frame_cloud);
+
+    if (checkForNewDetection(detection_center)) {
+      ROS_WARN("Light detected at %f, %f, %f", detection_center.x, detection_center.y, detection_center.z);
+      detections_.push_back(detection_center);
+    }
   }
 
   void onDepthImageReceived(const sensor_msgs::ImageConstPtr &depth_image_msg) {
@@ -81,7 +86,7 @@ private:
 
     depthImageToPointCloud(depth_image, cloud_msg, camera_model_);
   }
-  
+
   pcl::PointCloud<pcl::PointXYZ> transformPointCloudToGlobalFrame(sensor_msgs::PointCloud2::Ptr cloud_msg) {
     pcl::PointCloud<pcl::PointXYZ> local_cloud;
     pcl::fromROSMsg(*cloud_msg, local_cloud);
@@ -98,6 +103,25 @@ private:
     pcl_ros::transformPointCloud(local_cloud, global_cloud, transform);
     return global_cloud;
     }
+  
+  pcl::PointXYZ calculatePointCloudCenter(const pcl::PointCloud<pcl::PointXYZ>& cloud) {
+    pcl::PointXYZ center;
+    int valid_points = 0;
+    for (const auto& point : cloud.points) {
+      if (!std::isnan(point.x) && !std::isnan(point.y) && !std::isnan(point.z)) {
+        center.x += point.x;
+        center.y += point.y;
+        center.z += point.z;
+        valid_points++;
+      }
+    }
+    if (valid_points > 0) {
+      center.x /= valid_points;
+      center.y /= valid_points;
+      center.z /= valid_points;
+    }
+    return center;
+  }
 
   void depthImageToPointCloud(
     const cv::Mat& depth_image,
@@ -152,6 +176,16 @@ private:
         cv::Scalar(std::numeric_limits<double>::quiet_NaN()), ~mask);
 
     return depth_image->image;
+  }
+
+  bool checkForNewDetection(const pcl::PointXYZ& point) {
+    for (const auto& detection : detections_) {
+      double distance_squared = std::pow(detection.x - point.x, 2) + std::pow(detection.y - point.y, 2) + std::pow(detection.z - point.z, 2);
+      if (distance_squared < 100) {
+        return false;
+      }
+    }
+    return true;
   }
 };
 
