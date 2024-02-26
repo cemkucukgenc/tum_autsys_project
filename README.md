@@ -20,10 +20,16 @@
 ?????????????? WRITE AN INTRO ?????????????????????
 
 ### Utilized libraries and repositories
+- `MAV Trajectory Generation` (https://github.com/ethz-asl/mav_trajectory_generation)
+    - For trajectory generation
+
+- `Waypoint Navigator` (https://github.com/ethz-asl/waypoint_navigator)
+    - To generate and feed waypoints to controller for desired path
+
 - `Depth Image Proc` (https://wiki.ros.org/depth_image_proc)
     - For
 
-- `Octomap` (https://github.com/OctoMap/octomap)
+- `OctoMap` (https://github.com/OctoMap/octomap)
     - For
 
 - `Open Motion Planning Library (OMPL)` (https://github.com/ompl/ompl)
