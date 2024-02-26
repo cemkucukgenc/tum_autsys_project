@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="navigation_pkg" type="navigation_pkg" name="Planner" output="screen"> </node>
+</launch>

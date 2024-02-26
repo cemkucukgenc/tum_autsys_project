@@ -20,6 +20,11 @@ find_package(catkin REQUIRED COMPONENTS
   roslib
   yaml_cpp_catkin
 )
+
+find_package(fcl REQUIRED)
+find_package(ompl REQUIRED)
+find_package(octomap REQUIRED)
+
 catkin_simple(ALL_DEPS_REQUIRED)
 
 cs_add_executable(navigation_pkg
@@ -133,9 +138,16 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
+  ${mav_trajectory_generation_INCLUDE_DIRS}
+  ${OMPL_INCLUDE_DIRS}
+  SYSTEM ${fcl_INCLUDE_DIRS} 
 )
+
+link_directories(${OMPL_LIBRARY_DIRS})
+
+add_definitions(${OMPL_DEFINITIONS})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -151,6 +163,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/navigation_pkg_node.cpp)
+add_executable(Planner src/Planner.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -166,6 +179,15 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+target_link_libraries(Planner 
+${catkin_LIBRARIES}
+${mav_trajectory_generation_LIBRARIES} 
+${OMPL_LIBRARY_DIRS} 
+${OMPL_LIBRARIES}
+${OCTOMAP_LIBRARIES}
+${fcl_LIBRARY_DIRS} 
+${FCL_LIBRARIES} 
+)
 
 #############
 ## Install ##
