@@ -12,7 +12,7 @@
 #include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
 #include <math.h>
 #include <std_msgs/Float64.h>
-
+#include <geometry_msgs/PoseStamped.h>
 #include <eigen3/Eigen/Dense>
 
 #include <cstdlib>
@@ -39,7 +39,7 @@ StateMachine::StateMachine(): waypoint_navigation_launched(false) {
     desired_state_pub_ = nh.advertise<trajectory_msgs::MultiDOFJointTrajectory>("command/trajectory", 1);
     current_state_sub_ = nh.subscribe("current_state_est", 1, &StateMachine::onCurrentState, this);
     goal_position_pub_ = nh.advertise<geometry_msgs::PoseStamped>("goal_position", 1);
-
+    path_sub_ = nh.subscribe("planned_path", 1, &StateMachine::onPlannedPath, this);
                                   
     state_machine_timer_ = nh.createTimer(ros::Duration(sim_interval_),
     &StateMachine::state_machine_mission, this);
@@ -51,6 +51,86 @@ geometry_msgs::Point StateMachine::getNextGoalPoint() {
     } else {
         // Return the last point or handle the end of the vector as needed
         return goalpoints.back();
+    }
+}
+
+
+void StateMachine::onPlannedPath(const nav_msgs::Path::ConstPtr &msg)
+{
+    // Resetting the path vector for new data
+    goalpoints_path_vec.clear();
+    auto received_poses = msg->poses;
+
+    // Ensuring the path has at least three points by adding a midpoint if needed
+    if (received_poses.size() == 2)
+    {
+        // Correct initialization of Eigen::Vector3d
+        Eigen::Vector3d first_point(
+            received_poses[0].pose.position.x,
+            received_poses[0].pose.position.y,
+            received_poses[0].pose.position.z);
+        Eigen::Vector3d second_point(
+            received_poses[1].pose.position.x,
+            received_poses[1].pose.position.y,
+            received_poses[1].pose.position.z);
+        Eigen::Vector3d mid_point = (first_point + second_point)*0.5;
+
+        geometry_msgs::PoseStamped new_pose;
+        new_pose.pose.position.x = mid_point(0); // Access elements with ()
+        new_pose.pose.position.y = mid_point(1);
+        new_pose.pose.position.z = mid_point(2);
+        received_poses.insert(received_poses.begin() + 1, new_pose); // Use vector's insert method correctly
+    }
+    // Computing and appending orientation data to each path point
+    for (size_t index = 0; index < received_poses.size(); ++index)
+    {
+        // Decomposing the current pose to basic coordinates
+        auto current_pose = received_poses[index];
+        double posX = current_pose.pose.position.x;
+        double posY = current_pose.pose.position.y;
+        double posZ = current_pose.pose.position.z;
+        double orientation_yaw;
+        Eigen::Vector3d current_position(posX, posY, posZ), next_position;
+        size_t index_next = index +1;
+        if (index_next < received_poses.size())
+        {
+            double nextPosX = received_poses[index_next].pose.position.x;
+            double nextPosY = received_poses[index_next].pose.position.y;
+            double nextPosZ = received_poses[index_next].pose.position.z;
+            next_position = Eigen::Vector3d(nextPosX, nextPosY, nextPosZ);
+
+            Eigen::Vector3d direction_vector = next_position - current_position;
+            orientation_yaw = std::atan2(direction_vector[1], direction_vector[0]);
+        }
+        else
+        {
+            orientation_yaw = goalpoints_path_vec[index - 1][3]; // Reuse the previous yaw for the last point
+        }
+
+        // Storing the processed data in a 4D vector
+        goalpoints_path_vec.push_back(Eigen::Vector4d(posX, posY, posZ, orientation_yaw));
+    }
+    // Transform the last goalpoint to goal_pose_stamped
+    if (!goalpoints_path_vec.empty())
+    {
+        const Eigen::Vector4d &goalPoint = goalpoints_path_vec.back();
+        geometry_msgs::PoseStamped goal_pose_stamped;
+        goal_pose_stamped.pose.position.x = goalPoint[0];
+        goal_pose_stamped.pose.position.y = goalPoint[1];
+        goal_pose_stamped.pose.position.z = goalPoint[2];
+
+        tf2::Quaternion q;
+        q.setRPY(0, 0, goalPoint[3]); // roll, pitch, yaw
+
+        // Convert tf2 quaternion to geometry_msgs quaternion
+        goal_pose_stamped.pose.orientation = tf2::toMsg(q);
+
+        // Set the header
+        goal_pose_stamped.header.frame_id = "world"; // Set this to your frame id
+        goal_pose_stamped.header.stamp = ros::Time::now();
+
+        // Publish the goal_pose_stamped
+        goal_position_pub_.publish(goal_pose_stamped);
     }
 }
 
@@ -122,8 +202,8 @@ void StateMachine::to_cave() {
     if(goal_reached()) {
         goal_sent_once=0;
         // goalpoint = StateMachine::getNextGoalPoint();
-        if(current_goal_index == 7){
-          state_ = State::turn;
+        if(current_goal_index == 3){
+          state_ = State::hover;
           yaw_des = -1.5708; //-90 deg
           set_position();
         }
@@ -131,6 +211,12 @@ void StateMachine::to_cave() {
     }
 }
 
+double calculateYawForWaypoint(const geometry_msgs::Point &current, const geometry_msgs::Point &next)
+{
+    double delta_x = next.x - current.x;
+    double delta_y = next.y - current.y;
+    return std::atan2(delta_y, delta_x);
+}
 
 
 void StateMachine::hover() {

@@ -14,6 +14,7 @@
 #include <std_msgs/Float64.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <eigen3/Eigen/Dense>
+#include <nav_msgs/Path.h>
 
 #define PI M_PI
 const tf::Vector3 zero_vec(0, 0, 0);
@@ -34,7 +35,7 @@ class StateMachine {
   bool waypoint_navigation_launched;
   ros::NodeHandle nh;
 
-  ros::Subscriber cmd_vel_sub_, current_state_sub_;
+  ros::Subscriber cmd_vel_sub_, current_state_sub_, path_sub_;
   ros::Publisher desired_state_pub_;
   ros::Publisher goal_position_pub_;
   tf::TransformBroadcaster br;
@@ -55,6 +56,7 @@ class StateMachine {
   
   geometry_msgs::Point goalpoint;
   std::vector<geometry_msgs::Point> goalpoints;
+  std::vector<Eigen::Vector4d> goalpoints_path_vec;
   size_t current_goal_index = 0;
   bool goal_sent_once = 0;
   
@@ -66,7 +68,7 @@ class StateMachine {
   StateMachine();
 
   void onCurrentState(const nav_msgs::Odometry& current_state);
-
+  void onPlannedPath(const nav_msgs::Path::ConstPtr& msg);
   void state_machine_mission(const ros::TimerEvent& t);
   void takeoff();
   void to_cave();
