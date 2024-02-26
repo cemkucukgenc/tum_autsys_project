@@ -2,13 +2,25 @@
 
 ### Group 4
 - Cem Kücükgenc     (cem.kucukgenc@tum.de)
+    - DevOps, Navigation, Octomapping, Path Planning
+
 - Baran Özer        (baran.oezer@tum.de)
+    - State Machine, Navigation, Octomapping, Path Planning 
+
 - Serdar Soyer      (serdar.soyer@tum.de)
+    - Octomapping, Vision
+
 - Erencan Aslakci   (ge97jed@mytum.de)
+    - Vision
+
 - Hünkar Suci       (hunkar.suci@tum.de)
+    - Octomapping, Frontier Exploration
 
 ### Table of contents
 1. [Introduction](#introduction)
+    1. [Utilized libraries and external repositories](#utilized_libraries)
+    2. [Generated packages](#generated_packages)
+    3. [ROS graph, nodes and topic list](#ros_graph_nodes_topics)
 2. [Installation guide](#installation_guide)
     1. [System setup](#system_setup)
     2. [Installing dependencies](#installing_dependencies)
@@ -17,9 +29,9 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
-This repository introduces a drone specifically designed for autonomous exploration in a cave environment in Unity. The drone utilizes its depth camera to generate the point cloud of its environment, then transforms this information into a 3D Voxel grid representation by means of  OctoMap library. It then leverages a frontier detection and selection algorithm to detect frontiers (unexplored areas) using this Voxel grid representation. Subsequently, RRT* path planning algorithm plans the paths through these frontiers. The planned paths are transformed into executable trajectories by the mav trajectory generation package from ETH Zurich's Autonomous Systems Lab wchich enables the drone to autonomously navigate and explore 3D spaces efficiently. During its mission, the drone detects 4 objects of interest (lanterns) using its semantic camera and gives the location of them.
+This repository introduces ROS packages for autonomous exploration with a drone in a Unity cave environment. The drone utilizes its depth camera to generate the point cloud of its environment, then transforms this information into a 3D Voxel grid representation by means of `OctoMap` library. Then it leverages a frontier detection and selection algorithm to detect frontiers (unexplored areas) using this Voxel grid representation. Subsequently, `RRT*` path planning algorithm plans the paths through these frontiers. The planned paths are transformed into executable trajectories by the `mav_trajectory_generation` package from ETH Zurich's Autonomous Systems Lab which enables the drone to autonomously navigate and explore 3D spaces efficiently. During its mission, the drone detects 4 objects of interest (lanterns) using its semantic camera and gives the location of them.
 
-### Utilized libraries and repositories
+### 1.1 Utilized libraries and external repositories <a name="utilized_libraries"></a>
 - `MAV Trajectory Generation` (https://github.com/ethz-asl/mav_trajectory_generation)
     - For trajectory generation
 
@@ -38,11 +50,35 @@ This repository introduces a drone specifically designed for autonomous explorat
 - `Flexible Cloud Library (FCL)` (https://github.com/flexible-collision-library/fcl)
     - For  
 
-- `OctomapPlanner` (https://github.com/ArduPilot/OctomapPlanner)
-    - `Planner.cpp` and `Planner.h` is implemented  as a base for path planning.
-
 - `Point Cloud Library (PCL)` (https://github.com/PointCloudLibrary/pcl)
-    - For point cloud to voxel grid conversion.
+    - For point cloud to voxel grid conversion
+
+- `OctomapPlanner` (https://github.com/ArduPilot/OctomapPlanner)
+    - `Planner.cpp` and `Planner.h` is implemented as a base for path planning
+
+### 1.2 Generated packages <a name="generated_packages"></a>
+- `state_machine_pkg` (Baran Özer)
+    - aaa
+
+- `navigation_pkg` (Baran Özer, Cem Kücükgenc, Hünkar Suci)
+    - aaa
+
+- `vision_pkg` (Serdar Soyer, Erencan Aslakci)
+    - aaa
+
+### 1.3 ROS graph, nodes and topic list <a name="ros_graph_nodes_topics"></a>
+???????????????? run rostopic list, paste here and explain what does it do ?????????????
+In your documentation you should include a short description of every ROS node and package and its functionality.
+
+- ROS graph
+
+- ROS nodes
+
+- ROS topic list
+    - `/planned_path`
+    - `/frontier_goal`
+    - `/current_state_est`
+    - `octomap_full`
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
