@@ -27,7 +27,7 @@
     - To generate and feed waypoints to controller for desired path
 
 - `Depth Image Proc` (https://wiki.ros.org/depth_image_proc)
-    - For
+    - For depth image to point cloud conversion.
 
 - `OctoMap` (https://github.com/OctoMap/octomap)
     - For
@@ -40,6 +40,9 @@
 
 - `OctomapPlanner` (https://github.com/ArduPilot/OctomapPlanner)
     - `Planner.cpp` and `Planner.h` is implemented  as a base for path planning.
+
+- `Point Cloud Library (PCL)` (https://github.com/PointCloudLibrary/pcl)
+    - For point cloud to voxel grid conversion.
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
