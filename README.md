@@ -17,7 +17,23 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
-??????????????????????
+?????????????? WRITE AN INTRO ?????????????????????
+
+### Utilized libraries and repositories
+- `Depth Image Proc` (https://wiki.ros.org/depth_image_proc)
+    - For
+
+- `Octomap` (https://github.com/OctoMap/octomap)
+    - For
+
+- `Open Motion Planning Library (OMPL)` (https://github.com/ompl/ompl)
+    - For
+
+- `Flexible Cloud Library (FCL)` (https://github.com/flexible-collision-library/fcl)
+    - For  
+
+- `OctomapPlanner` (https://github.com/ArduPilot/OctomapPlanner)
+    - `Planner.cpp` and `Planner.h` is implemented  as a base for path planning.
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
