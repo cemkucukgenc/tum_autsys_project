@@ -17,10 +17,7 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
-This repository introduces a drone specifically designed for autonomous exploration in a cave environment in Unity. The drone utilizes its depth camera to generate the point cloud of its environment, then transforms this information
-into a 3D Voxel grid representation by means of  OctoMap library. It then leverages a frontier detection and selection algorithm to detect frontiers (unexplored areas) using this Voxel grid representation. Subsequently, RRT* path planning
-algorithm plans the paths through these frontiers. The planned paths are transformed into executable trajectories by the mav trajectory generation package from ETH Zurich's Autonomous Systems Lab wchich enables the drone to autonomously
-navigate and explore 3D spaces efficiently. During its mission, the drone detects 4 objects of interest (lanterns) using its semantic camera and gives the location of them.
+This repository introduces a drone specifically designed for autonomous exploration in a cave environment in Unity. The drone utilizes its depth camera to generate the point cloud of its environment, then transforms this information into a 3D Voxel grid representation by means of  OctoMap library. It then leverages a frontier detection and selection algorithm to detect frontiers (unexplored areas) using this Voxel grid representation. Subsequently, RRT* path planning algorithm plans the paths through these frontiers. The planned paths are transformed into executable trajectories by the mav trajectory generation package from ETH Zurich's Autonomous Systems Lab wchich enables the drone to autonomously navigate and explore 3D spaces efficiently. During its mission, the drone detects 4 objects of interest (lanterns) using its semantic camera and gives the location of them.
 
 ### Utilized libraries and repositories
 - `MAV Trajectory Generation` (https://github.com/ethz-asl/mav_trajectory_generation)
