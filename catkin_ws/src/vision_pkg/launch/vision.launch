@@ -11,7 +11,6 @@
 
   <node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen">
       <remap from="cloud_in" to="/point_cloud"/>
-      <remap from="occupied_cells_vis_array" to="/map/occupied"/>
       <param name="frame_id" value="world"/>
       <param name="latch" value="true"/>
       <param name="resolution" value="2"/>

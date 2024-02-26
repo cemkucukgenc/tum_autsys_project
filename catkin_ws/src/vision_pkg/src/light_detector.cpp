@@ -1,6 +1,5 @@
 #include <cv_bridge/cv_bridge.h>
 #include <image_geometry/pinhole_camera_model.h>
-#include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <ros/ros.h>
@@ -21,9 +20,8 @@
 
 class LightDetectorNode {
   ros::NodeHandle nh_;
-  image_transport::ImageTransport image_transport_;
-  image_transport::Subscriber semantic_image_subscriber_;
-  image_transport::Subscriber depth_image_subscriber_;
+  ros::Subscriber semantic_image_subscriber_;
+  ros::Subscriber depth_image_subscriber_;
   ros::Subscriber depth_info_subscriber_;
 
   tf::TransformListener transform_listener_;
@@ -36,13 +34,13 @@ class LightDetectorNode {
   image_geometry::PinholeCameraModel camera_model_;
 
 public:
-  LightDetectorNode() : image_transport_(nh_) {
-    semantic_image_subscriber_ = image_transport_.subscribe(
-        "/realsense/semantic/image_raw", 5,
-        &LightDetectorNode::onSemanticImageReceived, this);
-    depth_image_subscriber_ = image_transport_.subscribe(
-        "/realsense/depth/image", 5, &LightDetectorNode::onDepthImageReceived,
-        this);
+  LightDetectorNode() {
+    semantic_image_subscriber_ =
+        nh_.subscribe("/realsense/semantic/image_raw", 5,
+                      &LightDetectorNode::onSemanticImageReceived, this);
+    depth_image_subscriber_ =
+        nh_.subscribe("/realsense/depth/image", 5,
+                      &LightDetectorNode::onDepthImageReceived, this);
     depth_info_subscriber_ =
         nh_.subscribe("/realsense/depth/camera_info", 5,
                       &LightDetectorNode::onDepthInfoReceived, this);

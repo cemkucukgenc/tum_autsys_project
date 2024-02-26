@@ -55,7 +55,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /map/occupied
+      Marker Topic: /occupied_cells_vis_array
       Name: MarkerArray
       Namespaces:
         map: true
@@ -73,13 +73,6 @@ Visualization Manager:
       Transport Hint: raw
       Unreliable: false
       Value: true
-    - Class: rviz/Marker
-      Enabled: true
-      Marker Topic: "/detected_objects_markers"
-      Name: Marker
-      Namespaces:
-      # Adjust namespaces as needed
-      Queue Size: 100
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

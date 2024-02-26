@@ -9,7 +9,6 @@ find_package(PCL REQUIRED)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
-  image_transport
   std_msgs
   tf
   image_geometry
@@ -22,7 +21,6 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(CATKIN_DEPENDS 
   cv_bridge
-  image_transport
   std_msgs
   tf
   image_geometry
