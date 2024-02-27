@@ -19,19 +19,19 @@
 #define PI M_PI
 const tf::Vector3 zero_vec(0, 0, 0);
 
-enum class State {
-takeoff,
-to_cave,
-hover,
-explore,
-landing,
-turn,
-forward
+enum class State
+{
+  takeoff,
+  to_cave,
+  hover,
+  landing,
+  turn,
+  forward
 };
 
-class StateMachine {
- private:
- 
+class StateMachine
+{
+private:
   bool waypoint_navigation_launched;
   ros::NodeHandle nh;
 
@@ -49,51 +49,45 @@ class StateMachine {
   Eigen::Vector3d pos_, vel_, omega_;
   tf::Quaternion quat_;
   double yaw_ = 0.0;
-  
-  const float takeoff_height_ = 10.0;
+
   const float sim_interval_ = 0.1;
   const double tol_ = 0.5;
-  
+
   geometry_msgs::Point goalpoint;
   std::vector<geometry_msgs::Point> goalpoints;
   std::vector<Eigen::Vector4d> goalpoints_path_vec;
   size_t current_goal_index = 0;
   bool goal_sent_once = 0;
-  
+
   Eigen::Vector3d cur_position;
   double yaw_des = 0;
 
-
- public:
+public:
   StateMachine();
 
-  void onCurrentState(const nav_msgs::Odometry& current_state);
-  void onPlannedPath(const nav_msgs::Path::ConstPtr& msg);
-  void state_machine_mission(const ros::TimerEvent& t);
+  void onCurrentState(const nav_msgs::Odometry &current_state);
+  void onPlannedPath(const nav_msgs::Path::ConstPtr &msg);
+  void state_machine_mission(const ros::TimerEvent &t);
   void takeoff();
   void to_cave();
   void hover();
-  void explore();
   void landing();
   void turn();
   void forward();
-  
+
   geometry_msgs::Point getNextGoalPoint();
   void addGoalPoint(double x, double y, double z);
 
   bool in_range(double low, double high, double x);
   bool goal_reached();
-  
+
   void set_waypoint(tf::Vector3 pos, tf::Quaternion q,
-   tf::Vector3 lin_vel = zero_vec, tf::Vector3 ang_vel = zero_vec,
-    tf::Vector3 lin_acc = zero_vec);
-  
+                    tf::Vector3 lin_vel = zero_vec, tf::Vector3 ang_vel = zero_vec,
+                    tf::Vector3 lin_acc = zero_vec);
+
   void set_position();
   void set_yaw();
-  geometry_msgs::PoseStamped pointToPoseStamped(const geometry_msgs::Point& point, const std::string& frame_id, double yaw = 0.0);
-
-
+  geometry_msgs::PoseStamped pointToPoseStamped(const geometry_msgs::Point &point, const std::string &frame_id, double yaw = 0.0);
 };
 
-
-#endif  //  STATE_MACHINE_H
+#endif //  STATE_MACHINE_H
