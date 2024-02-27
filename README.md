@@ -2,19 +2,19 @@
 
 ### Group 4
 - Cem Kücükgenc     (cem.kucukgenc@tum.de)
-    - DevOps, Navigation, Octomapping, Path Planning
+    - Navigation(Path Planning, Trajectory Generation), Vision(Point Cloud Generation, Octomapping), DevOps 
 
 - Baran Özer        (baran.oezer@tum.de)
-    - State Machine, Navigation, Octomapping, Path Planning 
+    - State Machine, Navigation(Path Planning, Trajectory Generation), Vision(Point Cloud Generation, Octomapping) 
 
 - Serdar Soyer      (serdar.soyer@tum.de)
-    - Octomapping, Vision
+    - Vision(Octomapping, Light Detection)
 
 - Erencan Aslakci   (ge97jed@mytum.de)
-    - Vision
+    - Vision(Light Detection), Navigation(Path Planning)
 
 - Hünkar Suci       (hunkar.suci@tum.de)
-    - Octomapping, Frontier Exploration
+    - Navigation(Path Planning, Frontier Exploration), Vision(Light Detection)
 
 ### Table of contents
 1. [Introduction](#introduction)
@@ -29,14 +29,11 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
-This repository introduces ROS packages for autonomous exploration with a drone in a Unity cave environment. The drone utilizes its depth camera to generate the point cloud of its environment, then transforms this information into a 3D Voxel grid representation by means of `OctoMap` library. Then it leverages a frontier detection and selection algorithm to detect frontiers (unexplored areas) using this Voxel grid representation. Subsequently, `RRT*` path planning algorithm plans the paths through these frontiers. The planned paths are transformed into executable trajectories by the `mav_trajectory_generation` package from ETH Zurich's Autonomous Systems Lab which enables the drone to autonomously navigate and explore 3D spaces efficiently. During its mission, the drone detects 4 objects of interest (lanterns) using its semantic camera and gives the location of them.
+This repository introduces ROS packages for autonomous exploration with a drone in a Unity cave environment. The drone utilizes its depth camera to generate the point cloud of its environment, then transforms this information into a 3D Voxel Grid representation by means of `OctoMap` library. Then it leverages a frontier detection and selection algorithm to detect frontiers (unexplored areas) using this Voxel grid representation. Subsequently, `RRT*` path planning algorithm plans the paths through these frontiers. The planned paths are transformed into executable trajectories by the `mav_trajectory_generation` package from ETH Zurich's Autonomous Systems Lab which enables the drone to autonomously navigate and explore 3D spaces efficiently. During its mission, the drone detects 4 objects of interest (lanterns) using its semantic camera and gives the location of them.
 
 ### 1.1 Utilized libraries and external repositories <a name="utilized_libraries"></a>
 - `MAV Trajectory Generation` (https://github.com/ethz-asl/mav_trajectory_generation)
     - For trajectory generation
-
-- `Waypoint Navigator` (https://github.com/ethz-asl/waypoint_navigator)
-    - To generate and feed waypoints to controller for desired path
 
 - `Depth Image Proc` (https://wiki.ros.org/depth_image_proc)
     - For depth image to point cloud conversion.
@@ -237,5 +234,6 @@ source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 roslaunch simulation mission.launch
 ```
 `mission.launch` file launches related packages that should be run simultaneously. Additionally, it runs `rviz` to show octomapping visual.
+
 
 
