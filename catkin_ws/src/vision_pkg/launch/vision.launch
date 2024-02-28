@@ -9,13 +9,18 @@
     <remap from="points" to="/point_cloud"/>
   </node>
 
+  <!-- Node for OctoMap server -->
   <node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen">
       <remap from="cloud_in" to="/point_cloud"/>
+
+      <!-- OctoMap parameters -->
       <param name="frame_id" value="world"/>
-      <param name="latch" value="true"/>
+      <param name="latch" value="false"/> <!-- Set latch to false for dynamic parameter updates -->
       <param name="resolution" value="2"/>
+      <param name="sensor_model/max_range" value="32"/> <!-- Tuning the maximum range for the sensor model so that drone reaches further points -->
   </node>
   
+  <!-- Node for vision_pkg -->
   <node pkg="vision_pkg" type="light_detector_node" name="LightDetectorNode" output="screen"> </node>
 
 </launch>

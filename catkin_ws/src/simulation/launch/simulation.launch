@@ -58,11 +58,13 @@
   <node pkg="tf2_ros" type="static_transform_publisher"
         name="sim_right_camera"      args="0 0.05 0 0 0 0 /camera /Quadrotor/RGBCameraRight" />
 
+  <!-- Adjusted camera_to_body transformation to fine-tune camera positioning -->
+  <!-- Adjusted depth_camera_to_body transformation to optimize camera alignment -->
   <node pkg="tf2_ros" type="static_transform_publisher"
-        name="camera_to_body"      args="0 0 0 0 0 0 /true_body /camera" />
+        name="camera_to_body"      args="0.2 0 0 0 0 0 /body /camera" />
 
   <node pkg="tf2_ros" type="static_transform_publisher"
-        name="depth_camera_to_body"      args="0 0 0 0 0 0 /true_body /depth_camera" />
+        name="depth_camera_to_body"      args="0 0 0 0 0 0 /camera /depth_camera" />
 
 <!-- 90 degrees rotation about X axis from true_body to Depth Camera Frame -->
   <node pkg="tf2_ros" type="static_transform_publisher"
