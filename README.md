@@ -31,7 +31,7 @@
 
 This repository introduces ROS packages for autonomous exploration with a drone in a Unity cave environment. The drone utilizes its depth camera to generate the point cloud of its environment, then transforms this information into a 3D Voxel Grid representation by means of `OctoMap` library. Then it leverages a frontier detection and selection algorithm to detect frontiers (unexplored areas) using this Voxel grid representation. Subsequently, `RRT*` path planning algorithm plans the paths through these frontiers. The planned paths are transformed into executable trajectories by the `mav_trajectory_generation` package from ETH Zurich's Autonomous Systems Lab which enables the drone to autonomously navigate and explore 3D spaces efficiently. During its mission, the drone detects 4 objects of interest (lanterns) using its semantic camera and gives the location of them.
 
-### 1.1 Utilized libraries and external repositories <a name="utilized_libraries"></a>
+### 1.1. Utilized libraries and external repositories <a name="utilized_libraries"></a>
 - `MAV Trajectory Generation` (https://github.com/ethz-asl/mav_trajectory_generation)
     - For trajectory generation
 
@@ -53,7 +53,7 @@ This repository introduces ROS packages for autonomous exploration with a drone 
 - `OctomapPlanner` (https://github.com/ArduPilot/OctomapPlanner)
     - `Planner.cpp` and `Planner.h` is implemented as a base for path planning
 
-### 1.2 Generated packages <a name="generated_packages"></a>
+### 1.2. Generated packages <a name="generated_packages"></a>
 - `state_machine_pkg` (Baran Özer)
     - aaa
 
@@ -63,7 +63,7 @@ This repository introduces ROS packages for autonomous exploration with a drone 
 - `vision_pkg` (Serdar Soyer, Erencan Aslakci)
     - aaa
 
-### 1.3 ROS graph, nodes and topic list <a name="ros_graph_nodes_topics"></a>
+### 1.3. ROS graph, nodes and topic list <a name="ros_graph_nodes_topics"></a>
 ???????????????? run rostopic list, paste here and explain what does it do ?????????????
 In your documentation you should include a short description of every ROS node and package and its functionality.
 
