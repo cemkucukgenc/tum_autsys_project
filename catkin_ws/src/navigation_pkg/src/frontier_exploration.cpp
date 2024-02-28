@@ -115,7 +115,18 @@ Frontier::identifyLargestCluster(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
       largest_cluster_indices = cluster_indices;
       max_size = cluster_indices->indices.size();
     }
+  }
+
+  pcl::PointCloud<pcl::PointXYZ>::Ptr largest_cluster(
+      new pcl::PointCloud<pcl::PointXYZ>);
+  if (largest_cluster_indices) {
+    for (int index : largest_cluster_indices->indices) {
+      largest_cluster->points.push_back(cloud->points[index]);
+    }
+  }
+  return largest_cluster;
 }
+
 pcl::PointXYZ Frontier::calculateGoal(pcl::PointCloud<pcl::PointXYZ> &cloud) {
   pcl::PointXYZ goal(0, 0, 0);
   if (cloud.points.empty())
