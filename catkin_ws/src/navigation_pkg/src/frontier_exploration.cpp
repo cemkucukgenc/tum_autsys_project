@@ -93,7 +93,32 @@ void Frontier::detectFrontiers() {
 }
 
 bool Frontier::isFrontierPoint(const octomap::point3d &coord) {
-  // TODO
+  // Define the search offsets to check the immediate neighbors in 3D,
+  // including diagonals
+  std::vector<octomap::point3d> searchOffsets =
+      {{1, 0, 0},   {-1, 0, 0},   {0, 1, 0},
+       {0, -1, 0},  {0, 0, 1},    {0, 0, -1},
+       {1, 1, 0},   {-1, -1, 0},  {1, -1, 0},
+       {-1, 1, 0}, // Diagonals in XY plane
+       {1, 0, 1},   {-1, 0, -1},  {0, 1, 1},
+       {0, -1, -1}, // Diagonals in XZ and YZ planes
+       {-1, 0, 1},  {1, 0, -1},   {0, -1, 1},
+       {0, 1, -1}, // Opposite diagonals
+       {1, 1, 1},   {-1, -1, -1}, {1, -1, 1},
+       {-1, 1, -1}, // 3D diagonals
+       {1, 1, -1},  {-1, -1, 1},  {1, -1, -1},
+       {-1, 1, 1}};
+
+  for (const auto &offset : searchOffsets) {
+    octomap::point3d neighborCoord =
+        coord + offset * octomap_resolution; // Adjust by octomap resolution
+    octomap::OcTreeNode *node = octree->search(neighborCoord);
+    if (!node) { // If the node does not exist (is unknown)
+      return true;
+    }
+  }
+  return false; // If all neighbors are known (occupied or free), it's not a
+                // frontier
 }
 
 void Frontier::publishGoal(const pcl::PointXYZ &goal) {
