@@ -71,6 +71,8 @@ This repository introduces ROS packages for autonomous exploration with a drone 
 
 #### ROS graph (`rqt_graph`)
 
+![rqt_graph](images/rqt_graph.png)
+
 #### Generated ROS Nodes  
 - `/frontier_exploration`
     - The primary goal of the Frontier Exploration node is to enable autonomous exploration of unknown environments by systematically identifying and navigating towards unexplored areas.
@@ -116,10 +118,49 @@ This repository introduces ROS packages for autonomous exploration with a drone 
     - The node takes data from ROS topics, such as sensor data, state estimates, or navigation paths, and converts it into a format that Unity can understand.
 
 #### ROS Topic List
-- `/planned_path`
-- `/frontier_goal`
+
+- `/clicked_point`
+- `/command/trajectory`
 - `/current_state_est`
-- `octomap_full`
+- `/detected_points`
+- `/free_cells_vis_array`
+- `/frontier_goal`
+- `/goal_position`
+- `/initialpose`
+- `/move_base_simple/goal`
+- `/nodelet_manager/bond`
+- `/occupied_cells_vis_array`
+- `/octomap_binary`
+- `/octomap_full`
+- `/octomap_point_cloud_centers`
+- `/octomap_server/parameter_descriptions`
+- `/octomap_server/parameter_updates`
+- `/path_segments`
+- `/planned_path`
+- `/point_cloud`
+- `/pose_est`
+- `/projected_map`
+- `/realsense/depth/camera_info`
+- `/realsense/depth/image`
+- `/realsense/rgb/left_image_info`
+- `/realsense/rgb/left_image_raw`
+- `/realsense/rgb/right_image_info`
+- `/realsense/rgb/right_image_raw`
+- `/realsense/semantic/camera_info`
+- `/realsense/semantic/image_raw`
+- `/rosout`
+- `/rosout_agg`
+- `/rotor_speed_cmds`
+- `/tf`
+- `/tf_static`
+- `/trajectory`
+- `/trajectory_markers`
+- `/true_pose`
+- `/true_twist`
+- `/twist_est`
+- `/unity_ros/Quadrotor/Sensors/IMU`
+- `/unity_ros/command_topic`
+- `/w_to_unity/pose_topic`
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
@@ -278,3 +319,10 @@ source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 roslaunch simulation mission.launch
 ```
 `mission.launch` file launches related packages that should be run simultaneously. Additionally, it runs `rviz` to show octomapping visual.
+
+During the Frontier Exploration and Path Planning processes, we sometimes encounter a segmentation fault. We have examined the error logs and tried using smart pointers, but have not reached a solution. We were receiving this error even before patches were applied to the voids in the cave in the simulation. After the new simulation version with patching edit, we began to receive the error less frequently and reached further locations in the cave. However, some voids still exist. We therefore thought that the remaining voids might be the reason for this error.  Please note that, despite the segmentation fault, when the command is executed in a seperate terminal to restart the explorer, the drone continues its mission. To do that in a separate terminal (T2)
+```
+rosrun navigation_pkg frontier_exploration
+```
+
+![rviz](images/rviz.png)
