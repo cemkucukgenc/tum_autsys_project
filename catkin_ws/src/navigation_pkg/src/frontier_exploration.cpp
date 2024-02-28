@@ -64,7 +64,9 @@ Frontier::Frontier() {
 }
 
 void Frontier::currentStateCallback(const nav_msgs::Odometry &msg) {
-  // TODO
+  current_position =
+      octomap::point3d(msg.pose.pose.position.x, msg.pose.pose.position.y,
+                       msg.pose.pose.position.z);
 }
 
 void Frontier::mapUpdateCallback(const octomap_msgs::OctomapConstPtr &msg) {
@@ -73,11 +75,35 @@ void Frontier::mapUpdateCallback(const octomap_msgs::OctomapConstPtr &msg) {
 }
 
 void Frontier::explorationTimerCallback(const ros::TimerEvent &event) {
-  // TODO
+  if (!octree)
+    return;
+
+  detectFrontiers();
+  auto frontier_cloud = generateFrontierCloud();
+
+  // Assuming Optics::optics method exists and works as expected
+  Optics::optics<pcl::PointXYZ>(frontier_cloud, 5, 10.0, cluster_indices);
+
+  auto largest_cluster_cloud = identifyLargestCluster(frontier_cloud);
+  auto goal = calculateGoal(*largest_cluster_cloud);
+
+  ROS_INFO("Frontier goal point set to: (%f, %f, %f)", goal.x, goal.y, goal.z);
+  publishGoal(goal);
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr Frontier::generateFrontierCloud() {
-  // TODO
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(
+      new pcl::PointCloud<pcl::PointXYZ>); // Use boost::shared_ptr
+  cloud->header.frame_id = "world";
+  cloud->is_dense = false;
+
+  for (const auto &point : frontier_points) {
+    cloud->points.emplace_back(point.x, point.y, point.z);
+  }
+  cloud->width = cloud->points.size();
+  cloud->height = 1;
+
+  return cloud;
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr
@@ -122,7 +148,11 @@ bool Frontier::isFrontierPoint(const octomap::point3d &coord) {
 }
 
 void Frontier::publishGoal(const pcl::PointXYZ &goal) {
-  // TODO
+  geometry_msgs::Point goal_msg;
+  goal_msg.x = goal.x;
+  goal_msg.y = goal.y;
+  goal_msg.z = goal.z;
+  goal_publisher.publish(goal_msg);
 }
 
 int main(int argc, char **argv) {
