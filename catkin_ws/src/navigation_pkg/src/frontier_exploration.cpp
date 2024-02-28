@@ -108,14 +108,52 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr Frontier::generateFrontierCloud() {
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr
 Frontier::identifyLargestCluster(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
-  // TODO
+  int max_size = 0;
+  pcl::PointIndices::Ptr largest_cluster_indices;
+  for (const auto &cluster_indices : cluster_indices) {
+    if (cluster_indices->indices.size() > max_size) {
+      largest_cluster_indices = cluster_indices;
+      max_size = cluster_indices->indices.size();
+    }
 }
 pcl::PointXYZ Frontier::calculateGoal(pcl::PointCloud<pcl::PointXYZ> &cloud) {
-  // TODO
+  pcl::PointXYZ goal(0, 0, 0);
+  if (cloud.points.empty())
+    return goal;
+
+  for (const auto &point : cloud.points) {
+    goal.x += point.x;
+    goal.y += point.y;
+    goal.z += point.z;
+  }
+  goal.x /= cloud.points.size();
+  goal.y /= cloud.points.size();
+  goal.z /= cloud.points.size();
+
+  return goal;
 }
 
 void Frontier::detectFrontiers() {
-  // TODO
+  frontier_points.clear();
+  octomap::point3d minPt(current_position.x() - max_distance,
+                         current_position.y() - max_distance,
+                         current_position.z() - max_distance);
+  octomap::point3d maxPt(std::min(current_position.x() + max_distance, -340.0f),
+                         current_position.y() + max_distance,
+                         current_position.z() + max_distance);
+  iterator = octree->begin_leafs_bbx(minPt, maxPt);
+  for (; iterator != octree->end_leafs_bbx(); ++iterator) {
+    octomap::point3d coord = iterator.getCoordinate();
+    if (!octree->isNodeOccupied(*iterator)) {
+      if (isFrontierPoint(coord)) {
+        geometry_msgs::Point frontier_point;
+        frontier_point.x = coord.x();
+        frontier_point.y = coord.y();
+        frontier_point.z = coord.z();
+        frontier_points.push_back(frontier_point);
+      }
+    }
+  }
 }
 
 bool Frontier::isFrontierPoint(const octomap::point3d &coord) {
