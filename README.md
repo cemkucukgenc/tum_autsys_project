@@ -58,13 +58,13 @@ This repository introduces ROS packages for autonomous exploration with a drone 
 
 
 ### 1.2. Generated packages <a name="generated_packages"></a>
-- `state_machine_pkg` (Baran Özer)
+- `state_machine_pkg` 
     - Handling the drone's state transitions based on its position and mission progress. It utilizes topics for communication, timers for periodic tasks, and state management.
 
-- `navigation_pkg` (Baran Özer, Cem Kücükgenc, Hünkar Suci)
+- `navigation_pkg` 
     - Being enable to autonomously navigation in the environment by using path planning algorithms. RRT* is used to calculate optimal paths from the drone's current position to a target location. 
 
-- `vision_pkg` (Serdar Soyer, Erencan Aslakci)
+- `vision_pkg` 
     - Detection and tracking features of objects within the environment by integrating semantic and depth data, transforming this in the global reference frame.
 
 ### 1.3. ROS graph, nodes and topic list <a name="ros_graph_nodes_topics"></a>
@@ -73,49 +73,49 @@ This repository introduces ROS packages for autonomous exploration with a drone 
 
 #### Generated ROS Nodes  
 - `/frontier_exploration`
-    - a
+    - The primary goal of the Frontier Exploration node is to enable autonomous exploration of unknown environments by systematically identifying and navigating towards unexplored areas.
 - `/Planner`
-    - a
+    - By combining path planning with real-time collision avoidance and adaptive goal setting, it enables drones or robotic systems to navigate safely and efficiently, whether for exploration, mapping, or specific mission objectives.
 - `/state_machine_node`
-    - a
+    - The state machine node manages the drone's flight states and goals, starting with takeoff from an initial position, then flying to predefined coordinates such as a lamp position and a cave entrance.
 - `/waypoint_navigation`
-    - a
+    - The waypoint navigation node orchestrates the movement of the drone from one waypoint to another, ensuring it follows the designated path accurately and safely.
 - `/sampler`
-    - a
+    - The sampler subscribes to planned trajectory segments, converts them into a format suitable for UAV control
 - `/nodelet_manager`
-    - a
+    - Nodelets are a ROS feature designed to optimize the computational efficiency of processing data by running multiple nodes in a single process.
 - `/depth_to_cloud`
-    - a
+    - The depth to cloud node is that transforms depth image data from a depth camera into a 3D point cloud format.
 - `/octomap_server`
-    - a
+    - The octomap server node updates its internal octree representation of the environment by marking the spaces where obstacles are detected as occupied and spaces.
 - `/LightDetectorNode`
-    - a
+    - This ROS node operates as a light detection system, utilizing input from semantic and depth camera images to identify light sources in the environment.
 
 #### Given ROS Nodes by Template:
 - `/controller_node`
-    - a
+    - The Controller node is designed to control a quadrotor UAV by implementing a geometric tracking controller.
 - `/unity_ros`
-    - a
-- `/state_estimate_corrputor`
-    - a
+    - Serving an interface between ROS and the Unity engine.
+- `/state_estimate_corruptor`
+    - The State estimate corruptor Node is for simulation and testing purposes, specifically to introduce errors or noise into the drone's state estimates.
 - `/sim_true_body`
-    - a
+    - Providing ground truth data that the node simulates and publishes the drone's true position, orientation (pitch, roll, yaw) 
 - `/sim_depth_camera`
-    - a
+    - The Sim Depth Camera node associated with interfacing and processing data from a depth camera attached to the drone, focusing a lightweight approach.
 - `/sim_rgb_camera`
-    - a
+    - Associated an interface with an RGB camera on the drone, focusing on capturing and processing color images.
 - `/sim_right_camera`
-    - a
+    - Handling the data stream from a camera mounted on the right side of the drone.
 - `/camera_to_body`
-    - a
+    - For transforming camera data from the camera's coordinate frame to the drone's body frame of reference.
 - `/depth_camera_to_body`
-    - a
+    - The node serves the purpose of transforming depth camera data to the drone's body frame of reference.
 - `/depth_cam_sensors`
-    - a
+    - Handling interfacing with and processing data from a depth camera mounted on the drone.
 - `/w_to_unity`
-    - a
+    - The node takes data from ROS topics, such as sensor data, state estimates, or navigation paths, and converts it into a format that Unity can understand.
 
-#### ROS topic list
+#### ROS Topic List
 - `/planned_path`
 - `/frontier_goal`
 - `/current_state_est`
