@@ -192,7 +192,7 @@ void StateMachine::takeoff()
         goal_sent_once = 1;
         goalpoint = StateMachine::getNextGoalPoint();
         ros::Duration(1).sleep();
-        auto goal_pose_stamped = StateMachine::pointToPoseStamped(goalpoint, "world", -1.5708 * 2);
+        auto goal_pose_stamped = StateMachine::pointToPoseStamped(goalpoint, "world");
 
         goal_position_pub_.publish(goal_pose_stamped);
         ROS_INFO("Published goal position: [%f, %f, %f]", goalpoint.x, goalpoint.y, goalpoint.z);
@@ -227,7 +227,7 @@ void StateMachine::to_cave()
         // goalpoint = StateMachine::getNextGoalPoint();
         if (current_goal_index == 3)
         {
-            state_ = State::landing;
+            state_ = State::hover;
             yaw_des = -1.5708; //-90 deg
             set_position();
         }
