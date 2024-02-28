@@ -74,34 +74,34 @@ In your documentation you should include a short description of every ROS node a
 - ROS graph
 
 - ROS nodes
-      Generated ROS Nodes:
-       - `/frontier_exploration`
-       - `/Planner`
-       - `/state_machine_node`
-       - `/waypoint_navigation`
-       - `/sampler`
-       - `/nodelet_manager`
-       - `/depth_to_cloud`
-       - `/octomap_server`
-       - `/LightDetectorNode`
-      Given ROS Nodes by Template:
-       - `/controller_node`
-       - `/unity_ros`
-       - `/state_estimate_corrputor`
-       - `/sim_true_body`
-       - `/sim_depth_camera`
-       - `/sim_rgb_camera`
-       - `/sim_right_camera`
-       - `/camera_to_body`
-       - `/depth_camera_to_body`
-       - `/depth_cam_sensors`
-       - `/w_to_unity`
+  Generated ROS Nodes:
+   - `/frontier_exploration`
+   - `/Planner`
+   - `/state_machine_node`
+   - `/waypoint_navigation`
+   - `/sampler`
+   - `/nodelet_manager`
+   - `/depth_to_cloud`
+   - `/octomap_server`
+   - `/LightDetectorNode`
+  Given ROS Nodes by Template:
+   - `/controller_node`
+   - `/unity_ros`
+   - `/state_estimate_corrputor`
+   - `/sim_true_body`
+   - `/sim_depth_camera`
+   - `/sim_rgb_camera`
+   - `/sim_right_camera`
+   - `/camera_to_body`
+   - `/depth_camera_to_body`
+   - `/depth_cam_sensors`
+   - `/w_to_unity`
 
 - ROS topic list
-        - `/planned_path`
-        - `/frontier_goal`
-        - `/current_state_est`
-        - `octomap_full`
+    - `/planned_path`
+    - `/frontier_goal`
+    - `/current_state_est`
+    - `octomap_full`
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
