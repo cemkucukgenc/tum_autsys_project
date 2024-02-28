@@ -2,19 +2,19 @@
 
 ### Group 4
 - Cem Kücükgenc     (cem.kucukgenc@tum.de)
-    - Navigation(Path Planning, Trajectory Generation), Vision(Point Cloud Generation, Octomapping), DevOps 
+    - Navigation (Path Planning, Trajectory Generation), Vision (Point Cloud Generation, Octomapping), DevOps 
 
 - Baran Özer        (baran.oezer@tum.de)
-    - State Machine, Navigation(Path Planning, Trajectory Generation), Vision(Point Cloud Generation, Octomapping) 
+    - State Machine, Navigation (Path Planning, Trajectory Generation), Vision (Point Cloud Generation, Octomapping) 
 
 - Serdar Soyer      (serdar.soyer@tum.de)
-    - Vision(Octomapping, Light Detection)
+    - Vision (Octomapping, Light Detection), Navigation (Frontier Exploration)
 
 - Erencan Aslakci   (ge97jed@mytum.de)
-    - Vision(Light Detection), Navigation(Path Planning)
+    - Vision (Light Detection), Navigation (Frontier Exploration)
 
 - Hünkar Suci       (hunkar.suci@tum.de)
-    - Navigation(Path Planning, Frontier Exploration), Vision(Light Detection)
+    - Navigation (Path Planning, Frontier Exploration), Vision (Light Detection)
 
 ### Table of contents
 1. [Introduction](#introduction)
@@ -54,7 +54,7 @@ This repository introduces ROS packages for autonomous exploration with a drone 
     - `Planner.cpp` and `Planner.h` is implemented as a base for path planning
     
 - `Pcl-Optics` (https://github.com/Nandite/Pcl-Optics/tree/master)
-    - `Optics.hpp` is finding density-based clusters in spatial data
+    - `Optics.hpp` is for finding density-based clusters in spatial data
 
 
 ### 1.2. Generated packages <a name="generated_packages"></a>
@@ -68,40 +68,58 @@ This repository introduces ROS packages for autonomous exploration with a drone 
     - Detection and tracking features of objects within the environment by integrating semantic and depth data, transforming this in the global reference frame.
 
 ### 1.3. ROS graph, nodes and topic list <a name="ros_graph_nodes_topics"></a>
-???????????????? run rostopic list, paste here and explain what does it do ?????????????
-In your documentation you should include a short description of every ROS node and package and its functionality.
 
-- ROS graph
+#### ROS graph (`rqt_graph`)
 
-- ROS nodes
-  Generated ROS Nodes:
-   - `/frontier_exploration`
-   - `/Planner`
-   - `/state_machine_node`
-   - `/waypoint_navigation`
-   - `/sampler`
-   - `/nodelet_manager`
-   - `/depth_to_cloud`
-   - `/octomap_server`
-   - `/LightDetectorNode`
-  Given ROS Nodes by Template:
-   - `/controller_node`
-   - `/unity_ros`
-   - `/state_estimate_corrputor`
-   - `/sim_true_body`
-   - `/sim_depth_camera`
-   - `/sim_rgb_camera`
-   - `/sim_right_camera`
-   - `/camera_to_body`
-   - `/depth_camera_to_body`
-   - `/depth_cam_sensors`
-   - `/w_to_unity`
+#### Generated ROS Nodes  
+- `/frontier_exploration`
+    - a
+- `/Planner`
+    - a
+- `/state_machine_node`
+    - a
+- `/waypoint_navigation`
+    - a
+- `/sampler`
+    - a
+- `/nodelet_manager`
+    - a
+- `/depth_to_cloud`
+    - a
+- `/octomap_server`
+    - a
+- `/LightDetectorNode`
+    - a
 
-- ROS topic list
-    - `/planned_path`
-    - `/frontier_goal`
-    - `/current_state_est`
-    - `octomap_full`
+#### Given ROS Nodes by Template:
+- `/controller_node`
+    - a
+- `/unity_ros`
+    - a
+- `/state_estimate_corrputor`
+    - a
+- `/sim_true_body`
+    - a
+- `/sim_depth_camera`
+    - a
+- `/sim_rgb_camera`
+    - a
+- `/sim_right_camera`
+    - a
+- `/camera_to_body`
+    - a
+- `/depth_camera_to_body`
+    - a
+- `/depth_cam_sensors`
+    - a
+- `/w_to_unity`
+    - a
+
+#### ROS topic list
+- `/planned_path`
+- `/frontier_goal`
+- `/current_state_est`
+- `octomap_full`
 
 ## 2. Installation guide <a name="installation_guide"></a>
 
@@ -260,6 +278,3 @@ source /autsys_ws/tum_autsys_project/catkin_ws/devel/setup.bash
 roslaunch simulation mission.launch
 ```
 `mission.launch` file launches related packages that should be run simultaneously. Additionally, it runs `rviz` to show octomapping visual.
-
-
-
