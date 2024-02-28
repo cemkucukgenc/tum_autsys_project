@@ -201,7 +201,7 @@ void Frontier::publishGoal(const pcl::PointXYZ &goal) {
   goal_msg.x = goal.x;
   goal_msg.y = goal.y;
   goal_msg.z = goal.z;
-  goal_publisher.publish(goal_msg);
+  if(goal_msg.x<=-340.0){goal_publisher.publish(goal_msg);}//If the drone is at the entrance of the cave, send the frontier_goal
 }
 
 int main(int argc, char **argv) {

@@ -1,5 +1,0 @@
-<launch>
-    <node pkg="navigation_pkg" type="navigation_pkg" name="Planner" output="screen"> </node>
-    <node pkg="navigation_pkg" type="navigation_pkg" name="frontier_exploration" output="screen"> </node>
-</launch>
-
