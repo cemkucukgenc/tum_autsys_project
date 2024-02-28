@@ -4,7 +4,7 @@ project(navigation_pkg)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 set(CMAKE_MACOSX_RPATH 0)
-add_definitions(-std=c++11)
+add_definitions(-std=c++2a)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -24,6 +24,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(fcl REQUIRED)
 find_package(ompl REQUIRED)
 find_package(octomap REQUIRED)
+find_package(pcl_ros REQUIRED)
 
 catkin_simple(ALL_DEPS_REQUIRED)
 
@@ -164,6 +165,7 @@ add_definitions(${OMPL_DEFINITIONS})
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/navigation_pkg_node.cpp)
 add_executable(Planner src/Planner.cpp)
+add_executable(frontier_exploration src/frontier_exploration.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -188,6 +190,8 @@ ${OCTOMAP_LIBRARIES}
 ${fcl_LIBRARY_DIRS} 
 ${FCL_LIBRARIES} 
 )
+
+target_link_libraries(frontier_exploration ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${visualization_msgs_LIBRARIES} ${OCTOMAP_LIBRARIES})
 
 #############
 ## Install ##
