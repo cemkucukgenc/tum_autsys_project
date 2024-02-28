@@ -44,6 +44,7 @@
 #include <fcl/fcl.h>
 #include <fcl/geometry/collision_geometry.h>
 #include <fcl/geometry/octree/octree.h>
+#include <mutex>
 
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
@@ -105,6 +106,10 @@ private:
 	og::PathGeometric *path_smooth = NULL;
 
 	// bool replan_flag = true;
+
+	std::mutex mutex_flag;
+
+	bool plan_flag;
 
 	std::shared_ptr<fcl::CollisionObject<double>> treeObj;
 

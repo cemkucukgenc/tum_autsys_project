@@ -25,6 +25,8 @@
 Planner::Planner(void) : space(ob::StateSpacePtr(new ob::RealVectorStateSpace(3))),
 						 goal(ob::ScopedState<ob::RealVectorStateSpace>(space)),
 						 start(ob::ScopedState<ob::RealVectorStateSpace>(space)),
+						 mutex_flag(),
+						 plan_flag(false),
 						 bounds(3)
 {
 	current_state_sub = nh.subscribe("/current_state_est", 1, &Planner::updateOdom, this);
@@ -32,7 +34,9 @@ Planner::Planner(void) : space(ob::StateSpacePtr(new ob::RealVectorStateSpace(3)
 	frontier_goal_sub = nh.subscribe("frontier_goal", 1, &Planner::setGoal, this);
 	planned_path_pub = nh.advertise<nav_msgs::Path>("planned_path", 0);
 
-	aircraftObject = std::make_shared<fcl::CollisionObject<double>>(std::make_shared<fcl::Box<double>>(1.5, 1.5, 1.5));
+	// Change in Box size deeply affects the collision checking
+	// It is quite possible that planner will result in different paths for different box sizes
+	aircraftObject = std::make_shared<fcl::CollisionObject<double>>(std::make_shared<fcl::Box<double>>(3, 3, 3));
 	// fcl::OcTree<double>* tree = new fcl::OcTree<double>(std::shared_ptr<const octomap::OcTree>(new octomap::OcTree(0.15)));
 	// tree_obj = std::shared_ptr<fcl::CollisionGeometry<double>>(tree);
 	// treeObj = std::make_shared<fcl::CollisionObject<double>>((std::shared_ptr<fcl::CollisionGeometry<double>>(tree)));
@@ -128,12 +132,15 @@ Planner::~Planner()
 
 void Planner::setGoal(const geometry_msgs::PointConstPtr &msg)
 {
+	std::lock_guard<std::mutex> lock(mutex_flag);
+
 	// Create a state representing the goal
 	// ob::ScopedState<ob::RealVectorStateSpace> goal(space);
 	goal[0] = msg->x;
 	goal[1] = msg->y;
 	goal[2] = msg->z;
 	// pdef->clearGoal();
+	plan_flag = true;
 	pdef->clearSolutionPaths();
 	// pdef->setGoalState(goal);
 	ob::State *state = space->allocState();
@@ -151,6 +158,7 @@ void Planner::setGoal(const geometry_msgs::PointConstPtr &msg)
 		o_plan->setProblemDefinition(pdef);
 		o_plan->setup();
 		plan();
+		plan_flag = false;
 		ROS_INFO_STREAM("Goal point set to: " << msg->x << " " << msg->y << " " << msg->z);
 	}
 	else
@@ -163,6 +171,10 @@ void Planner::setGoal(const geometry_msgs::PointConstPtr &msg)
 
 void Planner::updateMap(const octomap_msgs::OctomapConstPtr &msg)
 {
+	std::lock_guard<std::mutex> lock(mutex_flag);
+	if (plan_flag)
+		return;
+
 	// Convert the received Octomap message to an Octree
 	auto octree = std::shared_ptr<octomap::OcTree>(dynamic_cast<octomap::OcTree *>(octomap_msgs::msgToMap(*msg)));
 
@@ -272,7 +284,10 @@ nav_msgs::Path Planner::vectorMsg(const std::vector<Eigen::Vector3d> &pathVector
 
 void Planner::plan(void)
 {
+
 	// attempt to solve the problem within X seconds of planning time
+	// Change in X seconds of planning time deeply affects the determined path
+	// It is quite possible that planner will result in different paths for different planning time
 	ob::PlannerStatus solved = o_plan->solve(3);
 
 	if (solved)
