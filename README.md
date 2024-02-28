@@ -39,29 +39,33 @@ This repository introduces ROS packages for autonomous exploration with a drone 
     - For depth image to point cloud conversion.
 
 - `OctoMap` (https://github.com/OctoMap/octomap)
-    - For
+    - For 3D mapping in the environment
 
 - `Open Motion Planning Library (OMPL)` (https://github.com/ompl/ompl)
-    - For
+    - For motion and mission planning
 
 - `Flexible Cloud Library (FCL)` (https://github.com/flexible-collision-library/fcl)
-    - For  
+    - For access and store data in the cloud
 
 - `Point Cloud Library (PCL)` (https://github.com/PointCloudLibrary/pcl)
     - For point cloud to voxel grid conversion
 
 - `OctomapPlanner` (https://github.com/ArduPilot/OctomapPlanner)
     - `Planner.cpp` and `Planner.h` is implemented as a base for path planning
+    
+- `Pcl-Optics` (https://github.com/ArduPilot/OctomapPlanne](https://github.com/Nandite/Pcl-Optics/tree/master)
+    - For finding density-based clusters in spatial data
+
 
 ### 1.2. Generated packages <a name="generated_packages"></a>
 - `state_machine_pkg` (Baran Özer)
-    - aaa
+    - Handling the drone's state transitions based on its position and mission progress. It utilizes topics for communication, timers for periodic tasks, and state management.
 
 - `navigation_pkg` (Baran Özer, Cem Kücükgenc, Hünkar Suci)
-    - aaa
+    - Being enable to autonomously navigation in the environment by using path planning algorithms. RRT* is used to calculate optimal paths from the drone's current position to a target location. 
 
 - `vision_pkg` (Serdar Soyer, Erencan Aslakci)
-    - aaa
+    - Detection and tracking features of objects within the environment by integrating semantic and depth data, transforming this in the global reference frame.
 
 ### 1.3. ROS graph, nodes and topic list <a name="ros_graph_nodes_topics"></a>
 ???????????????? run rostopic list, paste here and explain what does it do ?????????????
